@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DiabFit — Free Prediabetes Risk Screening</title>
+<meta name="description" content="Take the free 3-minute prediabetes risk screening. Get your certificate. Share your result. Join the health movement.">
+<style>
+  :root {
+    --green: #1D9E75; --green-light: #E1F5EE; --green-dark: #085041;
+    --amber: #EF9F27; --amber-light: #FAEEDA; --amber-dark: #633806;
+    --red: #E24B4A; --red-light: #FCEBEB; --red-dark: #501313;
+    --blue: #378ADD; --blue-light: #E6F1FB; --blue-dark: #042C53;
+    --navy: #1a2744; --navy-light: #253460;
+    --text: #1a1a1a; --text2: #555; --text3: #888;
+    --border: #e0e0e0; --bg: #f7f8fc; --white: #ffffff;
+    --radius: 12px; --radius-sm: 8px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* NAV */
+  nav { background: var(--navy); padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; height: 56px; position: sticky; top: 0; z-index: 100; }
+  .logo { color: #fff; font-size: 20px; font-weight: 700; letter-spacing: -0.5px; }
+  .logo span { color: var(--green); }
+  nav a { color: rgba(255,255,255,0.75); font-size: 13px; text-decoration: none; margin-left: 1.5rem; }
+  nav a:hover { color: #fff; }
+  .nav-cta { background: var(--green); color: #fff !important; padding: 6px 16px; border-radius: 99px; font-weight: 600; }
+
+  /* HERO */
+  .hero { background: var(--navy); color: #fff; padding: 3.5rem 1.5rem 4rem; text-align: center; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 99px; padding: 5px 14px; font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; margin-bottom: 1.5rem; }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; line-height: 1.15; margin-bottom: 1rem; letter-spacing: -1px; }
+  .hero h1 em { color: var(--green); font-style: normal; }
+  .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.75); max-width: 520px; margin: 0 auto 2rem; line-height: 1.65; }
+  .hero-stats { display: flex; justify-content: center; gap: 2.5rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+  .stat { text-align: center; }
+  .stat-num { font-size: 1.8rem; font-weight: 800; color: var(--green); display: block; }
+  .stat-label { font-size: 12px; color: rgba(255,255,255,0.6); }
+  .hero-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 14px 32px; border-radius: 99px; font-size: 1rem; font-weight: 700; text-decoration: none; cursor: pointer; border: none; font-family: inherit; transition: all .2s; box-shadow: 0 4px 20px rgba(29,158,117,0.4); }
+  .hero-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(29,158,117,0.5); }
+  .hero-note { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: .75rem; }
+
+  /* BADGES PREVIEW */
+  .badges-row { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; padding: 1.5rem; background: var(--navy-light); border-top: 1px solid rgba(255,255,255,0.08); }
+  .badge-chip { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 99px; padding: 6px 16px; font-size: 13px; color: rgba(255,255,255,0.9); font-weight: 500; }
+  .badge-icon { font-size: 16px; }
+
+  /* MAIN QUIZ CARD */
+  .main { max-width: 640px; margin: 0 auto; padding: 2rem 1rem 4rem; }
+
+  .quiz-card { background: var(--white); border-radius: 18px; box-shadow: var(--shadow-lg); overflow: hidden; }
+
+  /* Progress */
+  .quiz-header { padding: 1.25rem 1.5rem 0; }
+  .progress-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: .6rem; }
+  .progress-label { font-size: 12px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: .06em; }
+  .section-pill { font-size: 11px; font-weight: 600; color: var(--blue-dark); background: var(--blue-light); padding: 3px 10px; border-radius: 99px; }
+  .progress-bar { height: 5px; background: #eee; border-radius: 3px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--blue)); border-radius: 3px; transition: width .4s ease; }
+
+  /* Question body */
+  .question-body { padding: 1.5rem; }
+  .q-num { font-size: 11px; font-weight: 700; color: var(--green); text-transform: uppercase; letter-spacing: .08em; margin-bottom: .4rem; }
+  .q-title { font-size: 1.15rem; font-weight: 700; color: var(--text); margin-bottom: .4rem; line-height: 1.35; }
+  .q-sub { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 1.25rem; }
+
+  /* Options */
+  .options { display: flex; flex-direction: column; gap: 8px; }
+  .opt { display: flex; align-items: center; gap: 12px; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; transition: all .15s; background: #fff; }
+  .opt:hover { border-color: var(--green); background: var(--green-light); }
+  .opt.sel { border-color: var(--green); background: var(--green-light); }
+  .opt-radio { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+  .opt.sel .opt-radio { border-color: var(--green); background: var(--green); }
+  .opt-radio-dot { width: 7px; height: 7px; border-radius: 50%; background: #fff; opacity: 0; }
+  .opt.sel .opt-radio-dot { opacity: 1; }
+  .opt-text { font-size: 14px; color: var(--text); flex: 1; line-height: 1.4; }
+  .opt-risk { font-size: 11px; font-weight: 700; color: var(--text3); white-space: nowrap; }
+  .opt.sel .opt-risk { color: var(--green-dark); }
+
+  /* Country selector */
+  .country-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .c-card { border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 1.2rem .5rem; text-align: center; cursor: pointer; transition: all .15s; background: #fff; }
+  .c-card:hover { border-color: var(--green); background: var(--green-light); }
+  .c-card.sel { border-color: var(--green); background: var(--green-light); }
+  .c-flag { font-size: 2.2rem; display: block; margin-bottom: 6px; }
+  .c-name { font-size: 13px; font-weight: 700; color: var(--text); }
+  .c-card.sel .c-name { color: var(--green-dark); }
+
+  /* Input fields */
+  .input-section { display: flex; flex-direction: column; gap: 12px; }
+  .unit-tabs { display: flex; border: 1.5px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 10px; }
+  .ut { flex: 1; padding: 7px 12px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; background: transparent; color: var(--text3); font-family: inherit; transition: all .15s; }
+  .ut.on { background: var(--navy); color: #fff; }
+  .field-row { display: flex; gap: 10px; }
+  .field { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+  .field label { font-size: 12px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: .05em; }
+  .field input { padding: 10px 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 15px; color: var(--text); background: #fff; font-family: inherit; outline: none; transition: border-color .15s; }
+  .field input:focus { border-color: var(--green); }
+  .converted-display { font-size: 12px; color: var(--text3); font-style: italic; min-height: 18px; }
+  .hint-box { background: var(--blue-light); border-left: 3px solid var(--blue); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 10px 12px; font-size: 12px; color: var(--blue-dark); line-height: 1.55; margin-top: 10px; }
+
+  /* Nav buttons */
+  .quiz-footer { padding: 1rem 1.5rem 1.5rem; display: flex; gap: 10px; border-top: 1px solid #f0f0f0; }
+  .btn-back { flex: 1; padding: 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: #fff; color: var(--text2); font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all .15s; }
+  .btn-back:hover:not(:disabled) { border-color: var(--text); color: var(--text); }
+  .btn-back:disabled { opacity: .35; cursor: not-allowed; }
+  .btn-next { flex: 2; padding: 12px; border: none; border-radius: var(--radius-sm); background: var(--navy); color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; transition: all .15s; }
+  .btn-next:hover:not(:disabled) { background: var(--green); }
+  .btn-next:disabled { opacity: .35; cursor: not-allowed; }
+
+  /* RESULT */
+  .result-card { background: var(--white); border-radius: 18px; box-shadow: var(--shadow-lg); overflow: hidden; }
+  .result-header { padding: 2rem 1.5rem 1.5rem; text-align: center; }
+  .r-icon { font-size: 3.5rem; margin-bottom: .75rem; }
+  .r-title { font-size: 1.4rem; font-weight: 800; color: var(--text); margin-bottom: .5rem; line-height: 1.25; }
+  .r-sub { font-size: 14px; color: var(--text2); line-height: 1.65; max-width: 480px; margin: 0 auto .75rem; }
+  .score-pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 18px; border-radius: 99px; font-size: 14px; font-weight: 700; }
+
+  .result-body { padding: 1rem 1.5rem 1.5rem; }
+
+  .section-card { background: #fafafa; border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.1rem; margin-bottom: .75rem; }
+  .sc-title { font-size: 11px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .07em; margin-bottom: .6rem; }
+  .sc-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #eee; font-size: 13px; }
+  .sc-row:last-child { border: none; }
+  .sc-label { color: var(--text2); }
+  .sc-val { font-weight: 700; color: var(--text); }
+
+  .bmi-bar { display: flex; height: 8px; border-radius: 4px; overflow: hidden; gap: 2px; margin: 8px 0 4px; }
+  .bmi-seg { border-radius: 2px; }
+  .bmi-labels { display: flex; justify-content: space-between; font-size: 10px; color: var(--text3); }
+
+  .action-card { border-radius: var(--radius); padding: 1rem 1.1rem; margin-bottom: .75rem; }
+  .action-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .action-card ul { font-size: 13px; line-height: 1.75; padding-left: 1.1rem; }
+
+  .share-section { padding: 0 1.5rem 1.5rem; }
+  .share-title { font-size: 11px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .07em; margin-bottom: .75rem; text-align: center; }
+  .share-btn { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 13px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 700; cursor: pointer; border: none; width: 100%; margin-bottom: 8px; font-family: inherit; transition: all .15s; }
+  .share-btn:hover { filter: brightness(1.05); transform: translateY(-1px); }
+  .share-ig { background: var(--blue-light); color: var(--blue-dark); }
+  .share-wa { background: var(--green-light); color: var(--green-dark); }
+  .share-x { background: #f0f0f0; color: var(--text); }
+  .restart-btn { width: 100%; padding: 11px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: #fff; color: var(--text2); font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; margin-top: 4px; }
+  .restart-btn:hover { border-color: var(--text); color: var(--text); }
+
+  .disclaimer { font-size: 11px; color: var(--text3); text-align: center; line-height: 1.65; padding: 1rem 1.5rem; border-top: 1px solid #f0f0f0; }
+
+  /* Toast */
+  .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background: var(--text); color: #fff; padding: 10px 20px; border-radius: 99px; font-size: 14px; font-weight: 600; opacity: 0; transition: opacity .3s; pointer-events: none; z-index: 999; white-space: nowrap; }
+  .toast.show { opacity: 1; }
+
+  /* HOW IT WORKS section */
+  .how { padding: 3rem 1.5rem; background: var(--white); }
+  .how h2 { text-align: center; font-size: 1.5rem; font-weight: 800; color: var(--text); margin-bottom: 2rem; }
+  .steps-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1.5rem; max-width: 760px; margin: 0 auto; }
+  .step-item { text-align: center; }
+  .step-num { width: 40px; height: 40px; border-radius: 50%; background: var(--navy); color: #fff; font-size: 16px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto .75rem; }
+  .step-item h3 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .step-item p { font-size: 13px; color: var(--text2); line-height: 1.55; }
+
+  /* Footer */
+  footer { background: var(--navy); color: rgba(255,255,255,0.5); text-align: center; padding: 1.5rem; font-size: 12px; }
+  footer a { color: rgba(255,255,255,0.6); text-decoration: none; }
+  footer a:hover { color: #fff; }
+
+  @media (max-width: 480px) {
+    .hero { padding: 2.5rem 1rem 3rem; }
+    .hero-stats { gap: 1.5rem; }
+    nav a:not(.nav-cta) { display: none; }
+    .question-body { padding: 1.25rem; }
+    .quiz-header { padding: 1rem 1.25rem 0; }
+    .quiz-footer { padding: .75rem 1.25rem 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Diab<span>Fit</span></div>
+  <div style="display:flex;align-items:center">
+    <a href="#how">How it works</a>
+    <a href="#quiz-anchor" class="nav-cta" onclick="scrollToQuiz()">Take the test</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">🩺 Free · 3 minutes · Certified result</div>
+  <h1>Do you have <em>prediabetes</em> risk?<br>Find out. Share it.</h1>
+  <p>136 million Indians have diabetes. Billions more don't know they're at risk. Take the 3-minute screening, earn your certificate, and start a movement.</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num">₹0</span><span class="stat-label">Cost</span></div>
+    <div class="stat"><span class="stat-num">3 min</span><span class="stat-label">To complete</span></div>
+    <div class="stat"><span class="stat-num">13</span><span class="stat-label">Risk factors checked</span></div>
+    <div class="stat"><span class="stat-num">90 days</span><span class="stat-label">Certificate valid</span></div>
+  </div>
+  <button class="hero-btn" onclick="scrollToQuiz()">Start free screening →</button>
+  <div class="hero-note">No sign-up required. No personal data stored.</div>
+</section>
+
+<div class="badges-row">
+  <div class="badge-chip"><span class="badge-icon">✅</span> Green tick certificate</div>
+  <div class="badge-chip"><span class="badge-icon">⚡</span> 90-day challenge badge</div>
+  <div class="badge-chip"><span class="badge-icon">🏆</span> Challenge winner trophy</div>
+  <div class="badge-chip"><span class="badge-icon">📤</span> One-tap Instagram share</div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <h2>How DiabFit works</h2>
+  <div class="steps-row">
+    <div class="step-item"><div class="step-num">1</div><h3>Select your country</h3><p>India, USA, or Europe — thresholds adjust to your clinical guidelines</p></div>
+    <div class="step-item"><div class="step-num">2</div><h3>Answer 13 questions</h3><p>Age, weight, waist, family history, lifestyle — takes 3 minutes</p></div>
+    <div class="step-item"><div class="step-num">3</div><h3>Get your result</h3><p>Instant risk score with personalised breakdown by factor</p></div>
+    <div class="step-item"><div class="step-num">4</div><h3>Share your badge</h3><p>Green tick, challenge badge, or winner trophy — post on Instagram</p></div>
+    <div class="step-item"><div class="step-num">5</div><h3>Retest in 90 days</h3><p>Certificate expires after 3 months. Track your improvement.</p></div>
+  </div>
+</section>
+
+<!-- QUIZ ANCHOR -->
+<div id="quiz-anchor" style="padding-top:1rem"></div>
+
+<!-- QUIZ -->
+<div class="main">
+  <div id="quiz-wrap">
+    <div class="quiz-card">
+      <div class="quiz-header">
+        <div class="progress-meta">
+          <span class="progress-label" id="step-lbl">Step 1 of 14</span>
+          <span class="section-pill" id="sec-pill">Setup</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:7%"></div></div>
+      </div>
+      <div class="question-body" id="q-body"></div>
+      <div class="quiz-footer">
+        <button class="btn-back" id="btn-back" onclick="goBack()" disabled>← Back</button>
+        <button class="btn-next" id="btn-next" onclick="goNext()" disabled>Next →</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="result-wrap" style="display:none">
+    <div class="result-card">
+      <div class="result-header">
+        <div class="r-icon" id="r-icon"></div>
+        <div class="r-title" id="r-title"></div>
+        <div class="r-sub" id="r-sub"></div>
+        <div class="score-pill" id="r-pill"></div>
+      </div>
+      <div class="result-body">
+        <div class="section-card" id="r-profile"></div>
+        <div id="r-bmi-section"></div>
+        <div class="section-card" id="r-breakdown"></div>
+        <div id="r-actions"></div>
+      </div>
+      <div class="share-section">
+        <div class="share-title">Share your result</div>
+        <button class="share-btn share-ig" onclick="doCopy('ig')"><span id="ig-ico">📸</span><span id="ig-txt">Copy Instagram caption</span></button>
+        <button class="share-btn share-wa" onclick="doCopy('wa')">💬 Copy WhatsApp message</button>
+        <button class="share-btn share-x" onclick="doCopy('x')">✖ Copy X (Twitter) post</button>
+        <button class="restart-btn" onclick="restart()">Start over</button>
+      </div>
+      <div class="disclaimer">
+        <strong>Medical disclaimer:</strong> DiabFit uses the validated ADA/WHO FINDRISC questionnaire adapted by country. This is a risk <em>screening tool only</em> — not a medical diagnosis. Only a doctor and blood test (HbA1c or fasting glucose) can diagnose prediabetes. Always consult your healthcare provider. Results are for awareness and education only.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div style="margin-bottom:.5rem"><strong style="color:#fff">DiabFit</strong> — Free prediabetes risk screening for India, USA &amp; Europe</div>
+  <div>Based on the validated ADA/WHO FINDRISC questionnaire &nbsp;·&nbsp; Not a medical device &nbsp;·&nbsp; <a href="#">Privacy</a> &nbsp;·&nbsp; <a href="#">Disclaimer</a></div>
+</footer>
+
+<div class="toast" id="toast">Copied!</div>
+
+<script>
+// ── STATE ──────────────────────────────────────────────────────────────────
+const S = {
+  country:null, gender:null, ethnicity:null, age:null,
+  weightKg:null, heightCm:null, waistCm:null, waistKnown:null,
+  activity:null, diet:null, sleep:null, stress:null,
+  smoking:null, alcohol:null, bp:null, familyHx:null, prevSugar:null,
+  // unit prefs
+  _hUnit:null, _wUnit:null, _waUnit:null,
+  // scores
+  sc:{}
+};
+let cur = 0;
+let canNext = false;
+
+// ── STEPS ──────────────────────────────────────────────────────────────────
+const STEPS = [
+  {id:'country',   section:'Your location'},
+  {id:'gender',    section:'About you'},
+  {id:'ethnicity', section:'About you'},
+  {id:'age',       section:'About you'},
+  {id:'height',    section:'Body measurements'},
+  {id:'weight',    section:'Body measurements'},
+  {id:'waistKnown',section:'Body measurements'},
+  {id:'waist',     section:'Body measurements', skip:()=>S.waistKnown===1},
+  {id:'activity',  section:'Lifestyle'},
+  {id:'diet',      section:'Lifestyle'},
+  {id:'sleep',     section:'Lifestyle'},
+  {id:'stress',    section:'Lifestyle'},
+  {id:'smoking',   section:'Lifestyle'},
+  {id:'alcohol',   section:'Lifestyle'},
+  {id:'bp',        section:'Medical history'},
+  {id:'familyHx',  section:'Medical history'},
+  {id:'prevSugar', section:'Medical history'},
+];
+const vs = ()=> STEPS.filter(s=>!s.skip||!s.skip());
+
+// ── RENDER ENGINE ──────────────────────────────────────────────────────────
+function render(){
+  const steps = vs();
+  const step = steps[cur];
+  const total = steps.length;
+  document.getElementById('step-lbl').textContent = 'Step '+(cur+1)+' of '+total;
+  document.getElementById('sec-pill').textContent = step.section;
+  document.getElementById('prog-fill').style.width = Math.round((cur+1)/total*100)+'%';
+  document.getElementById('btn-back').disabled = cur===0;
+  document.getElementById('btn-next').textContent = cur===total-1 ? 'See my result ✓' : 'Next →';
+  canNext = false;
+  BUILDERS[step.id]();
+  updateNext();
+}
+
+function setOK(v){ canNext=v; updateNext(); }
+function updateNext(){ document.getElementById('btn-next').disabled=!canNext; }
+
+function goNext(){
+  if(!canNext) return;
+  const steps=vs();
+  if(cur<steps.length-1){ cur++; render(); }
+  else showResult();
+}
+function goBack(){ if(cur>0){cur--;render();} }
+function restart(){
+  Object.keys(S).forEach(k=>{ if(!k.startsWith('_')) S[k]=null; });
+  S.sc={};
+  cur=0;
+  document.getElementById('quiz-wrap').style.display='block';
+  document.getElementById('result-wrap').style.display='none';
+  render();
+}
+function scrollToQuiz(){
+  document.getElementById('quiz-anchor').scrollIntoView({behavior:'smooth'});
+}
+
+// ── HELPERS ────────────────────────────────────────────────────────────────
+function setBody(html){ document.getElementById('q-body').innerHTML=html; }
+
+function makeOpts(opts, key, onPick){
+  return '<div class="options">'+opts.map((o,i)=>`
+    <div class="opt${S[key]===i?' sel':''}" onclick="pickOpt(event,'${key}',${i},${o.score||0})">
+      <div class="opt-radio"><div class="opt-radio-dot"></div></div>
+      <span class="opt-text">${o.text}</span>
+      <span class="opt-risk">${o.score>0?'+'+o.score+' pts':o.score===0?'Low risk':''}</span>
+    </div>`).join('')+'</div>';
+}
+
+function pickOpt(e, key, idx, score){
+  S[key]=idx; S.sc[key]=score;
+  document.querySelectorAll('#q-body .opt').forEach((el,i)=>el.classList.toggle('sel',i===idx));
+  setOK(true);
+}
+
+function hintBox(text){ return `<div class="hint-box">💡 ${text}</div>`; }
+
+function getWaistThr(){
+  const male = S.gender===0;
+  const sa = S.ethnicity===0;
+  if(male) return sa?{lo:90,hi:102}:{lo:94,hi:102};
+  return {lo:80,hi:88};
+}
+
+function calcBMI(){
+  if(!S.weightKg||!S.heightCm) return null;
+  return +(S.weightKg/((S.heightCm/100)**2)).toFixed(1);
+}
+
+function bmiScore(bmi){
+  const sa = S.ethnicity===0;
+  if(sa){ if(bmi<23) return 0; if(bmi<25) return 1; if(bmi<27.5) return 2; return 3; }
+  else  { if(bmi<25) return 0; if(bmi<30) return 1; if(bmi<35)   return 2; return 3; }
+}
+
+function bmiCat(bmi){
+  const sa=S.ethnicity===0;
+  if(sa){
+    if(bmi<18.5) return {label:'Underweight',color:var_('--blue')};
+    if(bmi<23)   return {label:'Healthy (South Asian)',color:var_('--green')};
+    if(bmi<25)   return {label:'Overweight risk (South Asian)',color:var_('--amber')};
+    if(bmi<27.5) return {label:'Obese class I (South Asian)',color:var_('--amber')};
+    return       {label:'Obese class II',color:var_('--red')};
+  } else {
+    if(bmi<18.5) return {label:'Underweight',color:var_('--blue')};
+    if(bmi<25)   return {label:'Healthy weight',color:var_('--green')};
+    if(bmi<30)   return {label:'Overweight',color:var_('--amber')};
+    if(bmi<35)   return {label:'Obese class I',color:var_('--red')};
+    return       {label:'Obese class II',color:var_('--red')};
+  }
+}
+
+function waistScore(){
+  if(!S.waistCm) return 0;
+  const t=getWaistThr();
+  if(S.waistCm<t.lo) return 0;
+  if(S.waistCm<t.hi) return 3;
+  return 4;
+}
+
+function totalScore(){
+  const bmi=calcBMI();
+  return (bmi?bmiScore(bmi):0)+waistScore()+
+    (S.sc.ethnicity||0)+(S.sc.age||0)+(S.sc.activity||0)+(S.sc.diet||0)+
+    (S.sc.sleep||0)+(S.sc.stress||0)+(S.sc.smoking||0)+(S.sc.alcohol||0)+
+    (S.sc.bp||0)+(S.sc.familyHx||0)+(S.sc.prevSugar||0);
+}
+
+function var_(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+
+function fmtHt(cm){ return cm?`${cm} cm / ${Math.floor(cm/30.48)}ft ${Math.round((cm%30.48)/2.54)}in`:'—'; }
+function fmtWt(kg){ return kg?`${kg.toFixed(1)} kg / ${Math.round(kg*2.205)} lbs`:'—'; }
+function fmtWa(cm){ return cm?`${cm} cm / ${Math.round(cm/2.54)}"`:'—'; }
+function retestDate(){ const d=new Date(); d.setDate(d.getDate()+90); return d.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}); }
+
+// ── STEP BUILDERS ──────────────────────────────────────────────────────────
+const BUILDERS = {
+
+country(){
+  const countries=[{code:'india',flag:'🇮🇳',name:'India'},{code:'usa',flag:'🇺🇸',name:'USA'},{code:'europe',flag:'🇪🇺',name:'Europe'}];
+  setBody(`
+    <div class="q-num">Step 1</div>
+    <div class="q-title">Where are you located?</div>
+    <div class="q-sub">Units, risk thresholds and clinical guidelines are adjusted per country.</div>
+    <div class="country-grid">${countries.map(c=>`
+      <div class="c-card${S.country===c.code?' sel':''}" onclick="pickCountry('${c.code}',this)">
+        <span class="c-flag">${c.flag}</span>
+        <span class="c-name">${c.name}</span>
+      </div>`).join('')}</div>
+    ${hintBox('South Asian guidelines (India) use different BMI and waist thresholds than Western guidelines.')}
+  `);
+  if(S.country) setOK(true);
+},
+
+gender(){
+  const opts=[{text:'Male',score:0},{text:'Female',score:0},{text:'Non-binary / prefer not to say',score:0}];
+  setBody(`
+    <div class="q-num">About you</div>
+    <div class="q-title">What is your biological sex?</div>
+    <div class="q-sub">Waist size thresholds differ by biological sex. This does not affect your certificate type.</div>
+    ${makeOpts(opts,'gender')}
+  `);
+  if(S.gender!==null) setOK(true);
+},
+
+ethnicity(){
+  let opts;
+  if(S.country==='india'){
+    opts=[{text:'South Asian (Indian, Pakistani, Bangladeshi, Sri Lankan)',score:2},{text:'Other Asian',score:1},{text:'Other / prefer not to say',score:0}];
+  } else if(S.country==='usa'){
+    opts=[{text:'South Asian',score:2},{text:'East / Southeast Asian',score:1},{text:'Black / African American',score:1},{text:'Hispanic / Latino',score:1},{text:'White / Caucasian',score:0},{text:'Other / prefer not to say',score:0}];
+  } else {
+    opts=[{text:'South Asian',score:2},{text:'East Asian',score:1},{text:'African / Caribbean',score:1},{text:'White European',score:0},{text:'Other / prefer not to say',score:0}];
+  }
+  setBody(`
+    <div class="q-num">About you</div>
+    <div class="q-title">What is your ethnic background?</div>
+    <div class="q-sub">South Asians develop prediabetes at lower BMI thresholds — ethnicity adjusts the calculation, not the judgement.</div>
+    ${makeOpts(opts,'ethnicity')}
+    ${hintBox('South Asians are at risk from BMI 23+, not the Western 25+. This is the WHO\'s official guideline.')}
+  `);
+  if(S.ethnicity!==null) setOK(true);
+},
+
+age(){
+  const opts=[{text:'Under 35',score:0},{text:'35–44',score:1},{text:'45–54',score:2},{text:'55–64',score:3},{text:'65 or older',score:4}];
+  setBody(`
+    <div class="q-num">About you</div>
+    <div class="q-title">How old are you?</div>
+    <div class="q-sub">Risk increases significantly after 40, and again after 55.</div>
+    ${makeOpts(opts,'age')}
+  `);
+  if(S.age!==null) setOK(true);
+},
+
+height(){
+  const usa = S.country==='usa';
+  if(!S._hUnit) S._hUnit = usa?'ft':'cm';
+  const ht = S.heightCm||'';
+  const ft = ht?Math.floor(ht/30.48):'';
+  const inc = ht?Math.round((ht%30.48)/2.54):'';
+  setBody(`
+    <div class="q-num">Body measurements</div>
+    <div class="q-title">What is your height?</div>
+    <div class="q-sub">Used to calculate your BMI.</div>
+    <div class="input-section">
+      <div class="unit-tabs">
+        <button class="ut${S._hUnit==='ft'?' on':''}" onclick="setHUnit('ft')">ft / in</button>
+        <button class="ut${S._hUnit==='cm'?' on':''}" onclick="setHUnit('cm')">cm</button>
+      </div>
+      <div id="h-ft" style="display:${S._hUnit==='ft'?'block':'none'}">
+        <div class="field-row">
+          <div class="field"><label>Feet</label><input type="number" id="hft" min="3" max="8" placeholder="5" value="${ft}" oninput="calcHft()"></div>
+          <div class="field"><label>Inches</label><input type="number" id="hin" min="0" max="11" placeholder="8" value="${inc}" oninput="calcHft()"></div>
+        </div>
+      </div>
+      <div id="h-cm" style="display:${S._hUnit==='cm'?'block':'none'}">
+        <div class="field-row">
+          <div class="field"><label>Centimetres</label><input type="number" id="hcm" min="100" max="250" placeholder="170" value="${ht}" oninput="calcHcm()"></div>
+        </div>
+      </div>
+      <div class="converted-display" id="h-conv">${ht?fmtHt(ht):''}</div>
+    </div>
+    ${hintBox('Average Indian adult: 163 cm (5ft 4in) for men, 152 cm (5ft) for women.')}
+  `);
+  if(S.heightCm) setOK(true);
+},
+
+weight(){
+  const usa=S.country==='usa', eu=S.country==='europe';
+  if(!S._wUnit) S._wUnit=usa?'lbs':eu?'kg':'kg';
+  const kg=S.weightKg||'';
+  const lbs=kg?Math.round(kg*2.205):'';
+  const st=kg?Math.floor(kg*2.205/14):'';
+  const stlbs=kg?Math.round(kg*2.205%14):'';
+  setBody(`
+    <div class="q-num">Body measurements</div>
+    <div class="q-title">What is your weight?</div>
+    <div class="q-sub">Used alongside height to calculate your BMI — a key risk factor.</div>
+    <div class="input-section">
+      <div class="unit-tabs">
+        <button class="ut${S._wUnit==='kg'?' on':''}" onclick="setWUnit('kg')">kg</button>
+        <button class="ut${S._wUnit==='lbs'?' on':''}" onclick="setWUnit('lbs')">lbs</button>
+        <button class="ut${S._wUnit==='st'?' on':''}" onclick="setWUnit('st')">st / lbs</button>
+      </div>
+      <div id="w-kg" style="display:${S._wUnit==='kg'?'block':'none'}">
+        <div class="field-row"><div class="field"><label>Kilograms</label><input type="number" id="wkg" min="30" max="300" step="0.1" placeholder="70" value="${kg}" oninput="calcWkg()"></div></div>
+      </div>
+      <div id="w-lbs" style="display:${S._wUnit==='lbs'?'block':'none'}">
+        <div class="field-row"><div class="field"><label>Pounds</label><input type="number" id="wlbs" min="66" max="660" placeholder="154" value="${lbs}" oninput="calcWlbs()"></div></div>
+      </div>
+      <div id="w-st" style="display:${S._wUnit==='st'?'block':'none'}">
+        <div class="field-row">
+          <div class="field"><label>Stone</label><input type="number" id="wst" min="5" max="47" placeholder="11" value="${st}" oninput="calcWst()"></div>
+          <div class="field"><label>Pounds</label><input type="number" id="wstlbs" min="0" max="13" placeholder="0" value="${stlbs}" oninput="calcWst()"></div>
+        </div>
+      </div>
+      <div class="converted-display" id="w-conv">${kg?fmtWt(+kg):''}</div>
+    </div>
+  `);
+  if(S.weightKg) setOK(true);
+},
+
+waistKnown(){
+  setBody(`
+    <div class="q-num">Body measurements</div>
+    <div class="q-title">Do you know your waist measurement?</div>
+    <div class="q-sub">Waist size is one of the strongest indicators — especially for South Asians. If you have a tape measure, it takes 30 seconds to check.</div>
+    <div class="options">
+      <div class="opt${S.waistKnown===0?' sel':''}" onclick="pickWaistKnown(0)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-text">Yes, I know my waist size</span></div>
+      <div class="opt${S.waistKnown===1?' sel':''}" onclick="pickWaistKnown(1)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-text">No, I'll skip this measurement</span></div>
+    </div>
+    ${hintBox('Measure at navel level, relaxed (not sucked in). Morning before eating gives the most accurate reading.')}
+  `);
+  if(S.waistKnown!==null) setOK(true);
+},
+
+waist(){
+  const male=S.gender===0, thr=getWaistThr();
+  if(!S._waUnit) S._waUnit=S.country==='usa'?'in':'cm';
+  const cm=S.waistCm||'';
+  const inch=cm?+(cm/2.54).toFixed(1):'';
+  setBody(`
+    <div class="q-num">Body measurements</div>
+    <div class="q-title">What is your waist circumference?</div>
+    <div class="q-sub">Measure around your navel, not your hips. Belly fat around organs is the key risk driver.</div>
+    <div class="input-section">
+      <div class="unit-tabs">
+        <button class="ut${S._waUnit==='cm'?' on':''}" onclick="setWaUnit('cm')">cm</button>
+        <button class="ut${S._waUnit==='in'?' on':''}" onclick="setWaUnit('in')">inches</button>
+      </div>
+      <div id="wa-cm" style="display:${S._waUnit==='cm'?'block':'none'}">
+        <div class="field-row"><div class="field"><label>Centimetres</label><input type="number" id="wacm" min="40" max="200" step="0.5" placeholder="${male?'85':'78'}" value="${cm}" oninput="calcWacm()"></div></div>
+      </div>
+      <div id="wa-in" style="display:${S._waUnit==='in'?'block':'none'}">
+        <div class="field-row"><div class="field"><label>Inches</label><input type="number" id="wain" min="15" max="80" step="0.5" placeholder="${male?'34':'31'}" value="${inch}" oninput="calcWain()"></div></div>
+      </div>
+      <div class="converted-display" id="wa-conv">${cm?fmtWa(+cm):''}</div>
+    </div>
+    ${hintBox(`${male?'Men':'Women'}: risk begins at ${thr.lo} cm (${Math.round(thr.lo/2.54)}"). High risk above ${thr.hi} cm (${Math.round(thr.hi/2.54)}").`)}
+  `);
+  if(S.waistCm) setOK(true);
+},
+
+activity(){
+  const opts=[
+    {text:'Very active — physical job or daily exercise (60+ min)',score:0},
+    {text:'Active most days — 30+ min, 5+ days/week',score:0},
+    {text:'Moderately active — 30 min, 3–4 days/week',score:1},
+    {text:'Lightly active — occasional walks, 1–2 days/week',score:2},
+    {text:'Mostly sedentary — desk job, very little movement',score:3},
+  ];
+  setBody(`
+    <div class="q-num">Lifestyle</div>
+    <div class="q-title">How physically active are you?</div>
+    <div class="q-sub">Include all movement: walking, cycling, yoga, housework, farming, sport.</div>
+    ${makeOpts(opts,'activity')}
+    ${hintBox('30 minutes of brisk walking daily reduces diabetes risk by up to 35%.')}
+  `);
+  if(S.activity!==null) setOK(true);
+},
+
+diet(){
+  const label = S.country==='india'?'Think of chapati, dal, sabzi vs biryani, white rice, sweets, oil.':
+                S.country==='usa'?'Think whole grains and salads vs fast food, soda, white bread.':
+                'Think whole grains, vegetables vs pastries, white bread, soda.';
+  const opts=[
+    {text:'Very healthy — vegetables, whole grains, lean protein daily; minimal sugar',score:0},
+    {text:'Mostly healthy — good most days with occasional treats',score:1},
+    {text:'Mixed — some healthy food but regular refined carbs or fried food',score:2},
+    {text:'Mostly processed — white rice/bread/sugar drinks/fast food daily',score:3},
+  ];
+  setBody(`
+    <div class="q-num">Lifestyle</div>
+    <div class="q-title">How would you describe your typical diet?</div>
+    <div class="q-sub">${label}</div>
+    ${makeOpts(opts,'diet')}
+    ${hintBox('Focus on a typical day — not your best day or your worst.')}
+  `);
+  if(S.diet!==null) setOK(true);
+},
+
+sleep(){
+  const opts=[
+    {text:'7–9 hours — consistent, feel well-rested',score:0},
+    {text:'6–7 hours — slightly short but manageable',score:1},
+    {text:'Under 6 hours — often sleep-deprived',score:2},
+    {text:'Over 9 hours regularly — or very poor quality sleep',score:2},
+  ];
+  setBody(`
+    <div class="q-num">Lifestyle</div>
+    <div class="q-title">How much do you sleep on average?</div>
+    <div class="q-sub">Both too little and too much sleep are linked to insulin resistance and higher diabetes risk.</div>
+    ${makeOpts(opts,'sleep')}
+    ${hintBox('Poor sleep raises cortisol, which directly impairs blood sugar regulation — even one bad week matters.')}
+  `);
+  if(S.sleep!==null) setOK(true);
+},
+
+stress(){
+  const opts=[
+    {text:'Low — generally calm, stress is manageable',score:0},
+    {text:'Moderate — some stress but I cope well',score:1},
+    {text:'High — frequent stress, anxiety, or burnout',score:2},
+    {text:'Very high — chronic stress affecting daily life',score:3},
+  ];
+  setBody(`
+    <div class="q-num">Lifestyle</div>
+    <div class="q-title">What is your typical stress level?</div>
+    <div class="q-sub">Chronic stress raises cortisol, which increases blood sugar — a clinically recognized risk factor for prediabetes.</div>
+    ${makeOpts(opts,'stress')}
+    ${hintBox('Work pressure, financial stress, relationship stress — all count. Any persistent mental load affects cortisol.')}
+  `);
+  if(S.stress!==null) setOK(true);
+},
+
+smoking(){
+  const opts=[
+    {text:'Never smoked',score:0},
+    {text:'Former smoker — quit more than 1 year ago',score:1},
+    {text:'Former smoker — quit less than 1 year ago',score:2},
+    {text:'Current smoker',score:3},
+  ];
+  setBody(`
+    <div class="q-num">Lifestyle</div>
+    <div class="q-title">What is your smoking status?</div>
+    <div class="q-sub">Smokers are 30–40% more likely to develop Type 2 diabetes than non-smokers.</div>
+    ${makeOpts(opts,'smoking')}
+  `);
+  if(S.smoking!==null) setOK(true);
+},
+
+alcohol(){
+  const opts=[
+    {text:'None — I don\'t drink alcohol',score:0},
+    {text:'Occasional — 1–2 drinks per week or less',score:0},
+    {text:'Moderate — 3–7 drinks per week',score:1},
+    {text:'Heavy — more than 7 drinks per week',score:2},
+    {text:'Binge drinking — 4+ drinks in one sitting regularly',score:3},
+  ];
+  setBody(`
+    <div class="q-num">Lifestyle</div>
+    <div class="q-title">How much alcohol do you drink?</div>
+    <div class="q-sub">Heavy drinking impairs insulin sensitivity. Binge drinking causes acute blood sugar spikes.</div>
+    ${makeOpts(opts,'alcohol')}
+    ${hintBox('One drink = 330 ml beer, 150 ml wine, or 45 ml spirit.')}
+  `);
+  if(S.alcohol!==null) setOK(true);
+},
+
+bp(){
+  const opts=[
+    {text:'Normal — always below 130/80',score:0},
+    {text:'Borderline — occasionally high (130–140 / 80–90)',score:1},
+    {text:'High — diagnosed hypertension or on medication',score:2},
+    {text:'Not sure / never had it measured',score:1},
+  ];
+  setBody(`
+    <div class="q-num">Medical history</div>
+    <div class="q-title">What is your blood pressure status?</div>
+    <div class="q-sub">High blood pressure and prediabetes share the same root causes and almost always appear together.</div>
+    ${makeOpts(opts,'bp')}
+  `);
+  if(S.bp!==null) setOK(true);
+},
+
+familyHx(){
+  const opts=[
+    {text:'No family history of diabetes',score:0},
+    {text:'Grandparent, aunt, uncle, or cousin has diabetes',score:2},
+    {text:'One parent, sibling, or my own child has diabetes',score:3},
+    {text:'Both parents have diabetes',score:4},
+  ];
+  setBody(`
+    <div class="q-num">Medical history</div>
+    <div class="q-title">Has anyone in your family been diagnosed with diabetes?</div>
+    <div class="q-sub">Type 2 diabetes has a 40% heritability rate — having a parent or sibling with diabetes roughly doubles your risk.</div>
+    ${makeOpts(opts,'familyHx')}
+    ${hintBox('Includes both Type 1 and Type 2 diabetes. Gestational diabetes in a close relative also counts.')}
+  `);
+  if(S.familyHx!==null) setOK(true);
+},
+
+prevSugar(){
+  const opts=[
+    {text:'No — blood sugar has always been normal',score:0},
+    {text:'Not sure — never had it checked',score:1},
+    {text:'Borderline — told to "keep an eye on it"',score:4},
+    {text:'High — previously diagnosed with prediabetes',score:5},
+    {text:'Had gestational diabetes during pregnancy',score:4},
+  ];
+  setBody(`
+    <div class="q-num">Medical history</div>
+    <div class="q-title">Have you ever been told your blood sugar was high?</div>
+    <div class="q-sub">A previous episode of elevated blood sugar is the single strongest predictor of future diabetes.</div>
+    ${makeOpts(opts,'prevSugar')}
+    ${hintBox('Includes any blood test result, health camp reading, or doctor\'s comment about "borderline sugar".')}
+  `);
+  if(S.prevSugar!==null) setOK(true);
+},
+
+};
+
+// ── COUNTRY PICK ───────────────────────────────────────────────────────────
+function pickCountry(code, el){
+  S.country=code;
+  if(!S._hUnit) S._hUnit=code==='usa'?'ft':'cm';
+  if(!S._wUnit) S._wUnit=code==='usa'?'lbs':'kg';
+  if(!S._waUnit) S._waUnit=code==='usa'?'in':'cm';
+  document.querySelectorAll('.c-card').forEach(e=>e.classList.remove('sel'));
+  el.classList.add('sel');
+  setOK(true);
+}
+
+function pickWaistKnown(v){
+  S.waistKnown=v;
+  document.querySelectorAll('#q-body .opt').forEach((e,i)=>e.classList.toggle('sel',i===v));
+  setOK(true);
+}
+
+// ── HEIGHT UNIT ────────────────────────────────────────────────────────────
+function setHUnit(u){
+  S._hUnit=u;
+  document.querySelectorAll('.unit-tabs .ut').forEach((b,i)=>b.classList.toggle('on',['ft','cm'][i]===u));
+  document.getElementById('h-ft').style.display=u==='ft'?'block':'none';
+  document.getElementById('h-cm').style.display=u==='cm'?'block':'none';
+}
+function calcHft(){
+  const ft=parseFloat(document.getElementById('hft').value)||0;
+  const inc=parseFloat(document.getElementById('hin').value)||0;
+  S.heightCm=ft||inc?Math.round(ft*30.48+inc*2.54):null;
+  document.getElementById('h-conv').textContent=S.heightCm?fmtHt(S.heightCm):'';
+  setOK(S.heightCm>100);
+}
+function calcHcm(){
+  const v=parseFloat(document.getElementById('hcm').value);
+  S.heightCm=v||null;
+  document.getElementById('h-conv').textContent=v?fmtHt(v):'';
+  setOK(v>100&&v<250);
+}
+
+// ── WEIGHT UNIT ────────────────────────────────────────────────────────────
+function setWUnit(u){
+  S._wUnit=u;
+  document.querySelectorAll('.unit-tabs .ut').forEach((b,i)=>b.classList.toggle('on',['kg','lbs','st'][i]===u));
+  ['kg','lbs','st'].forEach(x=>{const el=document.getElementById('w-'+x);if(el)el.style.display=x===u?'block':'none';});
+}
+function calcWkg(){ const v=parseFloat(document.getElementById('wkg').value); S.weightKg=v||null; document.getElementById('w-conv').textContent=v?fmtWt(v):''; setOK(v>30&&v<300); }
+function calcWlbs(){ const v=parseFloat(document.getElementById('wlbs').value); S.weightKg=v?+(v/2.205).toFixed(1):null; document.getElementById('w-conv').textContent=S.weightKg?fmtWt(S.weightKg):''; setOK(v>60); }
+function calcWst(){ const st=parseFloat(document.getElementById('wst').value)||0, lb=parseFloat(document.getElementById('wstlbs').value)||0, t=st*14+lb; S.weightKg=t?+(t/2.205).toFixed(1):null; document.getElementById('w-conv').textContent=S.weightKg?fmtWt(S.weightKg):''; setOK(t>60); }
+
+// ── WAIST UNIT ─────────────────────────────────────────────────────────────
+function setWaUnit(u){
+  S._waUnit=u;
+  document.querySelectorAll('.unit-tabs .ut').forEach((b,i)=>b.classList.toggle('on',['cm','in'][i]===u));
+  document.getElementById('wa-cm').style.display=u==='cm'?'block':'none';
+  document.getElementById('wa-in').style.display=u==='in'?'block':'none';
+}
+function calcWacm(){ const v=parseFloat(document.getElementById('wacm').value); S.waistCm=v||null; document.getElementById('wa-conv').textContent=v?fmtWa(v):''; setOK(v>40&&v<200); }
+function calcWain(){ const v=parseFloat(document.getElementById('wain').value); S.waistCm=v?+(v*2.54).toFixed(1):null; document.getElementById('wa-conv').textContent=S.waistCm?fmtWa(S.waistCm):''; setOK(v>15); }
+
+// ── RESULT ─────────────────────────────────────────────────────────────────
+function showResult(){
+  document.getElementById('quiz-wrap').style.display='none';
+  document.getElementById('result-wrap').style.display='block';
+  document.getElementById('result-wrap').scrollIntoView({behavior:'smooth',block:'start'});
+
+  const sc=totalScore(), maxSc=28, bmi=calcBMI();
+
+  const COUNTRY_NAMES={india:'India',usa:'USA',europe:'Europe'};
+  const GENDER_NAMES=['Male','Female','Non-binary'];
+  const ETH_NAMES={
+    india:['South Asian','Other Asian','Other'],
+    usa:['South Asian','East/SE Asian','Black/AA','Hispanic','White','Other'],
+    europe:['South Asian','East Asian','African/Caribbean','White European','Other']
+  };
+
+  let icon,title,sub,pillBg,pillColor,actHtml;
+  const rd=retestDate();
+
+  if(sc<=5){
+    icon='✅'; title='Low risk — green tick certificate earned!';
+    sub='Your profile shows a low risk of prediabetes right now. Keep up the healthy habits, share your result, and retest in 90 days to maintain your certificate.';
+    pillBg='#E1F5EE'; pillColor='#085041';
+    actHtml=`<div class="action-card" style="background:#E1F5EE;border:1px solid #9FE1CB"><h4 style="color:#085041">What to do now</h4><ul style="color:#085041"><li>Continue your current activity and diet — it's working</li><li>Get an annual HbA1c test as good practice</li><li>Share your green tick and challenge 3 friends</li><li>Set a reminder to retest on ${rd}</li></ul></div>`;
+  } else if(sc<=12){
+    icon='⚡'; title='Moderate risk — take the 90-day challenge';
+    sub='You have some risk factors worth addressing. The great news: prediabetes risk is highly reversible through lifestyle changes. Accept the 90-day challenge and aim for the green tick next time.';
+    pillBg='#FAEEDA'; pillColor='#633806';
+    actHtml=`<div class="action-card" style="background:#FAEEDA;border:1px solid #FAC775"><h4 style="color:#633806">Your 90-day plan</h4><ul style="color:#633806"><li>Walk 30 min/day — reduces risk by up to 58%</li><li>Cut sugary drinks and refined carbs (maida, white rice excess)</li><li>Add vegetables to every meal</li><li>Book an HbA1c blood test to get your exact baseline</li><li>Aim for 7–8 hours of consistent sleep</li><li>Retest on DiabFit on ${rd}</li></ul></div>`;
+  } else {
+    icon='🔴'; title='High risk — please see a doctor this week';
+    sub='Your risk factors are elevated across multiple areas. This is not a diagnosis — but it is a strong signal. A simple blood test (HbA1c) will tell you exactly where you stand. Knowledge is power.';
+    pillBg='#FCEBEB'; pillColor='#501313';
+    actHtml=`<div class="action-card" style="background:#FCEBEB;border:1px solid #F7C1C1"><h4 style="color:#501313">Urgent steps</h4><ul style="color:#501313"><li>Book an HbA1c + fasting glucose test this week</li><li>Show this result to your doctor</li><li>Start walking — even 15 min/day helps immediately</li><li>Remove all sugar-sweetened drinks from your home</li><li>Come back and retest after 90 days of changes</li></ul></div><div class="action-card" style="background:#f8f8f8;border:1px solid #eee;margin-top:8px"><h4>Remember</h4><p style="font-size:13px;color:#555;line-height:1.6">This screening tool cannot diagnose prediabetes. Only a blood test and doctor can do that. Many people with high screening scores are still fine — but it's worth checking.</p></div>`;
+  }
+
+  document.getElementById('r-icon').textContent=icon;
+  document.getElementById('r-title').textContent=title;
+  document.getElementById('r-sub').textContent=sub;
+  const pill=document.getElementById('r-pill');
+  pill.textContent=`Risk score: ${sc} / ${maxSc}`;
+  pill.style.background=pillBg; pill.style.color=pillColor;
+
+  // Profile
+  document.getElementById('r-profile').innerHTML=`
+    <div class="sc-title">Your profile</div>
+    <div class="sc-row"><span class="sc-label">Country</span><span class="sc-val">${COUNTRY_NAMES[S.country]||'—'}</span></div>
+    <div class="sc-row"><span class="sc-label">Biological sex</span><span class="sc-val">${S.gender!==null?GENDER_NAMES[S.gender]:'—'}</span></div>
+    <div class="sc-row"><span class="sc-label">Ethnicity</span><span class="sc-val">${S.ethnicity!==null&&ETH_NAMES[S.country]?ETH_NAMES[S.country][S.ethnicity]||'—':'—'}</span></div>
+    <div class="sc-row"><span class="sc-label">Height</span><span class="sc-val">${fmtHt(S.heightCm)}</span></div>
+    <div class="sc-row"><span class="sc-label">Weight</span><span class="sc-val">${fmtWt(S.weightKg)}</span></div>
+    ${S.waistCm?`<div class="sc-row"><span class="sc-label">Waist</span><span class="sc-val">${fmtWa(S.waistCm)}</span></div>`:''}
+    ${bmi?`<div class="sc-row"><span class="sc-label">BMI</span><span class="sc-val" style="color:${bmiCat(bmi).color}">${bmi} — ${bmiCat(bmi).label}</span></div>`:''}
+  `;
+
+  // BMI meter
+  if(bmi){
+    const sa=S.ethnicity===0, cat=bmiCat(bmi);
+    const segs=sa?[
+      {c:'#378ADD',f:15},{c:'#1D9E75',f:20},{c:'#EF9F27',f:10},{c:'#E24B4A',f:12},{c:'#A32D2D',f:43}
+    ]:[
+      {c:'#378ADD',f:10},{c:'#1D9E75',f:25},{c:'#EF9F27',f:20},{c:'#E24B4A',f:20},{c:'#A32D2D',f:25}
+    ];
+    document.getElementById('r-bmi-section').innerHTML=`
+      <div class="section-card" style="margin-bottom:.75rem">
+        <div class="sc-title">BMI analysis — ${sa?'South Asian thresholds':'Standard thresholds'}</div>
+        <div style="font-size:13px;color:#555;margin-bottom:6px">Your BMI: <strong style="color:${cat.color}">${bmi} — ${cat.label}</strong></div>
+        <div class="bmi-bar">${segs.map(s=>`<div class="bmi-seg" style="background:${s.c};flex:${s.f}"></div>`).join('')}</div>
+        <div class="bmi-labels"><span>Under</span><span>Healthy</span><span>Over</span><span>Obese I</span><span>Obese II</span></div>
+        ${sa?'<div style="font-size:11px;color:#888;margin-top:6px">South Asian thresholds: Healthy = BMI 18.5–23, vs Western 18.5–25</div>':''}
+      </div>`;
+  } else document.getElementById('r-bmi-section').innerHTML='';
+
+  // Score breakdown
+  const brkItems=[
+    ['BMI', bmi?bmiScore(bmi):0, 'Body weight vs height'],
+    ['Waist size', waistScore(), 'Central adiposity'],
+    ['Ethnicity', S.sc.ethnicity||0, 'Genetic predisposition'],
+    ['Age', S.sc.age||0, 'Biological risk factor'],
+    ['Physical activity', S.sc.activity||0, 'Insulin sensitivity'],
+    ['Diet quality', S.sc.diet||0, 'Blood sugar impact'],
+    ['Sleep quality', S.sc.sleep||0, 'Metabolic regulation'],
+    ['Stress level', S.sc.stress||0, 'Cortisol & insulin'],
+    ['Smoking status', S.sc.smoking||0, 'Cellular insulin resistance'],
+    ['Alcohol intake', S.sc.alcohol||0, 'Blood sugar spikes'],
+    ['Blood pressure', S.sc.bp||0, 'Metabolic syndrome marker'],
+    ['Family history', S.sc.familyHx||0, 'Genetic risk'],
+    ['Previous blood sugar', S.sc.prevSugar||0, 'Strongest single predictor'],
+  ];
+  document.getElementById('r-breakdown').innerHTML=`
+    <div class="sc-title">Score breakdown — what's driving your risk</div>
+    ${brkItems.map(([label,score,why])=>`
+      <div class="sc-row">
+        <span class="sc-label">${label}<span style="font-size:11px;color:#aaa;display:block">${why}</span></span>
+        <span class="sc-val" style="color:${score===0?'#1D9E75':score<=2?'#EF9F27':'#E24B4A'}">${score===0?'Low risk':'+'+score+' pts'}</span>
+      </div>`).join('')}
+  `;
+  document.getElementById('r-actions').innerHTML=actHtml;
+
+  // Build captions
+  const cLabel=COUNTRY_NAMES[S.country]||'';
+  window._caps={
+    ig: sc<=5?
+      `Just took the free DiabFit prediabetes screening ✅\n\nScore: ${sc}/${maxSc} — Low risk! Green tick earned 🎉\nBMI: ${bmi||'—'} | Country: ${cLabel}\n\nFree 3-minute check that could save your life:\ndiabfit.com\n\n#DiabFit #GreenTick #HealthChecked #PrediabetesAwareness #HealthyIndia`:
+      sc<=12?
+      `Just took the DiabFit prediabetes screening ⚡\n\nScore: ${sc}/${maxSc} — Moderate risk zone\n\nAccepting the #DiabFit90 challenge!\nRetesting on ${rd} — join me!\n\nFree test: diabfit.com\n\n#DiabFit90 #HealthJourney #PrediabetesChallenge #HealthyIndia`:
+      `Took the DiabFit screening today 🔴\n\nScore: ${sc}/${maxSc} — High risk\n\nNot ignoring this. Getting a blood test this week.\nHave YOU checked? It's free and takes 3 min:\ndiabfit.com\n\n#DiabFit #TakeAction #HealthCheck #PrediabetesAwareness`,
+    wa: `Hey! I just took the free DiabFit prediabetes screening.\n\nMy score: ${sc}/${maxSc} — ${sc<=5?'Low risk ✅':sc<=12?'Moderate risk ⚡':'High risk 🔴'}\n\nIt only takes 3 minutes and is completely free:\ndiabfit.com\n\nYou should check yours too!`,
+    x: sc<=5?
+      `Just took the free #DiabFit prediabetes screening ✅ Score: ${sc}/${maxSc} — Low risk! Certificate earned. You should check yours → diabfit.com`:
+      `Took the #DiabFit prediabetes screening. Score: ${sc}/${maxSc}. Accepting the #DiabFit90 challenge to reach green. Retest on ${rd}. Free 3-min check → diabfit.com`
+  };
+}
+
+function doCopy(type){
+  navigator.clipboard.writeText(window._caps[type]||'').then(()=>{
+    showToast(type==='ig'?'Instagram caption copied! 📸':type==='wa'?'WhatsApp message copied! 💬':'X post copied! ✖');
+    if(type==='ig') document.getElementById('ig-txt').textContent='Copied! Paste into Instagram ✓';
+    setTimeout(()=>{ if(document.getElementById('ig-txt')) document.getElementById('ig-txt').textContent='Copy Instagram caption'; },3000);
+  }).catch(()=>{
+    prompt('Copy this caption:', window._caps[type]);
+  });
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// ── INIT ───────────────────────────────────────────────────────────────────
+render();
+</script>
+</body>
+</html>
