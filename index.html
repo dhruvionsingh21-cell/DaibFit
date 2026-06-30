@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DiabFit — Free Prediabetes Risk Screening</title>
-<meta name="description" content="Take the free 3-minute prediabetes risk screening. Get your certificate. Share your result. Join the health movement.">
+<title>DiabFit — Free Prediabetes Risk Screening for India</title>
+<meta name="description" content="Take the free 3-minute prediabetes risk screening for India. Get your certificate. Share your result. Join the health movement.">
 <style>
   :root {
     --green: #1D9E75; --green-light: #E1F5EE; --green-dark: #085041;
@@ -12,6 +12,7 @@
     --red: #E24B4A; --red-light: #FCEBEB; --red-dark: #501313;
     --blue: #378ADD; --blue-light: #E6F1FB; --blue-dark: #042C53;
     --navy: #1a2744; --navy-light: #253460;
+    --saffron: #FF9933;
     --text: #1a1a1a; --text2: #555; --text3: #888;
     --border: #e0e0e0; --bg: #f7f8fc; --white: #ffffff;
     --radius: 12px; --radius-sm: 8px;
@@ -21,41 +22,44 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-  /* NAV */
   nav { background: var(--navy); padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; height: 56px; position: sticky; top: 0; z-index: 100; }
   .logo { color: #fff; font-size: 20px; font-weight: 700; letter-spacing: -0.5px; }
   .logo span { color: var(--green); }
+  .mini-flag { width: 16px; height: 11px; border-radius: 1px; overflow: hidden; display: inline-block; flex-shrink: 0; position: relative; box-shadow: 0 0 0 1px rgba(0,0,0,0.12); }
+  .mini-flag div { height: 33.33%; }
+  .mini-flag::after { content: ""; position: absolute; left: 50%; top: 50%; width: 4px; height: 4px; transform: translate(-50%, -50%); border: 1px solid #000080; border-radius: 50%; background: repeating-conic-gradient(#000080 0 8deg, transparent 8deg 15deg); }
+  nav .nav-right { display: flex; align-items: center; }
+  .nav-india-mark { display: inline-flex; align-items: center; gap: 6px; margin-left: 1.25rem; color: rgba(255,255,255,0.72); font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; }
+  .nav-india-mark .mini-flag { width: 22px; height: 15px; }
+  .nav-india-mark .mini-flag::after { width: 6px; height: 6px; }
   nav a { color: rgba(255,255,255,0.75); font-size: 13px; text-decoration: none; margin-left: 1.5rem; }
   nav a:hover { color: #fff; }
   .nav-cta { background: var(--green); color: #fff !important; padding: 6px 16px; border-radius: 99px; font-weight: 600; }
-  .language-toggle { margin-left: 1rem; background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 99px; padding: 6px 10px; font: inherit; font-size: 13px; font-weight: 600; outline: none; }
-  .language-toggle option { color: var(--text); }
+  .lang-switch { display: flex; gap: 2px; background: rgba(255,255,255,0.08); border-radius: 99px; padding: 2px; margin-left: 1.25rem; }
+  .lang-switch button { border: none; background: transparent; color: rgba(255,255,255,0.6); font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 99px; cursor: pointer; font-family: inherit; }
+  .lang-switch button.on { background: var(--green); color: #fff; }
 
-  /* HERO */
-  .hero { background: var(--navy); color: #fff; padding: 3.5rem 1.5rem 4rem; text-align: center; }
-  .hero-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 99px; padding: 5px 14px; font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; margin-bottom: 1.5rem; }
-  .hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; line-height: 1.15; margin-bottom: 1rem; letter-spacing: -1px; }
+  .hero { background: var(--navy); color: #fff; padding: 3rem 1.5rem 3.5rem; text-align: center; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 99px; padding: 5px 14px; font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; margin-bottom: 1.25rem; }
+  .hero h1 { font-size: clamp(1.9rem, 5vw, 3rem); font-weight: 800; line-height: 1.18; margin-bottom: .9rem; letter-spacing: -1px; }
   .hero h1 em { color: var(--green); font-style: normal; }
-  .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.75); max-width: 520px; margin: 0 auto 2rem; line-height: 1.65; }
-  .hero-stats { display: flex; justify-content: center; gap: 2.5rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+  .hero p { font-size: 1.05rem; color: rgba(255,255,255,0.75); max-width: 520px; margin: 0 auto 1.75rem; line-height: 1.6; }
+  .shlok { font-size: 1rem; color: var(--saffron); margin-bottom: .35rem; font-weight: 600; letter-spacing: .02em; }
+  .shlok-translation { font-size: 12px; color: rgba(255,255,255,0.55); font-style: italic; margin-bottom: 1.5rem; }
+  .hero-stats { display: flex; justify-content: center; gap: 2.2rem; flex-wrap: wrap; margin-bottom: 2.25rem; }
   .stat { text-align: center; }
-  .stat-num { font-size: 1.8rem; font-weight: 800; color: var(--green); display: block; }
-  .stat-label { font-size: 12px; color: rgba(255,255,255,0.6); }
+  .stat-num { font-size: 1.7rem; font-weight: 800; color: var(--green); display: block; }
+  .stat-label { font-size: 11px; color: rgba(255,255,255,0.6); }
   .hero-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 14px 32px; border-radius: 99px; font-size: 1rem; font-weight: 700; text-decoration: none; cursor: pointer; border: none; font-family: inherit; transition: all .2s; box-shadow: 0 4px 20px rgba(29,158,117,0.4); }
   .hero-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(29,158,117,0.5); }
   .hero-note { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: .75rem; }
 
-  /* BADGES PREVIEW */
   .badges-row { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; padding: 1.5rem; background: var(--navy-light); border-top: 1px solid rgba(255,255,255,0.08); }
   .badge-chip { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 99px; padding: 6px 16px; font-size: 13px; color: rgba(255,255,255,0.9); font-weight: 500; }
-  .badge-icon { font-size: 16px; }
 
-  /* MAIN QUIZ CARD */
   .main { max-width: 640px; margin: 0 auto; padding: 2rem 1rem 4rem; }
-
   .quiz-card { background: var(--white); border-radius: 18px; box-shadow: var(--shadow-lg); overflow: hidden; }
 
-  /* Progress */
   .quiz-header { padding: 1.25rem 1.5rem 0; }
   .progress-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: .6rem; }
   .progress-label { font-size: 12px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: .06em; }
@@ -63,13 +67,11 @@
   .progress-bar { height: 5px; background: #eee; border-radius: 3px; overflow: hidden; }
   .progress-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--blue)); border-radius: 3px; transition: width .4s ease; }
 
-  /* Question body */
   .question-body { padding: 1.5rem; }
   .q-num { font-size: 11px; font-weight: 700; color: var(--green); text-transform: uppercase; letter-spacing: .08em; margin-bottom: .4rem; }
   .q-title { font-size: 1.15rem; font-weight: 700; color: var(--text); margin-bottom: .4rem; line-height: 1.35; }
   .q-sub { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 1.25rem; }
 
-  /* Options */
   .options { display: flex; flex-direction: column; gap: 8px; }
   .opt { display: flex; align-items: center; gap: 12px; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; transition: all .15s; background: #fff; }
   .opt:hover { border-color: var(--green); background: var(--green-light); }
@@ -82,16 +84,6 @@
   .opt-risk { font-size: 11px; font-weight: 700; color: var(--text3); white-space: nowrap; }
   .opt.sel .opt-risk { color: var(--green-dark); }
 
-  /* Country selector */
-  .country-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-  .c-card { border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 1.2rem .5rem; text-align: center; cursor: pointer; transition: all .15s; background: #fff; }
-  .c-card:hover { border-color: var(--green); background: var(--green-light); }
-  .c-card.sel { border-color: var(--green); background: var(--green-light); }
-  .c-flag { font-size: 2.2rem; display: block; margin-bottom: 6px; }
-  .c-name { font-size: 13px; font-weight: 700; color: var(--text); }
-  .c-card.sel .c-name { color: var(--green-dark); }
-
-  /* Input fields */
   .input-section { display: flex; flex-direction: column; gap: 12px; }
   .unit-tabs { display: flex; border: 1.5px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 10px; }
   .ut { flex: 1; padding: 7px 12px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; background: transparent; color: var(--text3); font-family: inherit; transition: all .15s; }
@@ -99,12 +91,11 @@
   .field-row { display: flex; gap: 10px; }
   .field { display: flex; flex-direction: column; gap: 4px; flex: 1; }
   .field label { font-size: 12px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: .05em; }
-  .field input { padding: 10px 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 15px; color: var(--text); background: #fff; font-family: inherit; outline: none; transition: border-color .15s; }
-  .field input:focus { border-color: var(--green); }
+  .field input, .field select { padding: 10px 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 15px; color: var(--text); background: #fff; font-family: inherit; outline: none; transition: border-color .15s; width: 100%; }
+  .field input:focus, .field select:focus { border-color: var(--green); }
   .converted-display { font-size: 12px; color: var(--text3); font-style: italic; min-height: 18px; }
   .hint-box { background: var(--blue-light); border-left: 3px solid var(--blue); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 10px 12px; font-size: 12px; color: var(--blue-dark); line-height: 1.55; margin-top: 10px; }
 
-  /* Nav buttons */
   .quiz-footer { padding: 1rem 1.5rem 1.5rem; display: flex; gap: 10px; border-top: 1px solid #f0f0f0; }
   .btn-back { flex: 1; padding: 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: #fff; color: var(--text2); font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all .15s; }
   .btn-back:hover:not(:disabled) { border-color: var(--text); color: var(--text); }
@@ -113,7 +104,19 @@
   .btn-next:hover:not(:disabled) { background: var(--green); }
   .btn-next:disabled { opacity: .35; cursor: not-allowed; }
 
-  /* RESULT */
+  /* Capture screen (name + city before result) */
+  .capture-card { background: var(--white); border-radius: 18px; box-shadow: var(--shadow-lg); overflow: hidden; padding: 2rem 1.5rem; }
+  .capture-icon { font-size: 2.5rem; text-align: center; margin-bottom: .75rem; }
+  .capture-title { font-size: 1.25rem; font-weight: 700; text-align: center; margin-bottom: .4rem; }
+  .capture-sub { font-size: 13px; color: var(--text2); text-align: center; margin-bottom: 1.5rem; line-height: 1.6; }
+  .consent-row { display: flex; align-items: flex-start; gap: 10px; background: #fafafa; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px; margin: 1rem 0; cursor: pointer; }
+  .consent-row input { margin-top: 2px; flex-shrink: 0; }
+  .consent-row span { font-size: 12px; color: var(--text2); line-height: 1.55; }
+  .capture-submit { width: 100%; padding: 13px; border: none; border-radius: var(--radius-sm); background: var(--navy); color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; margin-top: .5rem; transition: all .15s; }
+  .capture-submit:hover:not(:disabled) { background: var(--green); }
+  .capture-submit:disabled { opacity: .4; cursor: not-allowed; }
+  .capture-skip { width: 100%; padding: 10px; border: none; background: transparent; color: var(--text3); font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; text-decoration: underline; }
+
   .result-card { background: var(--white); border-radius: 18px; box-shadow: var(--shadow-lg); overflow: hidden; }
   .result-header { padding: 2rem 1.5rem 1.5rem; text-align: center; }
   .r-icon { font-size: 3.5rem; margin-bottom: .75rem; }
@@ -122,7 +125,6 @@
   .score-pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 18px; border-radius: 99px; font-size: 14px; font-weight: 700; }
 
   .result-body { padding: 1rem 1.5rem 1.5rem; }
-
   .section-card { background: #fafafa; border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.1rem; margin-bottom: .75rem; }
   .sc-title { font-size: 11px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .07em; margin-bottom: .6rem; }
   .sc-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #eee; font-size: 13px; }
@@ -138,6 +140,22 @@
   .action-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
   .action-card ul { font-size: 13px; line-height: 1.75; padding-left: 1.1rem; }
 
+  /* Card preview (canvas social card) */
+  .card-preview-wrap { padding: 0 1.5rem 1rem; text-align: center; }
+  .card-canvas-frame { display: inline-block; border-radius: 16px; overflow: hidden; box-shadow: var(--shadow-lg); max-width: 280px; width: 100%; }
+  .card-canvas-frame canvas { display: block; width: 100%; height: auto; }
+  .card-download-btn { display: inline-flex; align-items: center; gap: 8px; margin-top: .85rem; padding: 11px 24px; border-radius: 99px; background: var(--navy); color: #fff; font-size: 13px; font-weight: 700; border: none; cursor: pointer; font-family: inherit; transition: all .15s; }
+  .card-download-btn:hover { background: var(--green); }
+
+  /* Diet plan section */
+  .diet-plan-btn { width: 100%; padding: 13px; border: none; border-radius: var(--radius-sm); background: var(--amber); color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; margin-bottom: .75rem; transition: all .15s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .diet-plan-btn:hover:not(:disabled) { filter: brightness(1.05); }
+  .diet-plan-btn:disabled { opacity: .6; cursor: wait; }
+  .diet-plan-box { background: var(--amber-light); border: 1px solid #FAC775; border-radius: var(--radius); padding: 1.1rem; margin-bottom: .75rem; white-space: pre-line; font-size: 13px; color: var(--amber-dark); line-height: 1.75; }
+  .diet-plan-box h4 { font-size: 13px; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: .04em; }
+  .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
   .share-section { padding: 0 1.5rem 1.5rem; }
   .share-title { font-size: 11px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .07em; margin-bottom: .75rem; text-align: center; }
   .share-btn { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 13px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 700; cursor: pointer; border: none; width: 100%; margin-bottom: 8px; font-family: inherit; transition: all .15s; }
@@ -150,31 +168,38 @@
 
   .disclaimer { font-size: 11px; color: var(--text3); text-align: center; line-height: 1.65; padding: 1rem 1.5rem; border-top: 1px solid #f0f0f0; }
 
-  /* Toast */
-  .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background: var(--text); color: #fff; padding: 10px 20px; border-radius: 99px; font-size: 14px; font-weight: 600; opacity: 0; transition: opacity .3s; pointer-events: none; z-index: 999; white-space: nowrap; }
+  .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background: var(--text); color: #fff; padding: 10px 20px; border-radius: 99px; font-size: 14px; font-weight: 600; opacity: 0; transition: opacity .3s; pointer-events: none; z-index: 999; white-space: nowrap; max-width: 90vw; text-align: center; }
   .toast.show { opacity: 1; }
 
-  /* HOW IT WORKS section */
   .how { padding: 3rem 1.5rem; background: var(--white); }
   .how h2 { text-align: center; font-size: 1.5rem; font-weight: 800; color: var(--text); margin-bottom: 2rem; }
-  .steps-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1.5rem; max-width: 760px; margin: 0 auto; }
+  .steps-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.5rem; max-width: 760px; margin: 0 auto; }
   .step-item { text-align: center; }
   .step-num { width: 40px; height: 40px; border-radius: 50%; background: var(--navy); color: #fff; font-size: 16px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto .75rem; }
   .step-item h3 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
   .step-item p { font-size: 13px; color: var(--text2); line-height: 1.55; }
 
-  /* Footer */
-  footer { background: var(--navy); color: rgba(255,255,255,0.5); text-align: center; padding: 1.5rem; font-size: 12px; }
+  footer { background: var(--navy); color: rgba(255,255,255,0.5); text-align: center; padding: 1.75rem 1.5rem; font-size: 12px; }
   footer a { color: rgba(255,255,255,0.6); text-decoration: none; }
-  footer a:hover { color: #fff; }
-  .footer-credits { margin-top: .65rem; line-height: 1.7; }
-  .footer-credits a { color: rgba(255,255,255,0.78); font-weight: 600; }
+  footer a:hover { color: #fff; text-decoration: underline; }
+  .footer-credit { margin-top: .85rem; padding-top: .85rem; border-top: 1px solid rgba(255,255,255,0.1); font-size: 12px; }
+  .footer-credit a.creator-link { color: var(--green); font-weight: 600; text-decoration: none; }
+  .footer-credit a.creator-link:hover { text-decoration: underline; }
+  .footer-flag-row { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: .6rem; font-size: 11px; color: rgba(255,255,255,0.4); }
+  .footer-social { display: flex; justify-content: center; gap: 14px; margin-top: .75rem; }
+  .footer-social a { display: flex; align-items: center; gap: 5px; font-size: 12px; }
 
   @media (max-width: 480px) {
-    .hero { padding: 2.5rem 1rem 3rem; }
-    .hero-stats { gap: 1.5rem; }
+    .hero { padding: 2.25rem 1rem 2.75rem; }
+    .hero-stats { gap: 1.4rem; }
     nav a:not(.nav-cta) { display: none; }
-    .language-toggle { margin-left: .75rem; max-width: 96px; }
+    nav { padding: 0 .75rem; }
+    .nav-india-mark { margin-left: .5rem; gap: 4px; font-size: 9px; }
+    .nav-india-mark .mini-flag { width: 18px; height: 12px; }
+    .nav-india-mark .mini-flag::after { width: 5px; height: 5px; }
+    .nav-cta { margin-left: .55rem; padding: 6px 10px; }
+    .lang-switch { margin-left: .5rem; }
+    .lang-switch button { padding: 4px 7px; }
     .question-body { padding: 1.25rem; }
     .quiz-header { padding: 1rem 1.25rem 0; }
     .quiz-footer { padding: .75rem 1.25rem 1.25rem; }
@@ -183,72 +208,103 @@
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <div class="logo">Diab<span>Fit</span></div>
-  <div style="display:flex;align-items:center">
-    <a href="#how" data-i18n="navHow">How it works</a>
-    <a href="#quiz-anchor" class="nav-cta" onclick="scrollToQuiz()" data-i18n="navCta">Take the test</a>
-    <select class="language-toggle" id="language-select" onchange="setLanguage(this.value)" aria-label="Language">
-      <option value="en">English</option>
-      <option value="hi">हिन्दी</option>
-    </select>
+  <div class="nav-right">
+    <div class="nav-india-mark" aria-label="Make in India">
+      <span class="mini-flag"><div style="background:#FF9933"></div><div style="background:#FFFFFF"></div><div style="background:#138808"></div></span>
+      <span>Make in India</span>
+    </div>
+    <a href="#how" id="nav-how">How it works</a>
+    <div class="lang-switch">
+      <button id="lang-en" class="on" onclick="setUiLang('en')">EN</button>
+      <button id="lang-hi" onclick="setUiLang('hi')">हिं</button>
+    </div>
+    <a href="#quiz-anchor" class="nav-cta" id="nav-cta" onclick="scrollToQuiz()">Take the test</a>
   </div>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
-  <div class="hero-badge">🩺 Free · 3 minutes · Certified result</div>
-  <h1>Do you have <em>prediabetes</em> risk?<br>Find out. Share it.</h1>
-  <p>136 million Indians have diabetes. Billions more don't know they're at risk. Take the 3-minute screening, earn your certificate, and start a movement.</p>
+  <div class="hero-badge" id="hero-badge">🩺 Free · 3 minutes · Certified result</div>
+  <h1 id="hero-h1">Do you have <em>prediabetes</em> risk?<br>Find out. Share it.</h1>
+  <div class="shlok">स्वास्थ्यं सर्वार्थसाधनम्</div>
+  <div class="shlok-translation" id="shlok-trans">"Health is the means to achieve all goals"</div>
+  <p id="hero-p">136 million Indians have diabetes. Crores more don't know they're at risk. Take the screening, earn your certificate, and start a movement.</p>
   <div class="hero-stats">
-    <div class="stat"><span class="stat-num">₹0</span><span class="stat-label">Cost</span></div>
-    <div class="stat"><span class="stat-num">3 min</span><span class="stat-label">To complete</span></div>
-    <div class="stat"><span class="stat-num">13</span><span class="stat-label">Risk factors checked</span></div>
-    <div class="stat"><span class="stat-num">90 days</span><span class="stat-label">Certificate valid</span></div>
+    <div class="stat"><span class="stat-num">₹0</span><span class="stat-label" id="stat1">Cost</span></div>
+    <div class="stat"><span class="stat-num">3 min</span><span class="stat-label" id="stat2">To complete</span></div>
+    <div class="stat"><span class="stat-num">17</span><span class="stat-label" id="stat3">Risk factors checked</span></div>
+    <div class="stat"><span class="stat-num">90 days</span><span class="stat-label" id="stat4">Certificate valid</span></div>
   </div>
-  <button class="hero-btn" onclick="scrollToQuiz()">Start free screening →</button>
-  <div class="hero-note">No sign-up required. No personal data stored.</div>
+  <button class="hero-btn" id="hero-btn" onclick="scrollToQuiz()">Start free screening →</button>
+  <div class="hero-note" id="hero-note">Takes 3 minutes. Your data helps map prediabetes risk across India.</div>
 </section>
 
 <div class="badges-row">
-  <div class="badge-chip"><span class="badge-icon">✅</span> Green tick certificate</div>
-  <div class="badge-chip"><span class="badge-icon">⚡</span> 90-day challenge badge</div>
-  <div class="badge-chip"><span class="badge-icon">🏆</span> Challenge winner trophy</div>
-  <div class="badge-chip"><span class="badge-icon">📤</span> One-tap Instagram share</div>
+  <div class="badge-chip"><span>✅</span><span id="b1">Green tick certificate</span></div>
+  <div class="badge-chip"><span>⚡</span><span id="b2">30-day AI diet plan</span></div>
+  <div class="badge-chip"><span>🏆</span><span id="b3">Challenge winner trophy</span></div>
+  <div class="badge-chip"><span>📤</span><span id="b4">One-tap Instagram share</span></div>
 </div>
 
-<!-- HOW IT WORKS -->
 <section class="how" id="how">
-  <h2>How DiabFit works</h2>
-  <div class="steps-row">
-    <div class="step-item"><div class="step-num">1</div><h3>Select your country</h3><p>India, USA, or Europe — thresholds adjust to your clinical guidelines</p></div>
-    <div class="step-item"><div class="step-num">2</div><h3>Answer 13 questions</h3><p>Age, weight, waist, family history, lifestyle — takes 3 minutes</p></div>
-    <div class="step-item"><div class="step-num">3</div><h3>Get your result</h3><p>Instant risk score with personalised breakdown by factor</p></div>
-    <div class="step-item"><div class="step-num">4</div><h3>Share your badge</h3><p>Green tick, challenge badge, or winner trophy — post on Instagram</p></div>
-    <div class="step-item"><div class="step-num">5</div><h3>Retest in 90 days</h3><p>Certificate expires after 3 months. Track your improvement.</p></div>
-  </div>
+  <h2 id="how-title">How DiabFit works</h2>
+  <div class="steps-row" id="steps-row"></div>
 </section>
 
-<!-- QUIZ ANCHOR -->
 <div id="quiz-anchor" style="padding-top:1rem"></div>
 
-<!-- QUIZ -->
 <div class="main">
   <div id="quiz-wrap">
     <div class="quiz-card">
       <div class="quiz-header">
         <div class="progress-meta">
-          <span class="progress-label" id="step-lbl">Step 1 of 14</span>
-          <span class="section-pill" id="sec-pill">Setup</span>
+          <span class="progress-label" id="step-lbl">Step 1 of 17</span>
+          <span class="section-pill" id="sec-pill">About you</span>
         </div>
-        <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:7%"></div></div>
+        <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:6%"></div></div>
       </div>
       <div class="question-body" id="q-body"></div>
       <div class="quiz-footer">
         <button class="btn-back" id="btn-back" onclick="goBack()" disabled>← Back</button>
         <button class="btn-next" id="btn-next" onclick="goNext()" disabled>Next →</button>
       </div>
+    </div>
+  </div>
+
+  <div id="capture-wrap" style="display:none">
+    <div class="capture-card">
+      <div class="capture-icon">📍</div>
+      <div class="capture-title" id="cap-title">Almost there</div>
+      <div class="capture-sub" id="cap-sub">Tell us your name and city so we can personalise your card and track prediabetes risk across India.</div>
+      <div class="field">
+        <label id="cap-name-label">Your name</label>
+        <input type="text" id="cap-name" placeholder="Rahul Sharma" maxlength="60">
+      </div>
+      <div style="height:10px"></div>
+      <div class="field">
+        <label id="cap-city-label">Your city</label>
+        <input type="text" id="cap-city" placeholder="Indore" maxlength="60" list="city-list">
+        <datalist id="city-list">
+          <option value="Mumbai"><option value="Delhi"><option value="Bangalore">
+          <option value="Hyderabad"><option value="Chennai"><option value="Kolkata">
+          <option value="Pune"><option value="Ahmedabad"><option value="Indore">
+          <option value="Jaipur"><option value="Lucknow"><option value="Surat">
+          <option value="Bhopal"><option value="Nagpur"><option value="Patna">
+          <option value="Chandigarh"><option value="Kochi"><option value="Coimbatore">
+        </datalist>
+      </div>
+      <div style="height:10px"></div>
+      <div class="field">
+        <label id="cap-state-label">Your state</label>
+        <select id="cap-state"></select>
+      </div>
+      <label class="consent-row">
+        <input type="checkbox" id="cap-consent">
+        <span id="cap-consent-text">I agree to share this anonymised data (city and risk level only, no contact details) for public health awareness mapping across India.</span>
+      </label>
+      <button class="capture-submit" id="cap-submit" onclick="submitCapture()" disabled>Generate my card</button>
+      <button class="capture-skip" id="cap-skip-btn" onclick="skipCapture()">Skip and view result without saving</button>
     </div>
   </div>
 
@@ -260,897 +316,950 @@
         <div class="r-sub" id="r-sub"></div>
         <div class="score-pill" id="r-pill"></div>
       </div>
+
+      <div class="card-preview-wrap">
+        <div class="card-canvas-frame">
+          <canvas id="social-canvas" width="1080" height="1080"></canvas>
+        </div>
+        <br>
+        <button class="card-download-btn" onclick="downloadCard()">
+          <span>⬇</span><span id="download-txt">Download your card</span>
+        </button>
+      </div>
+
       <div class="result-body">
         <div class="section-card" id="r-profile"></div>
         <div id="r-bmi-section"></div>
         <div class="section-card" id="r-breakdown"></div>
         <div id="r-actions"></div>
+        <div id="diet-plan-section"></div>
       </div>
       <div class="share-section">
-        <div class="share-title">Share your result</div>
-        <button class="share-btn share-ig" onclick="doCopy('ig')"><span id="ig-ico">📸</span><span id="ig-txt">Copy Instagram caption</span></button>
-        <button class="share-btn share-wa" onclick="doCopy('wa')">💬 Copy WhatsApp message</button>
-        <button class="share-btn share-x" onclick="doCopy('x')">✖ Copy X (Twitter) post</button>
-        <button class="restart-btn" onclick="restart()">Start over</button>
+        <div class="share-title" id="share-title">Share your card</div>
+        <button class="share-btn share-ig" onclick="doCopy('ig')"><span>📸</span><span id="ig-txt">Copy Instagram caption</span></button>
+        <button class="share-btn share-wa" onclick="doCopy('wa')">💬 <span id="wa-txt">Copy WhatsApp message</span></button>
+        <button class="share-btn share-x" onclick="doCopy('x')">✖ <span id="x-txt">Copy X (Twitter) post</span></button>
+        <button class="restart-btn" id="restart-btn" onclick="restart()">Start over</button>
       </div>
-      <div class="disclaimer">
-        <strong>Medical disclaimer:</strong> DiabFit uses the validated ADA/WHO FINDRISC questionnaire adapted by country. This is a risk <em>screening tool only</em> — not a medical diagnosis. Only a doctor and blood test (HbA1c or fasting glucose) can diagnose prediabetes. Always consult your healthcare provider. Results are for awareness and education only.
-      </div>
+      <div class="disclaimer" id="disclaimer-text"></div>
     </div>
   </div>
 </div>
 
-<!-- FOOTER -->
 <footer>
-  <div style="margin-bottom:.5rem"><strong style="color:#fff">DiabFit</strong> — Free prediabetes risk screening for India, USA &amp; Europe</div>
-  <div>Based on the validated ADA/WHO FINDRISC questionnaire &nbsp;·&nbsp; Not a medical device &nbsp;·&nbsp; <a href="#">Privacy</a> &nbsp;·&nbsp; <a href="#">Disclaimer</a></div>
-  <div class="footer-credits">
-    Manufacturer and creator:
-    <a href="https://www.linkedin.com/in/harmeet-singh-lubana-054456419" target="_blank" rel="noopener noreferrer">Harmeet Singh Lubana</a>
-    &nbsp;·&nbsp;
-    Project manager:
-    <a href="https://www.linkedin.com/in/priyanka-yadav-22316a171/" target="_blank" rel="noopener noreferrer">Priyanaka Yadav</a>
+  <div><strong style="color:#fff">DiabFit</strong> — <span id="footer-tag">Free prediabetes risk screening for India</span></div>
+  <div style="margin-top:.4rem"><span id="footer-based">Based on the validated ADA/WHO FINDRISC questionnaire, adapted for India</span> &nbsp;·&nbsp; <a href="#">Privacy</a> &nbsp;·&nbsp; <a href="#">Disclaimer</a></div>
+  <div class="footer-credit">
+    <span id="footer-made-by">Made with care by</span>
+    <a class="creator-link" href="https://www.linkedin.com/in/harmeet-singh-lubana-054456419" target="_blank" rel="noopener noreferrer">@Harmeet Singh Lubana</a>
+    <span> &nbsp;|&nbsp; Project manager: </span>
+    <a class="creator-link" href="https://www.linkedin.com/in/priyanka-yadav-22316a171/?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BDacQOzR%2BSMmJeqnzBgMlzA%3D%3D" target="_blank" rel="noopener noreferrer">Priyanka Yadav</a>
+  </div>
+  <div class="footer-flag-row">
+    <span class="mini-flag"><div style="background:#FF9933"></div><div style="background:#FFFFFF"></div><div style="background:#138808"></div></span>
+    <span id="footer-mii">Make in India</span>
   </div>
 </footer>
 
 <div class="toast" id="toast">Copied!</div>
 
 <script>
-// ── STATE ──────────────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════
+// CONFIG — set these once you know your live Netlify URL.
+// Using relative paths means this works automatically on whatever
+// domain the site is deployed to, no edits needed.
+// ════════════════════════════════════════════════════════════════
+const API_BASE = '/.netlify/functions';
+
+// ════════════════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════════════════
 const S = {
-  country:null, gender:null, ethnicity:null, age:null,
+  country:'india', ethnicity:0, gender:null, age:null,
   weightKg:null, heightCm:null, waistCm:null, waistKnown:null,
   activity:null, diet:null, sleep:null, stress:null,
   smoking:null, alcohol:null, bp:null, familyHx:null, prevSugar:null,
-  // unit prefs
-  _hUnit:null, _wUnit:null, _waUnit:null,
-  // scores
-  sc:{}
+  _hUnit:'cm', _wUnit:'kg', _waUnit:'cm',
+  sc:{ethnicity:2}
 };
 let cur = 0;
 let canNext = false;
-let lang = localStorage.getItem('diabfit-lang') || 'en';
+let qLang = 'en';
+let lastResult = null;
+let capturedName = '';
+let capturedCity = '';
 
-const I18N = {
-  en: {
-    navHow:'How it works', navCta:'Take the test',
-    heroBadge:'Free · 3 minutes · Certified result',
-    heroTitle:'Do you have <em>prediabetes</em> risk?<br>Find out. Share it.',
-    heroCopy:"136 million Indians have diabetes. Billions more don't know they're at risk. Take the 3-minute screening, earn your certificate, and start a movement.",
-    statCost:'Cost', statTime:'To complete', statRisk:'Risk factors checked', statCert:'Certificate valid',
-    heroButton:'Start free screening →', heroNote:'No sign-up required. No personal data stored.',
-    badges:['Green tick certificate','90-day challenge badge','Challenge winner trophy','One-tap Instagram share'],
-    howTitle:'How DiabFit works',
-    how:[
-      ['Select your country','India, USA, or Europe — thresholds adjust to your clinical guidelines'],
-      ['Answer 13 questions','Age, weight, waist, family history, lifestyle — takes 3 minutes'],
-      ['Get your result','Instant risk score with personalised breakdown by factor'],
-      ['Share your badge','Green tick, challenge badge, or winner trophy — post on Instagram'],
-      ['Retest in 90 days','Certificate expires after 3 months. Track your improvement.']
-    ],
-    footerTagline:'DiabFit — Free prediabetes risk screening for India, USA & Europe',
-    footerMeta:'Based on the validated ADA/WHO FINDRISC questionnaire · Not a medical device · Privacy · Disclaimer',
-    creditCreator:'Manufacturer and creator:', creditManager:'Project manager:',
-    shareTitle:'Share your result', copyIg:'Copy Instagram caption', copyWa:'💬 Copy WhatsApp message', copyX:'✖ Copy X (Twitter) post', startOver:'Start over',
-    medicalDisclaimer:'Medical disclaimer: DiabFit uses the validated ADA/WHO FINDRISC questionnaire adapted by country. This is a risk screening tool only — not a medical diagnosis. Only a doctor and blood test (HbA1c or fasting glucose) can diagnose prediabetes. Always consult your healthcare provider. Results are for awareness and education only.',
-    step:(n,total)=>`Step ${n} of ${total}`, next:'Next →', back:'← Back', result:'See my result ✓',
-    lowRisk:'Low risk', pts:s=>`+${s} pts`, copied:'Copied!', igCopied:'Instagram caption copied! 📸', waCopied:'WhatsApp message copied! 💬', xCopied:'X post copied! ✖', igPaste:'Copied! Paste into Instagram ✓',
-    sections:{location:'Your location', about:'About you', body:'Body measurements', lifestyle:'Lifestyle', medical:'Medical history'},
-    common:{men:'Men', women:'Women', country:'Country', biologicalSex:'Biological sex', ethnicity:'Ethnicity', height:'Height', weight:'Weight', waist:'Waist', bmi:'BMI'},
-    q: {
-      country:['Step 1','Where are you located?','Units, risk thresholds and clinical guidelines are adjusted per country.','South Asian guidelines (India) use different BMI and waist thresholds than Western guidelines.'],
-      gender:['About you','What is your biological sex?','Waist size thresholds differ by biological sex. This does not affect your certificate type.'],
-      ethnicity:['About you','What is your ethnic background?','South Asians develop prediabetes at lower BMI thresholds — ethnicity adjusts the calculation, not the judgement.','South Asians are at risk from BMI 23+, not the Western 25+. This is the WHO\'s official guideline.'],
-      age:['About you','How old are you?','Risk increases significantly after 40, and again after 55.'],
-      height:['Body measurements','What is your height?','Used to calculate your BMI.','Feet','Inches','Centimetres','Average Indian adult: 163 cm (5ft 4in) for men, 152 cm (5ft) for women.'],
-      weight:['Body measurements','What is your weight?','Used alongside height to calculate your BMI — a key risk factor.','Kilograms','Pounds','Stone'],
-      waistKnown:['Body measurements','Do you know your waist measurement?','Waist size is one of the strongest indicators — especially for South Asians. If you have a tape measure, it takes 30 seconds to check.','Yes, I know my waist size',"No, I'll skip this measurement",'Measure at navel level, relaxed (not sucked in). Morning before eating gives the most accurate reading.'],
-      waist:['Body measurements','What is your waist circumference?','Measure around your navel, not your hips. Belly fat around organs is the key risk driver.','Centimetres','Inches',(sex,lo,hi)=>`${sex}: risk begins at ${lo} cm (${Math.round(lo/2.54)}"). High risk above ${hi} cm (${Math.round(hi/2.54)}").`],
-      activity:['Lifestyle','How physically active are you?','Include all movement: walking, cycling, yoga, housework, farming, sport.','30 minutes of brisk walking daily reduces diabetes risk by up to 35%.'],
-      diet:['Lifestyle','How would you describe your typical diet?',{india:'Think of chapati, dal, sabzi vs biryani, white rice, sweets, oil.',usa:'Think whole grains and salads vs fast food, soda, white bread.',europe:'Think whole grains, vegetables vs pastries, white bread, soda.'},'Focus on a typical day — not your best day or your worst.'],
-      sleep:['Lifestyle','How much do you sleep on average?','Both too little and too much sleep are linked to insulin resistance and higher diabetes risk.','Poor sleep raises cortisol, which directly impairs blood sugar regulation — even one bad week matters.'],
-      stress:['Lifestyle','What is your typical stress level?','Chronic stress raises cortisol, which increases blood sugar — a clinically recognized risk factor for prediabetes.','Work pressure, financial stress, relationship stress — all count. Any persistent mental load affects cortisol.'],
-      smoking:['Lifestyle','What is your smoking status?','Smokers are 30–40% more likely to develop Type 2 diabetes than non-smokers.'],
-      alcohol:['Lifestyle','How much alcohol do you drink?','Heavy drinking impairs insulin sensitivity. Binge drinking causes acute blood sugar spikes.','One drink = 330 ml beer, 150 ml wine, or 45 ml spirit.'],
-      bp:['Medical history','What is your blood pressure status?','High blood pressure and prediabetes share the same root causes and almost always appear together.'],
-      familyHx:['Medical history','Has anyone in your family been diagnosed with diabetes?','Type 2 diabetes has a 40% heritability rate — having a parent or sibling with diabetes roughly doubles your risk.','Includes both Type 1 and Type 2 diabetes. Gestational diabetes in a close relative also counts.'],
-      prevSugar:['Medical history','Have you ever been told your blood sugar was high?','A previous episode of elevated blood sugar is the single strongest predictor of future diabetes.','Includes any blood test result, health camp reading, or doctor\'s comment about "borderline sugar".']
-    },
-    opts: {
-      gender:['Male','Female','Non-binary / prefer not to say'],
-      ethnicity:{india:['South Asian (Indian, Pakistani, Bangladeshi, Sri Lankan)','Other Asian','Other / prefer not to say'],usa:['South Asian','East / Southeast Asian','Black / African American','Hispanic / Latino','White / Caucasian','Other / prefer not to say'],europe:['South Asian','East Asian','African / Caribbean','White European','Other / prefer not to say']},
-      age:['Under 35','35–44','45–54','55–64','65 or older'],
-      activity:['Very active — physical job or daily exercise (60+ min)','Active most days — 30+ min, 5+ days/week','Moderately active — 30 min, 3–4 days/week','Lightly active — occasional walks, 1–2 days/week','Mostly sedentary — desk job, very little movement'],
-      diet:['Very healthy — vegetables, whole grains, lean protein daily; minimal sugar','Mostly healthy — good most days with occasional treats','Mixed — some healthy food but regular refined carbs or fried food','Mostly processed — white rice/bread/sugar drinks/fast food daily'],
-      sleep:['7–9 hours — consistent, feel well-rested','6–7 hours — slightly short but manageable','Under 6 hours — often sleep-deprived','Over 9 hours regularly — or very poor quality sleep'],
-      stress:['Low — generally calm, stress is manageable','Moderate — some stress but I cope well','High — frequent stress, anxiety, or burnout','Very high — chronic stress affecting daily life'],
-      smoking:['Never smoked','Former smoker — quit more than 1 year ago','Former smoker — quit less than 1 year ago','Current smoker'],
-      alcohol:["None — I don't drink alcohol",'Occasional — 1–2 drinks per week or less','Moderate — 3–7 drinks per week','Heavy — more than 7 drinks per week','Binge drinking — 4+ drinks in one sitting regularly'],
-      bp:['Normal — always below 130/80','Borderline — occasionally high (130–140 / 80–90)','High — diagnosed hypertension or on medication','Not sure / never had it measured'],
-      familyHx:['No family history of diabetes','Grandparent, aunt, uncle, or cousin has diabetes','One parent, sibling, or my own child has diabetes','Both parents have diabetes'],
-      prevSugar:['No — blood sugar has always been normal','Not sure — never had it checked','Borderline — told to "keep an eye on it"','High — previously diagnosed with prediabetes','Had gestational diabetes during pregnancy']
-    },
-    resultText:{low:['Low risk — green tick certificate earned!','Your profile shows a low risk of prediabetes right now. Keep up the healthy habits, share your result, and retest in 90 days to maintain your certificate.'], moderate:['Moderate risk — take the 90-day challenge','You have some risk factors worth addressing. The great news: prediabetes risk is highly reversible through lifestyle changes. Accept the 90-day challenge and aim for the green tick next time.'], high:['High risk — please see a doctor this week','Your risk factors are elevated across multiple areas. This is not a diagnosis — but it is a strong signal. A simple blood test (HbA1c) will tell you exactly where you stand. Knowledge is power.']},
-    actions:{lowTitle:'What to do now', low:['Continue your current activity and diet — it\'s working','Get an annual HbA1c test as good practice','Share your green tick and challenge 3 friends',rd=>`Set a reminder to retest on ${rd}`], modTitle:'Your 90-day plan', mod:['Walk 30 min/day — reduces risk by up to 58%','Cut sugary drinks and refined carbs (maida, white rice excess)','Add vegetables to every meal','Book an HbA1c blood test to get your exact baseline','Aim for 7–8 hours of consistent sleep',rd=>`Retest on DiabFit on ${rd}`], highTitle:'Urgent steps', high:['Book an HbA1c + fasting glucose test this week','Show this result to your doctor','Start walking — even 15 min/day helps immediately','Remove all sugar-sweetened drinks from your home','Come back and retest after 90 days of changes'], remember:'Remember', rememberCopy:"This screening tool cannot diagnose prediabetes. Only a blood test and doctor can do that. Many people with high screening scores are still fine — but it's worth checking."},
-    result:{score:s=>`Risk score: ${s} / 28`, profile:'Your profile', bmiAnalysis:x=>`BMI analysis — ${x}`, saThresholds:'South Asian thresholds', stdThresholds:'Standard thresholds', yourBmi:'Your BMI', labels:['Under','Healthy','Over','Obese I','Obese II'], saNote:'South Asian thresholds: Healthy = BMI 18.5–23, vs Western 18.5–25', breakdown:"Score breakdown — what's driving your risk", brk:[['BMI','Body weight vs height'],['Waist size','Central adiposity'],['Ethnicity','Genetic predisposition'],['Age','Biological risk factor'],['Physical activity','Insulin sensitivity'],['Diet quality','Blood sugar impact'],['Sleep quality','Metabolic regulation'],['Stress level','Cortisol & insulin'],['Smoking status','Cellular insulin resistance'],['Alcohol intake','Blood sugar spikes'],['Blood pressure','Metabolic syndrome marker'],['Family history','Genetic risk'],['Previous blood sugar','Strongest single predictor']]},
-    bmiCat:['Underweight','Healthy (South Asian)','Overweight risk (South Asian)','Obese class I (South Asian)','Obese class II','Healthy weight','Overweight','Obese class I'],
-    names:{countries:{india:'India',usa:'USA',europe:'Europe'}, genders:['Male','Female','Non-binary'], eth:{india:['South Asian','Other Asian','Other'],usa:['South Asian','East/SE Asian','Black/AA','Hispanic','White','Other'],europe:['South Asian','East Asian','African/Caribbean','White European','Other']}}
-  },
-  hi: {
-    navHow:'कैसे काम करता है', navCta:'टेस्ट शुरू करें',
-    heroBadge:'मुफ्त · 3 मिनट · प्रमाणित परिणाम',
-    heroTitle:'क्या आपको <em>प्रीडायबिटीज</em> का जोखिम है?<br>जानें और साझा करें.',
-    heroCopy:'13.6 करोड़ भारतीयों को डायबिटीज है. कई लोगों को अपना जोखिम पता भी नहीं होता. 3 मिनट की स्क्रीनिंग करें, अपना प्रमाणपत्र पाएं और जागरूकता बढ़ाएं.',
-    statCost:'लागत', statTime:'पूरा करने में', statRisk:'जोखिम कारक जांचे गए', statCert:'प्रमाणपत्र मान्य',
-    heroButton:'मुफ्त स्क्रीनिंग शुरू करें →', heroNote:'साइन-अप जरूरी नहीं. व्यक्तिगत डेटा सेव नहीं होता.',
-    badges:['ग्रीन टिक प्रमाणपत्र','90-दिन चुनौती बैज','चुनौती विजेता ट्रॉफी','एक टैप Instagram शेयर'],
-    howTitle:'DiabFit कैसे काम करता है',
-    how:[
-      ['अपना देश चुनें','भारत, USA या Europe — आपके क्लिनिकल दिशानिर्देशों के अनुसार सीमा बदलेगी'],
-      ['13 सवालों के जवाब दें','उम्र, वजन, कमर, परिवार का इतिहास और जीवनशैली — सिर्फ 3 मिनट'],
-      ['अपना परिणाम पाएं','हर कारक के साथ तुरंत जोखिम स्कोर'],
-      ['अपना बैज साझा करें','ग्रीन टिक, चुनौती बैज या ट्रॉफी — Instagram पर पोस्ट करें'],
-      ['90 दिन बाद फिर टेस्ट करें','प्रमाणपत्र 3 महीने बाद समाप्त होता है. अपनी प्रगति देखें.']
-    ],
-    footerTagline:'DiabFit — भारत, USA और Europe के लिए मुफ्त प्रीडायबिटीज जोखिम स्क्रीनिंग',
-    footerMeta:'मान्य ADA/WHO FINDRISC प्रश्नावली पर आधारित · मेडिकल डिवाइस नहीं · Privacy · Disclaimer',
-    creditCreator:'निर्माता और क्रिएटर:', creditManager:'प्रोजेक्ट मैनेजर:',
-    shareTitle:'अपना परिणाम साझा करें', copyIg:'Instagram कैप्शन कॉपी करें', copyWa:'💬 WhatsApp संदेश कॉपी करें', copyX:'✖ X (Twitter) पोस्ट कॉपी करें', startOver:'फिर से शुरू करें',
-    medicalDisclaimer:'मेडिकल डिस्क्लेमर: DiabFit देश के अनुसार अनुकूलित मान्य ADA/WHO FINDRISC प्रश्नावली का उपयोग करता है. यह केवल जोखिम स्क्रीनिंग टूल है — मेडिकल डायग्नोसिस नहीं. प्रीडायबिटीज का निदान केवल डॉक्टर और ब्लड टेस्ट (HbA1c या fasting glucose) से हो सकता है. हमेशा अपने हेल्थकेयर प्रोवाइडर से सलाह लें. परिणाम केवल जागरूकता और शिक्षा के लिए हैं.',
-    step:(n,total)=>`स्टेप ${n} / ${total}`, next:'अगला →', back:'← पीछे', result:'मेरा परिणाम देखें ✓',
-    lowRisk:'कम जोखिम', pts:s=>`+${s} अंक`, copied:'कॉपी हो गया!', igCopied:'Instagram कैप्शन कॉपी हो गया! 📸', waCopied:'WhatsApp संदेश कॉपी हो गया! 💬', xCopied:'X पोस्ट कॉपी हो गई! ✖', igPaste:'कॉपी हो गया! Instagram में पेस्ट करें ✓',
-    sections:{location:'आपका स्थान', about:'आपके बारे में', body:'शारीरिक माप', lifestyle:'जीवनशैली', medical:'मेडिकल इतिहास'},
-    common:{men:'पुरुष', women:'महिलाएं', country:'देश', biologicalSex:'जैविक लिंग', ethnicity:'जातीय पृष्ठभूमि', height:'लंबाई', weight:'वजन', waist:'कमर', bmi:'BMI'},
-    q: {
-      country:['स्टेप 1','आप कहां रहते हैं?','देश के अनुसार यूनिट, जोखिम सीमा और क्लिनिकल दिशानिर्देश बदले जाते हैं.','दक्षिण एशियाई दिशानिर्देश (भारत) Western guidelines से अलग BMI और कमर सीमा इस्तेमाल करते हैं.'],
-      gender:['आपके बारे में','आपका जैविक लिंग क्या है?','कमर की जोखिम सीमा जैविक लिंग के अनुसार अलग होती है. इससे आपके प्रमाणपत्र पर असर नहीं पड़ता.'],
-      ethnicity:['आपके बारे में','आपकी जातीय पृष्ठभूमि क्या है?','दक्षिण एशियाई लोगों में कम BMI पर भी प्रीडायबिटीज का जोखिम बढ़ सकता है — यह गणना को समायोजित करता है, फैसला नहीं सुनाता.','दक्षिण एशियाई लोगों में जोखिम BMI 23+ से माना जाता है, Western 25+ से नहीं. यह WHO दिशानिर्देश है.'],
-      age:['आपके बारे में','आपकी उम्र कितनी है?','40 के बाद जोखिम बढ़ता है, और 55 के बाद फिर बढ़ता है.'],
-      height:['शारीरिक माप','आपकी लंबाई कितनी है?','BMI निकालने के लिए इस्तेमाल होता है.','फीट','इंच','सेंटीमीटर','औसत भारतीय वयस्क: पुरुष 163 cm (5ft 4in), महिलाएं 152 cm (5ft).'],
-      weight:['शारीरिक माप','आपका वजन कितना है?','लंबाई के साथ BMI निकालने में इस्तेमाल होता है — यह मुख्य जोखिम कारक है.','किलोग्राम','पाउंड','स्टोन'],
-      waistKnown:['शारीरिक माप','क्या आपको अपनी कमर का माप पता है?','कमर का माप सबसे मजबूत संकेतकों में से एक है — खासकर दक्षिण एशियाई लोगों के लिए. टेप हो तो 30 सेकंड लगते हैं.','हां, मुझे कमर का माप पता है','नहीं, मैं यह माप छोड़ूंगा','नाभि के स्तर पर मापें, सामान्य अवस्था में. सुबह खाने से पहले माप सबसे सही रहता है.'],
-      waist:['शारीरिक माप','आपकी कमर की परिधि कितनी है?','नाभि के आसपास मापें, कूल्हों पर नहीं. अंगों के आसपास जमा पेट की चर्बी मुख्य जोखिम है.','सेंटीमीटर','इंच',(sex,lo,hi)=>`${sex}: जोखिम ${lo} cm (${Math.round(lo/2.54)}") से शुरू होता है. ${hi} cm (${Math.round(hi/2.54)}") से ऊपर उच्च जोखिम.`],
-      activity:['जीवनशैली','आप कितने शारीरिक रूप से सक्रिय हैं?','चलना, साइकिल, योग, घर का काम, खेती, खेल — सभी गतिविधियां शामिल करें.','रोज 30 मिनट तेज चलना डायबिटीज जोखिम को 35% तक कम कर सकता है.'],
-      diet:['जीवनशैली','आप अपने सामान्य भोजन को कैसे बताएंगे?',{india:'चपाती, दाल, सब्जी बनाम बिरयानी, सफेद चावल, मिठाई, ज्यादा तेल के बारे में सोचें.',usa:'Whole grains और salad बनाम fast food, soda, white bread सोचें.',europe:'Whole grains, vegetables बनाम pastries, white bread, soda सोचें.'},'अपने सामान्य दिन के बारे में सोचें — सबसे अच्छे या सबसे खराब दिन के बारे में नहीं.'],
-      sleep:['जीवनशैली','आप औसतन कितनी नींद लेते हैं?','बहुत कम और बहुत ज्यादा, दोनों तरह की नींद insulin resistance और diabetes risk से जुड़ी हैं.','खराब नींद cortisol बढ़ाती है, जिससे blood sugar regulation प्रभावित होता है — एक खराब सप्ताह भी मायने रखता है.'],
-      stress:['जीवनशैली','आपका सामान्य तनाव स्तर कैसा है?','लगातार तनाव cortisol बढ़ाता है, जिससे blood sugar बढ़ सकती है — यह prediabetes का मान्य जोखिम कारक है.','काम, पैसे, रिश्ते — हर तरह का तनाव गिना जाता है. लगातार mental load cortisol को प्रभावित करता है.'],
-      smoking:['जीवनशैली','आपकी smoking स्थिति क्या है?','Smokers में Type 2 diabetes होने की संभावना non-smokers से 30–40% ज्यादा होती है.'],
-      alcohol:['जीवनशैली','आप कितना alcohol पीते हैं?','ज्यादा alcohol insulin sensitivity घटाता है. Binge drinking से blood sugar अचानक बढ़ सकती है.','एक drink = 330 ml beer, 150 ml wine, या 45 ml spirit.'],
-      bp:['मेडिकल इतिहास','आपका blood pressure status क्या है?','High blood pressure और prediabetes की जड़ें अक्सर समान होती हैं और ये साथ दिखते हैं.'],
-      familyHx:['मेडिकल इतिहास','क्या आपके परिवार में किसी को diabetes है?','Type 2 diabetes में पारिवारिक प्रभाव होता है — parent या sibling में diabetes होने से आपका जोखिम लगभग दोगुना हो सकता है.','Type 1 और Type 2 diabetes दोनों शामिल हैं. करीबी रिश्तेदार में gestational diabetes भी गिना जाता है.'],
-      prevSugar:['मेडिकल इतिहास','क्या कभी आपको बताया गया है कि आपकी blood sugar high थी?','पहले कभी blood sugar high होना भविष्य के diabetes risk का सबसे मजबूत संकेत है.','किसी भी blood test, health camp reading या doctor की "borderline sugar" टिप्पणी को शामिल करें.']
-    },
-    opts: {
-      gender:['पुरुष','महिला','Non-binary / बताना नहीं चाहते'],
-      ethnicity:{india:['दक्षिण एशियाई (Indian, Pakistani, Bangladeshi, Sri Lankan)','अन्य एशियाई','अन्य / बताना नहीं चाहते'],usa:['दक्षिण एशियाई','East / Southeast Asian','Black / African American','Hispanic / Latino','White / Caucasian','अन्य / बताना नहीं चाहते'],europe:['दक्षिण एशियाई','East Asian','African / Caribbean','White European','अन्य / बताना नहीं चाहते']},
-      age:['35 से कम','35–44','45–54','55–64','65 या अधिक'],
-      activity:['बहुत सक्रिय — physical job या रोज exercise (60+ min)','ज्यादातर दिन सक्रिय — 30+ min, 5+ दिन/सप्ताह','मध्यम सक्रिय — 30 min, 3–4 दिन/सप्ताह','हल्का सक्रिय — कभी-कभी walk, 1–2 दिन/सप्ताह','ज्यादातर बैठे रहते हैं — desk job, बहुत कम movement'],
-      diet:['बहुत healthy — सब्जियां, whole grains, lean protein रोज; sugar कम','ज्यादातर healthy — अधिकतर दिन अच्छा, कभी-कभी treats','Mixed — कुछ healthy food लेकिन refined carbs या fried food regular','ज्यादातर processed — white rice/bread/sugar drinks/fast food daily'],
-      sleep:['7–9 घंटे — नियमित, आराम महसूस होता है','6–7 घंटे — थोड़ा कम लेकिन manageable','6 घंटे से कम — अक्सर नींद की कमी','9 घंटे से ज्यादा नियमित — या बहुत खराब sleep quality'],
-      stress:['कम — सामान्यतः शांत, stress manageable','मध्यम — कुछ stress लेकिन संभल जाता है','ज्यादा — frequent stress, anxiety या burnout','बहुत ज्यादा — chronic stress daily life को प्रभावित करता है'],
-      smoking:['कभी smoke नहीं किया','पहले smoker — 1 साल से ज्यादा पहले छोड़ा','पहले smoker — 1 साल से कम पहले छोड़ा','वर्तमान smoker'],
-      alcohol:['नहीं — मैं alcohol नहीं पीता/पीती','कभी-कभी — 1–2 drinks/week या कम','मध्यम — 3–7 drinks/week','ज्यादा — 7 से ज्यादा drinks/week','Binge drinking — एक बार में 4+ drinks नियमित'],
-      bp:['Normal — हमेशा 130/80 से कम','Borderline — कभी-कभी high (130–140 / 80–90)','High — hypertension diagnosed या medication पर','पता नहीं / कभी measure नहीं किया'],
-      familyHx:['परिवार में diabetes history नहीं','Grandparent, aunt, uncle या cousin को diabetes','एक parent, sibling या मेरे बच्चे को diabetes','दोनों parents को diabetes'],
-      prevSugar:['नहीं — blood sugar हमेशा normal रही','पता नहीं — कभी check नहीं कराया','Borderline — "ध्यान रखें" कहा गया','High — पहले prediabetes diagnosed','Pregnancy में gestational diabetes हुआ था']
-    },
-    resultText:{low:['कम जोखिम — green tick certificate मिला!','आपकी profile अभी prediabetes के कम जोखिम को दिखाती है. Healthy habits जारी रखें, result share करें, और certificate बनाए रखने के लिए 90 दिन बाद retest करें.'], moderate:['मध्यम जोखिम — 90-day challenge लें','आपके कुछ risk factors सुधारने योग्य हैं. अच्छी बात यह है कि lifestyle बदलावों से prediabetes risk काफी कम हो सकता है. 90-day challenge लें और अगली बार green tick का लक्ष्य रखें.'], high:['उच्च जोखिम — इस सप्ताह doctor से मिलें','आपके कई risk factors बढ़े हुए हैं. यह diagnosis नहीं है — लेकिन एक मजबूत संकेत है. एक simple blood test (HbA1c) आपको सही स्थिति बता सकता है.']},
-    actions:{lowTitle:'अब क्या करें', low:['अपनी current activity और diet जारी रखें — यह काम कर रही है','सावधानी के लिए annual HbA1c test कराएं','अपना green tick share करें और 3 friends को challenge दें',rd=>`${rd} को retest reminder सेट करें`], modTitle:'आपका 90-day plan', mod:['रोज 30 min walk करें — risk 58% तक घट सकता है','Sugary drinks और refined carbs (maida, white rice excess) कम करें','हर meal में vegetables जोड़ें','Exact baseline के लिए HbA1c blood test book करें','7–8 घंटे consistent sleep का लक्ष्य रखें',rd=>`${rd} को DiabFit पर retest करें`], highTitle:'जरूरी कदम', high:['इस सप्ताह HbA1c + fasting glucose test book करें','यह result अपने doctor को दिखाएं','Walking शुरू करें — 15 min/day भी तुरंत मदद करता है','घर से sugar-sweetened drinks हटाएं','90 दिन बदलाव के बाद वापस आकर retest करें'], remember:'याद रखें', rememberCopy:'यह screening tool prediabetes diagnose नहीं कर सकता. diagnosis केवल blood test और doctor कर सकते हैं. High screening score वाले कई लोग ठीक भी हो सकते हैं — लेकिन check कराना जरूरी है.'},
-    result:{score:s=>`जोखिम स्कोर: ${s} / 28`, profile:'आपकी profile', bmiAnalysis:x=>`BMI analysis — ${x}`, saThresholds:'South Asian thresholds', stdThresholds:'Standard thresholds', yourBmi:'आपका BMI', labels:['Under','Healthy','Over','Obese I','Obese II'], saNote:'South Asian thresholds: Healthy = BMI 18.5–23, Western 18.5–25 की तुलना में', breakdown:'Score breakdown — आपका risk किससे बढ़ रहा है', brk:[['BMI','Body weight vs height'],['कमर का माप','Central adiposity'],['Ethnicity','Genetic predisposition'],['उम्र','Biological risk factor'],['Physical activity','Insulin sensitivity'],['Diet quality','Blood sugar impact'],['Sleep quality','Metabolic regulation'],['Stress level','Cortisol & insulin'],['Smoking status','Cellular insulin resistance'],['Alcohol intake','Blood sugar spikes'],['Blood pressure','Metabolic syndrome marker'],['Family history','Genetic risk'],['Previous blood sugar','Strongest single predictor']]},
-    bmiCat:['Underweight','Healthy (South Asian)','Overweight risk (South Asian)','Obese class I (South Asian)','Obese class II','Healthy weight','Overweight','Obese class I'],
-    names:{countries:{india:'भारत',usa:'USA',europe:'Europe'}, genders:['पुरुष','महिला','Non-binary'], eth:{india:['दक्षिण एशियाई','अन्य एशियाई','अन्य'],usa:['दक्षिण एशियाई','East/SE Asian','Black/AA','Hispanic','White','अन्य'],europe:['दक्षिण एशियाई','East Asian','African/Caribbean','White European','अन्य']}}
-  }
-};
-const L = ()=>I18N[lang] || I18N.en;
+const INDIAN_STATES = [
+  'Andhra Pradesh','Arunachal Pradesh','Assam','Bihar','Chhattisgarh','Delhi','Goa','Gujarat',
+  'Haryana','Himachal Pradesh','Jharkhand','Karnataka','Kerala','Madhya Pradesh','Maharashtra',
+  'Manipur','Meghalaya','Mizoram','Nagaland','Odisha','Punjab','Rajasthan','Sikkim','Tamil Nadu',
+  'Telangana','Tripura','Uttar Pradesh','Uttarakhand','West Bengal','Other'
+];
 
-function setLanguage(nextLang){
-  lang = nextLang === 'hi' ? 'hi' : 'en';
-  localStorage.setItem('diabfit-lang', lang);
-  document.documentElement.lang = lang === 'hi' ? 'hi' : 'en';
-  const select=document.getElementById('language-select');
-  if(select) select.value=lang;
-  translateStatic();
-  if(document.getElementById('result-wrap').style.display==='block') showResult(false);
-  else render();
-}
-
-function setText(sel, value){ const el=document.querySelector(sel); if(el) el.textContent=value; }
-function setHtml(sel, value){ const el=document.querySelector(sel); if(el) el.innerHTML=value; }
-function translateStatic(){
-  const l=L();
-  setText('[data-i18n="navHow"]', l.navHow);
-  setText('[data-i18n="navCta"]', l.navCta);
-  setText('.hero-badge', l.heroBadge);
-  setHtml('.hero h1', l.heroTitle);
-  setText('.hero p', l.heroCopy);
-  const statLabels=document.querySelectorAll('.stat-label');
-  [l.statCost,l.statTime,l.statRisk,l.statCert].forEach((txt,i)=>{ if(statLabels[i]) statLabels[i].textContent=txt; });
-  setText('.hero-btn', l.heroButton);
-  setText('.hero-note', l.heroNote);
-  document.querySelectorAll('.badge-chip').forEach((el,i)=>{
-    const icon=el.querySelector('.badge-icon')?.outerHTML || '';
-    el.innerHTML=`${icon} ${l.badges[i]}`;
-  });
-  setText('.how h2', l.howTitle);
-  document.querySelectorAll('.step-item').forEach((el,i)=>{
-    const pair=l.how[i]; if(!pair) return;
-    const h=el.querySelector('h3'), p=el.querySelector('p');
-    if(h) h.textContent=pair[0];
-    if(p) p.textContent=pair[1];
-  });
-  setText('.share-title', l.shareTitle);
-  setText('#ig-txt', l.copyIg);
-  setText('.share-wa', l.copyWa);
-  setText('.share-x', l.copyX);
-  setText('.restart-btn', l.startOver);
-  const parts=l.medicalDisclaimer.split(':');
-  setHtml('.disclaimer', `<strong>${parts[0]}:</strong> ${parts.slice(1).join(':').trim()}`);
-  const footer=document.querySelector('footer');
-  if(footer){
-    const divs=footer.querySelectorAll(':scope > div');
-    if(divs[0]) divs[0].innerHTML=`<strong style="color:#fff">DiabFit</strong>${l.footerTagline.replace('DiabFit','')}`;
-    if(divs[1]) divs[1].innerHTML=l.footerMeta.replaceAll(' · ',' &nbsp;·&nbsp; ');
-    const spans=footer.querySelectorAll('.footer-credits span');
-    if(spans[0]) spans[0].textContent=l.creditCreator;
-    if(spans[1]) spans[1].textContent=l.creditManager;
-  }
-}
-
-// ── STEPS ──────────────────────────────────────────────────────────────────
 const STEPS = [
-  {id:'country',   section:'Your location'},
-  {id:'gender',    section:'About you'},
-  {id:'ethnicity', section:'About you'},
-  {id:'age',       section:'About you'},
-  {id:'height',    section:'Body measurements'},
-  {id:'weight',    section:'Body measurements'},
-  {id:'waistKnown',section:'Body measurements'},
-  {id:'waist',     section:'Body measurements', skip:()=>S.waistKnown===1},
-  {id:'activity',  section:'Lifestyle'},
-  {id:'diet',      section:'Lifestyle'},
-  {id:'sleep',     section:'Lifestyle'},
-  {id:'stress',    section:'Lifestyle'},
-  {id:'smoking',   section:'Lifestyle'},
-  {id:'alcohol',   section:'Lifestyle'},
-  {id:'bp',        section:'Medical history'},
-  {id:'familyHx',  section:'Medical history'},
-  {id:'prevSugar', section:'Medical history'},
+  {id:'gender',    section:{en:'About you',hi:'आपके बारे में'}},
+  {id:'age',       section:{en:'About you',hi:'आपके बारे में'}},
+  {id:'height',    section:{en:'Body measurements',hi:'शारीरिक माप'}},
+  {id:'weight',    section:{en:'Body measurements',hi:'शारीरिक माप'}},
+  {id:'waistKnown',section:{en:'Body measurements',hi:'शारीरिक माप'}},
+  {id:'waist',     section:{en:'Body measurements',hi:'शारीरिक माप'}, skip:()=>S.waistKnown===1},
+  {id:'activity',  section:{en:'Lifestyle',hi:'जीवनशैली'}},
+  {id:'diet',      section:{en:'Lifestyle',hi:'जीवनशैली'}},
+  {id:'sleep',     section:{en:'Lifestyle',hi:'जीवनशैली'}},
+  {id:'stress',    section:{en:'Lifestyle',hi:'जीवनशैली'}},
+  {id:'smoking',   section:{en:'Lifestyle',hi:'जीवनशैली'}},
+  {id:'alcohol',   section:{en:'Lifestyle',hi:'जीवनशैली'}},
+  {id:'bp',        section:{en:'Medical history',hi:'चिकित्सा इतिहास'}},
+  {id:'familyHx',  section:{en:'Medical history',hi:'चिकित्सा इतिहास'}},
+  {id:'prevSugar', section:{en:'Medical history',hi:'चिकित्सा इतिहास'}},
 ];
 const vs = ()=> STEPS.filter(s=>!s.skip||!s.skip());
 
-// ── RENDER ENGINE ──────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════
+// UI LANGUAGE
+// ════════════════════════════════════════════════════════════════
+const UI_TEXT = {
+  en: {
+    how:'How it works', cta:'Take the test',
+    heroBadge:'🩺 Free · 3 minutes · Certified result',
+    heroH1:'Do you have <em>prediabetes</em> risk?<br>Find out. Share it.',
+    shlokTrans:'"Health is the means to achieve all goals"',
+    heroP:"136 million Indians have diabetes. Crores more don't know they're at risk. Take the screening, earn your certificate, and start a movement.",
+    stat1:'Cost', stat2:'To complete', stat3:'Risk factors checked', stat4:'Certificate valid',
+    heroBtn:'Start free screening →', heroNote:'Takes 3 minutes. Your data helps map prediabetes risk across India.',
+    b1:'Green tick certificate', b2:'30-day AI diet plan', b3:'Challenge winner trophy', b4:'One-tap Instagram share',
+    howTitle:'How DiabFit works',
+    steps:[
+      ['1','Answer 17 quick questions','Age, weight, waist, lifestyle, family history'],
+      ['2','Get your result','Instant risk score with full breakdown'],
+      ['3','Share your card','Name + city — helps map risk across India'],
+      ['4','Get your AI diet plan','If at risk, a personalised 30-day Indian plan'],
+      ['5','Retest in 90 days','Certificate expires after 3 months — track progress'],
+    ],
+    capTitle:'Almost there', capSub:'Tell us your name and city so we can personalise your card and track prediabetes risk across India.',
+    capName:'Your name', capCity:'Your city', capState:'Your state',
+    capConsent:'I agree to share this anonymised data (city and risk level only, no contact details) for public health awareness mapping across India.',
+    capSubmit:'Generate my card', capSkip:'Skip and view result without saving',
+    shareTitle:'Share your card', ig:'Copy Instagram caption', wa:'Copy WhatsApp message', x:'Copy X (Twitter) post',
+    restart:'Start over', download:'Download your card',
+    dietBtn:'Generate my 30-day AI diet plan', dietLoading:'Creating your plan...', dietTitle:'Your 30-day plan',
+    footerTag:'Free prediabetes risk screening for India',
+    footerBased:'Based on the validated ADA/WHO FINDRISC questionnaire, adapted for India',
+    footerMadeBy:'Made with care by', footerMii:'Make in India',
+    disclaimer:'<strong>Medical disclaimer:</strong> DiabFit uses the validated ADA/WHO FINDRISC questionnaire adapted for India. This is a risk <em>screening tool only</em> — not a medical diagnosis. Only a doctor and blood test (HbA1c or fasting glucose) can diagnose prediabetes. The diet plan is general wellness guidance, not medical advice. Always consult your doctor.',
+  },
+  hi: {
+    how:'यह कैसे काम करता है', cta:'टेस्ट लें',
+    heroBadge:'🩺 मुफ़्त · 3 मिनट · प्रमाणित परिणाम',
+    heroH1:'क्या आपको <em>प्रीडायबिटीज़</em> का खतरा है?<br>पता करें। शेयर करें।',
+    shlokTrans:'"स्वास्थ्य सभी लक्ष्यों को प्राप्त करने का साधन है"',
+    heroP:'13.6 करोड़ भारतीयों को मधुमेह है। करोड़ों और लोगों को पता ही नहीं कि वे जोखिम में हैं। जांच लें, सर्टिफिकेट पाएं, और एक आंदोलन शुरू करें।',
+    stat1:'लागत', stat2:'पूरा करने में समय', stat3:'जोखिम कारक जांचे गए', stat4:'सर्टिफिकेट वैधता',
+    heroBtn:'मुफ़्त जांच शुरू करें →', heroNote:'3 मिनट लगते हैं। आपका डेटा भारत भर में जोखिम मैपिंग में मदद करता है।',
+    b1:'हरा टिक सर्टिफिकेट', b2:'30-दिन AI आहार योजना', b3:'चैलेंज विजेता ट्रॉफी', b4:'इंस्टाग्राम पर एक-टैप शेयर',
+    howTitle:'DiabFit कैसे काम करता है',
+    steps:[
+      ['1','17 त्वरित प्रश्नों के उत्तर दें','उम्र, वजन, कमर, जीवनशैली, पारिवारिक इतिहास'],
+      ['2','अपना परिणाम पाएं','तुरंत जोखिम स्कोर और पूरा विवरण'],
+      ['3','अपना कार्ड शेयर करें','नाम + शहर — भारत भर में जोखिम मैप करने में मदद करता है'],
+      ['4','अपनी AI आहार योजना पाएं','जोखिम होने पर व्यक्तिगत 30-दिन भारतीय योजना'],
+      ['5','90 दिनों में दोबारा जांच करें','सर्टिफिकेट 3 महीने बाद समाप्त — प्रगति ट्रैक करें'],
+    ],
+    capTitle:'लगभग हो गया', capSub:'अपना नाम और शहर बताएं ताकि हम आपका कार्ड व्यक्तिगत बना सकें और भारत भर में प्रीडायबिटीज़ जोखिम ट्रैक कर सकें।',
+    capName:'आपका नाम', capCity:'आपका शहर', capState:'आपका राज्य',
+    capConsent:'मैं इस गुमनाम डेटा (केवल शहर और जोखिम स्तर, कोई संपर्क विवरण नहीं) को भारत भर में सार्वजनिक स्वास्थ्य जागरूकता मैपिंग के लिए साझा करने के लिए सहमत हूं।',
+    capSubmit:'मेरा कार्ड बनाएं', capSkip:'सहेजे बिना परिणाम देखें',
+    shareTitle:'अपना कार्ड शेयर करें', ig:'इंस्टाग्राम कैप्शन कॉपी करें', wa:'व्हाट्सएप मैसेज कॉपी करें', x:'X (ट्विटर) पोस्ट कॉपी करें',
+    restart:'फिर से शुरू करें', download:'अपना कार्ड डाउनलोड करें',
+    dietBtn:'मेरी 30-दिन AI आहार योजना बनाएं', dietLoading:'आपकी योजना बन रही है...', dietTitle:'आपकी 30-दिन योजना',
+    footerTag:'भारत के लिए मुफ़्त प्रीडायबिटीज़ जोखिम जांच',
+    footerBased:'मान्य ADA/WHO FINDRISC प्रश्नावली पर आधारित, भारत के लिए अनुकूलित',
+    footerMadeBy:'द्वारा सावधानी से बनाया गया', footerMii:'Make in India',
+    disclaimer:'<strong>चिकित्सा अस्वीकरण:</strong> DiabFit भारत के लिए अनुकूलित मान्य ADA/WHO FINDRISC प्रश्नावली का उपयोग करता है। यह केवल एक जोखिम <em>स्क्रीनिंग टूल</em> है — चिकित्सा निदान नहीं। आहार योजना सामान्य कल्याण मार्गदर्शन है, चिकित्सा सलाह नहीं। हमेशा अपने डॉक्टर से सलाह लें।',
+  }
+};
+
+function setUiLang(l){
+  qLang = l;
+  document.getElementById('lang-en').classList.toggle('on',l==='en');
+  document.getElementById('lang-hi').classList.toggle('on',l==='hi');
+  const t=UI_TEXT[l];
+  document.getElementById('nav-how').textContent=t.how;
+  document.getElementById('nav-cta').textContent=t.cta;
+  document.getElementById('hero-badge').textContent=t.heroBadge;
+  document.getElementById('hero-h1').innerHTML=t.heroH1;
+  document.getElementById('shlok-trans').textContent=t.shlokTrans;
+  document.getElementById('hero-p').textContent=t.heroP;
+  document.getElementById('stat1').textContent=t.stat1;
+  document.getElementById('stat2').textContent=t.stat2;
+  document.getElementById('stat3').textContent=t.stat3;
+  document.getElementById('stat4').textContent=t.stat4;
+  document.getElementById('hero-btn').textContent=t.heroBtn;
+  document.getElementById('hero-note').textContent=t.heroNote;
+  document.getElementById('b1').textContent=t.b1;
+  document.getElementById('b2').textContent=t.b2;
+  document.getElementById('b3').textContent=t.b3;
+  document.getElementById('b4').textContent=t.b4;
+  document.getElementById('how-title').textContent=t.howTitle;
+  document.getElementById('steps-row').innerHTML=t.steps.map(s=>`
+    <div class="step-item"><div class="step-num">${s[0]}</div><h3>${s[1]}</h3><p>${s[2]}</p></div>
+  `).join('');
+  document.getElementById('cap-title').textContent=t.capTitle;
+  document.getElementById('cap-sub').textContent=t.capSub;
+  document.getElementById('cap-name-label').textContent=t.capName;
+  document.getElementById('cap-city-label').textContent=t.capCity;
+  document.getElementById('cap-state-label').textContent=t.capState;
+  document.getElementById('cap-consent-text').textContent=t.capConsent;
+  document.getElementById('cap-submit').textContent=t.capSubmit;
+  document.getElementById('cap-skip-btn').textContent=t.capSkip;
+  document.getElementById('share-title').textContent=t.shareTitle;
+  document.getElementById('ig-txt').textContent=t.ig;
+  document.getElementById('wa-txt').textContent=t.wa;
+  document.getElementById('x-txt').textContent=t.x;
+  document.getElementById('restart-btn').textContent=t.restart;
+  document.getElementById('download-txt').textContent=t.download;
+  document.getElementById('footer-tag').textContent=t.footerTag;
+  document.getElementById('footer-based').textContent=t.footerBased;
+  document.getElementById('footer-made-by').textContent=t.footerMadeBy;
+  document.getElementById('footer-mii').textContent=t.footerMii;
+  document.getElementById('disclaimer-text').innerHTML=t.disclaimer;
+  render();
+  if(lastResult) drawSocialCard(lastResult);
+}
+
+function scrollToQuiz(){ document.getElementById('quiz-anchor').scrollIntoView({behavior:'smooth'}); }
+
+function populateStates(){
+  const sel = document.getElementById('cap-state');
+  sel.innerHTML = '<option value="">' + (qLang==='hi'?'चुनें':'Select') + '</option>' +
+    INDIAN_STATES.map(s=>`<option value="${s}">${s}</option>`).join('');
+}
+
+// ════════════════════════════════════════════════════════════════
+// RENDER ENGINE
+// ════════════════════════════════════════════════════════════════
 function render(){
   const steps = vs();
   const step = steps[cur];
   const total = steps.length;
-  document.getElementById('step-lbl').textContent = 'Step '+(cur+1)+' of '+total;
-  document.getElementById('sec-pill').textContent = step.section;
+  document.getElementById('step-lbl').textContent = (qLang==='hi'?'चरण ':'Step ')+(cur+1)+(qLang==='hi'?' / '+total:' of '+total);
+  document.getElementById('sec-pill').textContent = step.section[qLang];
   document.getElementById('prog-fill').style.width = Math.round((cur+1)/total*100)+'%';
   document.getElementById('btn-back').disabled = cur===0;
-  document.getElementById('btn-next').textContent = cur===total-1 ? 'See my result ✓' : 'Next →';
+  document.getElementById('btn-next').textContent = cur===total-1 ? (qLang==='hi'?'जारी रखें →':'Continue →') : (qLang==='hi'?'अगला →':'Next →');
   canNext = false;
   BUILDERS[step.id]();
   updateNext();
 }
-
 function setOK(v){ canNext=v; updateNext(); }
 function updateNext(){ document.getElementById('btn-next').disabled=!canNext; }
-
 function goNext(){
   if(!canNext) return;
   const steps=vs();
   if(cur<steps.length-1){ cur++; render(); }
-  else showResult();
+  else showCapture();
 }
 function goBack(){ if(cur>0){cur--;render();} }
+
 function restart(){
-  Object.keys(S).forEach(k=>{ if(!k.startsWith('_')) S[k]=null; });
-  S.sc={};
-  cur=0;
+  S.gender=null;S.age=null;S.weightKg=null;S.heightCm=null;S.waistCm=null;S.waistKnown=null;
+  S.activity=null;S.diet=null;S.sleep=null;S.stress=null;S.smoking=null;S.alcohol=null;
+  S.bp=null;S.familyHx=null;S.prevSugar=null;S.sc={ethnicity:2};
+  cur=0; lastResult=null; capturedName=''; capturedCity='';
   document.getElementById('quiz-wrap').style.display='block';
+  document.getElementById('capture-wrap').style.display='none';
   document.getElementById('result-wrap').style.display='none';
   render();
-}
-function scrollToQuiz(){
-  document.getElementById('quiz-anchor').scrollIntoView({behavior:'smooth'});
+  scrollToQuiz();
 }
 
-// ── HELPERS ────────────────────────────────────────────────────────────────
 function setBody(html){ document.getElementById('q-body').innerHTML=html; }
-
-function makeOpts(opts, key, onPick){
+function makeOpts(opts,key){
   return '<div class="options">'+opts.map((o,i)=>`
-    <div class="opt${S[key]===i?' sel':''}" onclick="pickOpt(event,'${key}',${i},${o.score||0})">
+    <div class="opt${S[key]===i?' sel':''}" onclick="pickOpt('${key}',${i},${o.score||0})">
       <div class="opt-radio"><div class="opt-radio-dot"></div></div>
       <span class="opt-text">${o.text}</span>
-      <span class="opt-risk">${o.score>0?'+'+o.score+' pts':o.score===0?'Low risk':''}</span>
+      <span class="opt-risk">${o.score>0?'+'+o.score+(qLang==='hi'?' अंक':' pts'):(qLang==='hi'?'कम जोखिम':'Low risk')}</span>
     </div>`).join('')+'</div>';
 }
-
-function pickOpt(e, key, idx, score){
+function pickOpt(key,idx,score){
   S[key]=idx; S.sc[key]=score;
   document.querySelectorAll('#q-body .opt').forEach((el,i)=>el.classList.toggle('sel',i===idx));
   setOK(true);
 }
-
-function hintBox(text){ return `<div class="hint-box">💡 ${text}</div>`; }
-
-function getWaistThr(){
-  const male = S.gender===0;
-  const sa = S.ethnicity===0;
-  if(male) return sa?{lo:90,hi:102}:{lo:94,hi:102};
-  return {lo:80,hi:88};
-}
-
-function calcBMI(){
-  if(!S.weightKg||!S.heightCm) return null;
-  return +(S.weightKg/((S.heightCm/100)**2)).toFixed(1);
-}
-
-function bmiScore(bmi){
-  const sa = S.ethnicity===0;
-  if(sa){ if(bmi<23) return 0; if(bmi<25) return 1; if(bmi<27.5) return 2; return 3; }
-  else  { if(bmi<25) return 0; if(bmi<30) return 1; if(bmi<35)   return 2; return 3; }
-}
-
-function bmiCat(bmi){
-  const sa=S.ethnicity===0;
-  if(sa){
-    if(bmi<18.5) return {label:'Underweight',color:var_('--blue')};
-    if(bmi<23)   return {label:'Healthy (South Asian)',color:var_('--green')};
-    if(bmi<25)   return {label:'Overweight risk (South Asian)',color:var_('--amber')};
-    if(bmi<27.5) return {label:'Obese class I (South Asian)',color:var_('--amber')};
-    return       {label:'Obese class II',color:var_('--red')};
-  } else {
-    if(bmi<18.5) return {label:'Underweight',color:var_('--blue')};
-    if(bmi<25)   return {label:'Healthy weight',color:var_('--green')};
-    if(bmi<30)   return {label:'Overweight',color:var_('--amber')};
-    if(bmi<35)   return {label:'Obese class I',color:var_('--red')};
-    return       {label:'Obese class II',color:var_('--red')};
-  }
-}
-
-function waistScore(){
-  if(!S.waistCm) return 0;
-  const t=getWaistThr();
-  if(S.waistCm<t.lo) return 0;
-  if(S.waistCm<t.hi) return 3;
-  return 4;
-}
-
-function totalScore(){
-  const bmi=calcBMI();
-  return (bmi?bmiScore(bmi):0)+waistScore()+
-    (S.sc.ethnicity||0)+(S.sc.age||0)+(S.sc.activity||0)+(S.sc.diet||0)+
-    (S.sc.sleep||0)+(S.sc.stress||0)+(S.sc.smoking||0)+(S.sc.alcohol||0)+
-    (S.sc.bp||0)+(S.sc.familyHx||0)+(S.sc.prevSugar||0);
-}
-
-function var_(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
-
+function hintBox(t){ return `<div class="hint-box">💡 ${t}</div>`; }
 function fmtHt(cm){ return cm?`${cm} cm / ${Math.floor(cm/30.48)}ft ${Math.round((cm%30.48)/2.54)}in`:'—'; }
 function fmtWt(kg){ return kg?`${kg.toFixed(1)} kg / ${Math.round(kg*2.205)} lbs`:'—'; }
 function fmtWa(cm){ return cm?`${cm} cm / ${Math.round(cm/2.54)}"`:'—'; }
-function retestDate(){ const d=new Date(); d.setDate(d.getDate()+90); return d.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}); }
-
-// ── STEP BUILDERS ──────────────────────────────────────────────────────────
-const BUILDERS = {
-
-country(){
-  const countries=[{code:'india',flag:'🇮🇳',name:'India'},{code:'usa',flag:'🇺🇸',name:'USA'},{code:'europe',flag:'🇪🇺',name:'Europe'}];
-  setBody(`
-    <div class="q-num">Step 1</div>
-    <div class="q-title">Where are you located?</div>
-    <div class="q-sub">Units, risk thresholds and clinical guidelines are adjusted per country.</div>
-    <div class="country-grid">${countries.map(c=>`
-      <div class="c-card${S.country===c.code?' sel':''}" onclick="pickCountry('${c.code}',this)">
-        <span class="c-flag">${c.flag}</span>
-        <span class="c-name">${c.name}</span>
-      </div>`).join('')}</div>
-    ${hintBox('South Asian guidelines (India) use different BMI and waist thresholds than Western guidelines.')}
-  `);
-  if(S.country) setOK(true);
-},
-
-gender(){
-  const opts=[{text:'Male',score:0},{text:'Female',score:0},{text:'Non-binary / prefer not to say',score:0}];
-  setBody(`
-    <div class="q-num">About you</div>
-    <div class="q-title">What is your biological sex?</div>
-    <div class="q-sub">Waist size thresholds differ by biological sex. This does not affect your certificate type.</div>
-    ${makeOpts(opts,'gender')}
-  `);
-  if(S.gender!==null) setOK(true);
-},
-
-ethnicity(){
-  let opts;
-  if(S.country==='india'){
-    opts=[{text:'South Asian (Indian, Pakistani, Bangladeshi, Sri Lankan)',score:2},{text:'Other Asian',score:1},{text:'Other / prefer not to say',score:0}];
-  } else if(S.country==='usa'){
-    opts=[{text:'South Asian',score:2},{text:'East / Southeast Asian',score:1},{text:'Black / African American',score:1},{text:'Hispanic / Latino',score:1},{text:'White / Caucasian',score:0},{text:'Other / prefer not to say',score:0}];
-  } else {
-    opts=[{text:'South Asian',score:2},{text:'East Asian',score:1},{text:'African / Caribbean',score:1},{text:'White European',score:0},{text:'Other / prefer not to say',score:0}];
-  }
-  setBody(`
-    <div class="q-num">About you</div>
-    <div class="q-title">What is your ethnic background?</div>
-    <div class="q-sub">South Asians develop prediabetes at lower BMI thresholds — ethnicity adjusts the calculation, not the judgement.</div>
-    ${makeOpts(opts,'ethnicity')}
-    ${hintBox('South Asians are at risk from BMI 23+, not the Western 25+. This is the WHO\'s official guideline.')}
-  `);
-  if(S.ethnicity!==null) setOK(true);
-},
-
-age(){
-  const opts=[{text:'Under 35',score:0},{text:'35–44',score:1},{text:'45–54',score:2},{text:'55–64',score:3},{text:'65 or older',score:4}];
-  setBody(`
-    <div class="q-num">About you</div>
-    <div class="q-title">How old are you?</div>
-    <div class="q-sub">Risk increases significantly after 40, and again after 55.</div>
-    ${makeOpts(opts,'age')}
-  `);
-  if(S.age!==null) setOK(true);
-},
-
-height(){
-  const usa = S.country==='usa';
-  if(!S._hUnit) S._hUnit = usa?'ft':'cm';
-  const ht = S.heightCm||'';
-  const ft = ht?Math.floor(ht/30.48):'';
-  const inc = ht?Math.round((ht%30.48)/2.54):'';
-  setBody(`
-    <div class="q-num">Body measurements</div>
-    <div class="q-title">What is your height?</div>
-    <div class="q-sub">Used to calculate your BMI.</div>
-    <div class="input-section">
-      <div class="unit-tabs">
-        <button class="ut${S._hUnit==='ft'?' on':''}" onclick="setHUnit('ft')">ft / in</button>
-        <button class="ut${S._hUnit==='cm'?' on':''}" onclick="setHUnit('cm')">cm</button>
-      </div>
-      <div id="h-ft" style="display:${S._hUnit==='ft'?'block':'none'}">
-        <div class="field-row">
-          <div class="field"><label>Feet</label><input type="number" id="hft" min="3" max="8" placeholder="5" value="${ft}" oninput="calcHft()"></div>
-          <div class="field"><label>Inches</label><input type="number" id="hin" min="0" max="11" placeholder="8" value="${inc}" oninput="calcHft()"></div>
-        </div>
-      </div>
-      <div id="h-cm" style="display:${S._hUnit==='cm'?'block':'none'}">
-        <div class="field-row">
-          <div class="field"><label>Centimetres</label><input type="number" id="hcm" min="100" max="250" placeholder="170" value="${ht}" oninput="calcHcm()"></div>
-        </div>
-      </div>
-      <div class="converted-display" id="h-conv">${ht?fmtHt(ht):''}</div>
-    </div>
-    ${hintBox('Average Indian adult: 163 cm (5ft 4in) for men, 152 cm (5ft) for women.')}
-  `);
-  if(S.heightCm) setOK(true);
-},
-
-weight(){
-  const usa=S.country==='usa', eu=S.country==='europe';
-  if(!S._wUnit) S._wUnit=usa?'lbs':eu?'kg':'kg';
-  const kg=S.weightKg||'';
-  const lbs=kg?Math.round(kg*2.205):'';
-  const st=kg?Math.floor(kg*2.205/14):'';
-  const stlbs=kg?Math.round(kg*2.205%14):'';
-  setBody(`
-    <div class="q-num">Body measurements</div>
-    <div class="q-title">What is your weight?</div>
-    <div class="q-sub">Used alongside height to calculate your BMI — a key risk factor.</div>
-    <div class="input-section">
-      <div class="unit-tabs">
-        <button class="ut${S._wUnit==='kg'?' on':''}" onclick="setWUnit('kg')">kg</button>
-        <button class="ut${S._wUnit==='lbs'?' on':''}" onclick="setWUnit('lbs')">lbs</button>
-        <button class="ut${S._wUnit==='st'?' on':''}" onclick="setWUnit('st')">st / lbs</button>
-      </div>
-      <div id="w-kg" style="display:${S._wUnit==='kg'?'block':'none'}">
-        <div class="field-row"><div class="field"><label>Kilograms</label><input type="number" id="wkg" min="30" max="300" step="0.1" placeholder="70" value="${kg}" oninput="calcWkg()"></div></div>
-      </div>
-      <div id="w-lbs" style="display:${S._wUnit==='lbs'?'block':'none'}">
-        <div class="field-row"><div class="field"><label>Pounds</label><input type="number" id="wlbs" min="66" max="660" placeholder="154" value="${lbs}" oninput="calcWlbs()"></div></div>
-      </div>
-      <div id="w-st" style="display:${S._wUnit==='st'?'block':'none'}">
-        <div class="field-row">
-          <div class="field"><label>Stone</label><input type="number" id="wst" min="5" max="47" placeholder="11" value="${st}" oninput="calcWst()"></div>
-          <div class="field"><label>Pounds</label><input type="number" id="wstlbs" min="0" max="13" placeholder="0" value="${stlbs}" oninput="calcWst()"></div>
-        </div>
-      </div>
-      <div class="converted-display" id="w-conv">${kg?fmtWt(+kg):''}</div>
-    </div>
-  `);
-  if(S.weightKg) setOK(true);
-},
-
-waistKnown(){
-  setBody(`
-    <div class="q-num">Body measurements</div>
-    <div class="q-title">Do you know your waist measurement?</div>
-    <div class="q-sub">Waist size is one of the strongest indicators — especially for South Asians. If you have a tape measure, it takes 30 seconds to check.</div>
-    <div class="options">
-      <div class="opt${S.waistKnown===0?' sel':''}" onclick="pickWaistKnown(0)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-text">Yes, I know my waist size</span></div>
-      <div class="opt${S.waistKnown===1?' sel':''}" onclick="pickWaistKnown(1)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-text">No, I'll skip this measurement</span></div>
-    </div>
-    ${hintBox('Measure at navel level, relaxed (not sucked in). Morning before eating gives the most accurate reading.')}
-  `);
-  if(S.waistKnown!==null) setOK(true);
-},
-
-waist(){
-  const male=S.gender===0, thr=getWaistThr();
-  if(!S._waUnit) S._waUnit=S.country==='usa'?'in':'cm';
-  const cm=S.waistCm||'';
-  const inch=cm?+(cm/2.54).toFixed(1):'';
-  setBody(`
-    <div class="q-num">Body measurements</div>
-    <div class="q-title">What is your waist circumference?</div>
-    <div class="q-sub">Measure around your navel, not your hips. Belly fat around organs is the key risk driver.</div>
-    <div class="input-section">
-      <div class="unit-tabs">
-        <button class="ut${S._waUnit==='cm'?' on':''}" onclick="setWaUnit('cm')">cm</button>
-        <button class="ut${S._waUnit==='in'?' on':''}" onclick="setWaUnit('in')">inches</button>
-      </div>
-      <div id="wa-cm" style="display:${S._waUnit==='cm'?'block':'none'}">
-        <div class="field-row"><div class="field"><label>Centimetres</label><input type="number" id="wacm" min="40" max="200" step="0.5" placeholder="${male?'85':'78'}" value="${cm}" oninput="calcWacm()"></div></div>
-      </div>
-      <div id="wa-in" style="display:${S._waUnit==='in'?'block':'none'}">
-        <div class="field-row"><div class="field"><label>Inches</label><input type="number" id="wain" min="15" max="80" step="0.5" placeholder="${male?'34':'31'}" value="${inch}" oninput="calcWain()"></div></div>
-      </div>
-      <div class="converted-display" id="wa-conv">${cm?fmtWa(+cm):''}</div>
-    </div>
-    ${hintBox(`${male?'Men':'Women'}: risk begins at ${thr.lo} cm (${Math.round(thr.lo/2.54)}"). High risk above ${thr.hi} cm (${Math.round(thr.hi/2.54)}").`)}
-  `);
-  if(S.waistCm) setOK(true);
-},
-
-activity(){
-  const opts=[
-    {text:'Very active — physical job or daily exercise (60+ min)',score:0},
-    {text:'Active most days — 30+ min, 5+ days/week',score:0},
-    {text:'Moderately active — 30 min, 3–4 days/week',score:1},
-    {text:'Lightly active — occasional walks, 1–2 days/week',score:2},
-    {text:'Mostly sedentary — desk job, very little movement',score:3},
-  ];
-  setBody(`
-    <div class="q-num">Lifestyle</div>
-    <div class="q-title">How physically active are you?</div>
-    <div class="q-sub">Include all movement: walking, cycling, yoga, housework, farming, sport.</div>
-    ${makeOpts(opts,'activity')}
-    ${hintBox('30 minutes of brisk walking daily reduces diabetes risk by up to 35%.')}
-  `);
-  if(S.activity!==null) setOK(true);
-},
-
-diet(){
-  const label = S.country==='india'?'Think of chapati, dal, sabzi vs biryani, white rice, sweets, oil.':
-                S.country==='usa'?'Think whole grains and salads vs fast food, soda, white bread.':
-                'Think whole grains, vegetables vs pastries, white bread, soda.';
-  const opts=[
-    {text:'Very healthy — vegetables, whole grains, lean protein daily; minimal sugar',score:0},
-    {text:'Mostly healthy — good most days with occasional treats',score:1},
-    {text:'Mixed — some healthy food but regular refined carbs or fried food',score:2},
-    {text:'Mostly processed — white rice/bread/sugar drinks/fast food daily',score:3},
-  ];
-  setBody(`
-    <div class="q-num">Lifestyle</div>
-    <div class="q-title">How would you describe your typical diet?</div>
-    <div class="q-sub">${label}</div>
-    ${makeOpts(opts,'diet')}
-    ${hintBox('Focus on a typical day — not your best day or your worst.')}
-  `);
-  if(S.diet!==null) setOK(true);
-},
-
-sleep(){
-  const opts=[
-    {text:'7–9 hours — consistent, feel well-rested',score:0},
-    {text:'6–7 hours — slightly short but manageable',score:1},
-    {text:'Under 6 hours — often sleep-deprived',score:2},
-    {text:'Over 9 hours regularly — or very poor quality sleep',score:2},
-  ];
-  setBody(`
-    <div class="q-num">Lifestyle</div>
-    <div class="q-title">How much do you sleep on average?</div>
-    <div class="q-sub">Both too little and too much sleep are linked to insulin resistance and higher diabetes risk.</div>
-    ${makeOpts(opts,'sleep')}
-    ${hintBox('Poor sleep raises cortisol, which directly impairs blood sugar regulation — even one bad week matters.')}
-  `);
-  if(S.sleep!==null) setOK(true);
-},
-
-stress(){
-  const opts=[
-    {text:'Low — generally calm, stress is manageable',score:0},
-    {text:'Moderate — some stress but I cope well',score:1},
-    {text:'High — frequent stress, anxiety, or burnout',score:2},
-    {text:'Very high — chronic stress affecting daily life',score:3},
-  ];
-  setBody(`
-    <div class="q-num">Lifestyle</div>
-    <div class="q-title">What is your typical stress level?</div>
-    <div class="q-sub">Chronic stress raises cortisol, which increases blood sugar — a clinically recognized risk factor for prediabetes.</div>
-    ${makeOpts(opts,'stress')}
-    ${hintBox('Work pressure, financial stress, relationship stress — all count. Any persistent mental load affects cortisol.')}
-  `);
-  if(S.stress!==null) setOK(true);
-},
-
-smoking(){
-  const opts=[
-    {text:'Never smoked',score:0},
-    {text:'Former smoker — quit more than 1 year ago',score:1},
-    {text:'Former smoker — quit less than 1 year ago',score:2},
-    {text:'Current smoker',score:3},
-  ];
-  setBody(`
-    <div class="q-num">Lifestyle</div>
-    <div class="q-title">What is your smoking status?</div>
-    <div class="q-sub">Smokers are 30–40% more likely to develop Type 2 diabetes than non-smokers.</div>
-    ${makeOpts(opts,'smoking')}
-  `);
-  if(S.smoking!==null) setOK(true);
-},
-
-alcohol(){
-  const opts=[
-    {text:'None — I don\'t drink alcohol',score:0},
-    {text:'Occasional — 1–2 drinks per week or less',score:0},
-    {text:'Moderate — 3–7 drinks per week',score:1},
-    {text:'Heavy — more than 7 drinks per week',score:2},
-    {text:'Binge drinking — 4+ drinks in one sitting regularly',score:3},
-  ];
-  setBody(`
-    <div class="q-num">Lifestyle</div>
-    <div class="q-title">How much alcohol do you drink?</div>
-    <div class="q-sub">Heavy drinking impairs insulin sensitivity. Binge drinking causes acute blood sugar spikes.</div>
-    ${makeOpts(opts,'alcohol')}
-    ${hintBox('One drink = 330 ml beer, 150 ml wine, or 45 ml spirit.')}
-  `);
-  if(S.alcohol!==null) setOK(true);
-},
-
-bp(){
-  const opts=[
-    {text:'Normal — always below 130/80',score:0},
-    {text:'Borderline — occasionally high (130–140 / 80–90)',score:1},
-    {text:'High — diagnosed hypertension or on medication',score:2},
-    {text:'Not sure / never had it measured',score:1},
-  ];
-  setBody(`
-    <div class="q-num">Medical history</div>
-    <div class="q-title">What is your blood pressure status?</div>
-    <div class="q-sub">High blood pressure and prediabetes share the same root causes and almost always appear together.</div>
-    ${makeOpts(opts,'bp')}
-  `);
-  if(S.bp!==null) setOK(true);
-},
-
-familyHx(){
-  const opts=[
-    {text:'No family history of diabetes',score:0},
-    {text:'Grandparent, aunt, uncle, or cousin has diabetes',score:2},
-    {text:'One parent, sibling, or my own child has diabetes',score:3},
-    {text:'Both parents have diabetes',score:4},
-  ];
-  setBody(`
-    <div class="q-num">Medical history</div>
-    <div class="q-title">Has anyone in your family been diagnosed with diabetes?</div>
-    <div class="q-sub">Type 2 diabetes has a 40% heritability rate — having a parent or sibling with diabetes roughly doubles your risk.</div>
-    ${makeOpts(opts,'familyHx')}
-    ${hintBox('Includes both Type 1 and Type 2 diabetes. Gestational diabetes in a close relative also counts.')}
-  `);
-  if(S.familyHx!==null) setOK(true);
-},
-
-prevSugar(){
-  const opts=[
-    {text:'No — blood sugar has always been normal',score:0},
-    {text:'Not sure — never had it checked',score:1},
-    {text:'Borderline — told to "keep an eye on it"',score:4},
-    {text:'High — previously diagnosed with prediabetes',score:5},
-    {text:'Had gestational diabetes during pregnancy',score:4},
-  ];
-  setBody(`
-    <div class="q-num">Medical history</div>
-    <div class="q-title">Have you ever been told your blood sugar was high?</div>
-    <div class="q-sub">A previous episode of elevated blood sugar is the single strongest predictor of future diabetes.</div>
-    ${makeOpts(opts,'prevSugar')}
-    ${hintBox('Includes any blood test result, health camp reading, or doctor\'s comment about "borderline sugar".')}
-  `);
-  if(S.prevSugar!==null) setOK(true);
-},
-
-};
-
-// ── COUNTRY PICK ───────────────────────────────────────────────────────────
-function pickCountry(code, el){
-  S.country=code;
-  if(!S._hUnit) S._hUnit=code==='usa'?'ft':'cm';
-  if(!S._wUnit) S._wUnit=code==='usa'?'lbs':'kg';
-  if(!S._waUnit) S._waUnit=code==='usa'?'in':'cm';
-  document.querySelectorAll('.c-card').forEach(e=>e.classList.remove('sel'));
-  el.classList.add('sel');
-  setOK(true);
+function retestDate(){ const d=new Date(); d.setDate(d.getDate()+90); return d.toLocaleDateString(qLang==='hi'?'hi-IN':'en-GB',{day:'numeric',month:'long',year:'numeric'}); }
+function getWaistThr(){ const male=S.gender===0; return male?{lo:90,hi:102}:{lo:80,hi:88}; }
+function calcBMI(){ if(!S.weightKg||!S.heightCm) return null; return +(S.weightKg/((S.heightCm/100)**2)).toFixed(1); }
+function bmiScore(bmi){ if(bmi<23) return 0; if(bmi<25) return 1; if(bmi<27.5) return 2; return 3; }
+function bmiCat(bmi){
+  if(bmi<18.5) return {label:qLang==='hi'?'कम वजन':'Underweight',color:'#0C447C'};
+  if(bmi<23)   return {label:qLang==='hi'?'स्वस्थ (भारतीय मानक)':'Healthy (Indian threshold)',color:'#085041'};
+  if(bmi<25)   return {label:qLang==='hi'?'अधिक वजन जोखिम':'Overweight risk',color:'#633806'};
+  if(bmi<27.5) return {label:qLang==='hi'?'मोटापा श्रेणी I':'Obese class I',color:'#633806'};
+  return       {label:qLang==='hi'?'मोटापा श्रेणी II':'Obese class II',color:'#501313'};
 }
+function waistScore(){ if(!S.waistCm) return 0; const t=getWaistThr(); if(S.waistCm<t.lo) return 0; if(S.waistCm<t.hi) return 3; return 4; }
+function totalScore(){
+  const bmi=calcBMI();
+  return (bmi?bmiScore(bmi):0)+waistScore()+(S.sc.ethnicity||0)+
+    (S.sc.age||0)+(S.sc.activity||0)+(S.sc.diet||0)+(S.sc.sleep||0)+(S.sc.stress||0)+
+    (S.sc.smoking||0)+(S.sc.alcohol||0)+(S.sc.bp||0)+(S.sc.familyHx||0)+(S.sc.prevSugar||0);
+}
+function activeLifestyleFlags(){
+  const flags=[];
+  if(S.activity!==null && S.activity>=2) flags.push(qLang==='hi'?'कम शारीरिक गतिविधि':'low physical activity');
+  if(S.diet!==null && S.diet>=2) flags.push(qLang==='hi'?'अस्वास्थ्यकर आहार':'unhealthy diet');
+  if(S.sleep!==null && S.sleep>=2) flags.push(qLang==='hi'?'खराब नींद':'poor sleep');
+  if(S.stress!==null && S.stress>=2) flags.push(qLang==='hi'?'उच्च तनाव':'high stress');
+  if(S.smoking!==null && S.smoking>=2) flags.push(qLang==='hi'?'धूम्रपान':'smoking');
+  if(S.alcohol!==null && S.alcohol>=2) flags.push(qLang==='hi'?'अधिक शराब':'heavy alcohol');
+  return flags;
+}
+
+const BUILDERS = {
+  gender(){
+    const en=[{text:'Male',score:0},{text:'Female',score:0},{text:'Non-binary / prefer not to say',score:0}];
+    const hi=[{text:'पुरुष',score:0},{text:'महिला',score:0},{text:'नॉन-बाइनरी / बताना नहीं चाहते',score:0}];
+    setBody(`
+      <div class="q-num">${qLang==='hi'?'आपके बारे में':'About you'}</div>
+      <div class="q-title">${qLang==='hi'?'आपका जैविक लिंग क्या है?':'What is your biological sex?'}</div>
+      <div class="q-sub">${qLang==='hi'?'कमर के माप की सीमा जैविक लिंग के अनुसार अलग होती है।':'Waist size thresholds differ by biological sex. This does not affect your certificate.'}</div>
+      ${makeOpts(qLang==='hi'?hi:en,'gender')}
+    `);
+    if(S.gender!==null) setOK(true);
+  },
+  age(){
+    const en=[{text:'Under 35',score:0},{text:'35–44',score:1},{text:'45–54',score:2},{text:'55–64',score:3},{text:'65 or older',score:4}];
+    const hi=[{text:'35 से कम',score:0},{text:'35–44',score:1},{text:'45–54',score:2},{text:'55–64',score:3},{text:'65 या अधिक',score:4}];
+    setBody(`
+      <div class="q-num">${qLang==='hi'?'आपके बारे में':'About you'}</div>
+      <div class="q-title">${qLang==='hi'?'आपकी उम्र कितनी है?':'How old are you?'}</div>
+      <div class="q-sub">${qLang==='hi'?'40 के बाद जोखिम काफी बढ़ जाता है, और 55 के बाद फिर से।':'Risk increases significantly after 40, and again after 55.'}</div>
+      ${makeOpts(qLang==='hi'?hi:en,'age')}
+    `);
+    if(S.age!==null) setOK(true);
+  },
+  height(){
+    const ht=S.heightCm||'';
+    const ft=ht?Math.floor(ht/30.48):'', inc=ht?Math.round((ht%30.48)/2.54):'';
+    setBody(`
+      <div class="q-num">${qLang==='hi'?'शारीरिक माप':'Body measurements'}</div>
+      <div class="q-title">${qLang==='hi'?'आपकी ऊंचाई क्या है?':'What is your height?'}</div>
+      <div class="q-sub">${qLang==='hi'?'BMI निकालने के लिए उपयोग होता है।':'Used to calculate your BMI.'}</div>
+      <div class="input-section">
+        <div class="unit-tabs">
+          <button class="ut${S._hUnit==='cm'?' on':''}" onclick="setHUnit('cm')">cm</button>
+          <button class="ut${S._hUnit==='ft'?' on':''}" onclick="setHUnit('ft')">ft / in</button>
+        </div>
+        <div id="h-cm" style="display:${S._hUnit==='cm'?'block':'none'}">
+          <div class="field-row"><div class="field"><label>${qLang==='hi'?'सेंटीमीटर':'Centimetres'}</label><input type="number" id="hcm" min="100" max="250" placeholder="170" value="${ht}" oninput="calcHcm()"></div></div>
+        </div>
+        <div id="h-ft" style="display:${S._hUnit==='ft'?'block':'none'}">
+          <div class="field-row">
+            <div class="field"><label>${qLang==='hi'?'फीट':'Feet'}</label><input type="number" id="hft" min="3" max="8" placeholder="5" value="${ft}" oninput="calcHft()"></div>
+            <div class="field"><label>${qLang==='hi'?'इंच':'Inches'}</label><input type="number" id="hin" min="0" max="11" placeholder="8" value="${inc}" oninput="calcHft()"></div>
+          </div>
+        </div>
+        <div class="converted-display" id="h-conv">${ht?fmtHt(ht):''}</div>
+      </div>
+      ${hintBox(qLang==='hi'?'औसत भारतीय वयस्क: पुरुष 163 cm (5ft 4in), महिला 152 cm (5ft)।':'Average Indian adult: 163 cm (5ft 4in) for men, 152 cm (5ft) for women.')}
+    `);
+    if(S.heightCm) setOK(true);
+  },
+  weight(){
+    const kg=S.weightKg||'';
+    const lbs=kg?Math.round(kg*2.205):'';
+    setBody(`
+      <div class="q-num">${qLang==='hi'?'शारीरिक माप':'Body measurements'}</div>
+      <div class="q-title">${qLang==='hi'?'आपका वजन क्या है?':'What is your weight?'}</div>
+      <div class="q-sub">${qLang==='hi'?'ऊंचाई के साथ मिलकर BMI निकालने के लिए उपयोग होता है।':'Used alongside height to calculate your BMI — a key risk factor.'}</div>
+      <div class="input-section">
+        <div class="unit-tabs">
+          <button class="ut${S._wUnit==='kg'?' on':''}" onclick="setWUnit('kg')">kg</button>
+          <button class="ut${S._wUnit==='lbs'?' on':''}" onclick="setWUnit('lbs')">lbs</button>
+        </div>
+        <div id="w-kg" style="display:${S._wUnit==='kg'?'block':'none'}">
+          <div class="field-row"><div class="field"><label>${qLang==='hi'?'किलोग्राम':'Kilograms'}</label><input type="number" id="wkg" min="30" max="300" step="0.1" placeholder="70" value="${kg}" oninput="calcWkg()"></div></div>
+        </div>
+        <div id="w-lbs" style="display:${S._wUnit==='lbs'?'block':'none'}">
+          <div class="field-row"><div class="field"><label>${qLang==='hi'?'पाउंड':'Pounds'}</label><input type="number" id="wlbs" min="66" max="660" placeholder="154" value="${lbs}" oninput="calcWlbs()"></div></div>
+        </div>
+        <div class="converted-display" id="w-conv">${kg?fmtWt(+kg):''}</div>
+      </div>
+    `);
+    if(S.weightKg) setOK(true);
+  },
+  waistKnown(){
+    setBody(`
+      <div class="q-num">${qLang==='hi'?'शारीरिक माप':'Body measurements'}</div>
+      <div class="q-title">${qLang==='hi'?'क्या आप अपनी कमर का माप जानते हैं?':'Do you know your waist measurement?'}</div>
+      <div class="q-sub">${qLang==='hi'?'कमर का माप सबसे मजबूत संकेतकों में से एक है।':'Waist size is one of the strongest indicators — especially for Indians. Takes 30 seconds with a tape measure.'}</div>
+      <div class="options">
+        <div class="opt${S.waistKnown===0?' sel':''}" onclick="pickWaistKnown(0)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-text">${qLang==='hi'?'हाँ, मुझे पता है':'Yes, I know my waist size'}</span></div>
+        <div class="opt${S.waistKnown===1?' sel':''}" onclick="pickWaistKnown(1)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-text">${qLang==='hi'?'नहीं, छोड़ देंगे':"No, I'll skip this measurement"}</span></div>
+      </div>
+      ${hintBox(qLang==='hi'?'नाभि के स्तर पर मापें, आराम से।':'Measure at navel level, relaxed (not sucked in).')}
+    `);
+    if(S.waistKnown!==null) setOK(true);
+  },
+  waist(){
+    const male=S.gender===0, thr=getWaistThr();
+    const cm=S.waistCm||'', inch=cm?+(cm/2.54).toFixed(1):'';
+    setBody(`
+      <div class="q-num">${qLang==='hi'?'शारीरिक माप':'Body measurements'}</div>
+      <div class="q-title">${qLang==='hi'?'आपकी कमर का घेरा कितना है?':'What is your waist circumference?'}</div>
+      <div class="q-sub">${qLang==='hi'?'नाभि के चारों ओर मापें, कूल्हों के नहीं।':'Measure around your navel, not your hips.'}</div>
+      <div class="input-section">
+        <div class="unit-tabs">
+          <button class="ut${S._waUnit==='cm'?' on':''}" onclick="setWaUnit('cm')">cm</button>
+          <button class="ut${S._waUnit==='in'?' on':''}" onclick="setWaUnit('in')">inches</button>
+        </div>
+        <div id="wa-cm" style="display:${S._waUnit==='cm'?'block':'none'}">
+          <div class="field-row"><div class="field"><label>${qLang==='hi'?'सेंटीमीटर':'Centimetres'}</label><input type="number" id="wacm" min="40" max="200" step="0.5" placeholder="${male?'85':'78'}" value="${cm}" oninput="calcWacm()"></div></div>
+        </div>
+        <div id="wa-in" style="display:${S._waUnit==='in'?'block':'none'}">
+          <div class="field-row"><div class="field"><label>${qLang==='hi'?'इंच':'Inches'}</label><input type="number" id="wain" min="15" max="80" step="0.5" placeholder="${male?'34':'31'}" value="${inch}" oninput="calcWain()"></div></div>
+        </div>
+        <div class="converted-display" id="wa-conv">${cm?fmtWa(+cm):''}</div>
+      </div>
+      ${hintBox((qLang==='hi'?(male?'पुरुष':'महिला')+': जोखिम शुरू होता है ':(male?'Men':'Women')+': risk begins at ')+thr.lo+' cm ('+Math.round(thr.lo/2.54)+'"). '+(qLang==='hi'?'उच्च जोखिम इससे ऊपर: ':'High risk above: ')+thr.hi+' cm.')}
+    `);
+    if(S.waistCm) setOK(true);
+  },
+  activity(){
+    const en=[
+      {text:'Very active — physical job or daily exercise (60+ min)',score:0},
+      {text:'Active most days — 30+ min, 5+ days/week',score:0},
+      {text:'Moderately active — 30 min, 3–4 days/week',score:1},
+      {text:'Lightly active — occasional walks, 1–2 days/week',score:2},
+      {text:'Mostly sedentary — desk job, very little movement',score:3},
+    ];
+    const hi=[
+      {text:'अत्यधिक सक्रिय — शारीरिक काम या रोज़ 60+ मिनट व्यायाम',score:0},
+      {text:'अधिकांश दिन सक्रिय — 30+ मिनट, सप्ताह में 5+ दिन',score:0},
+      {text:'मध्यम सक्रिय — 30 मिनट, सप्ताह में 3–4 दिन',score:1},
+      {text:'हल्का सक्रिय — कभी-कभी टहलना, सप्ताह में 1–2 दिन',score:2},
+      {text:'ज्यादातर निष्क्रिय — डेस्क जॉब, बहुत कम हलचल',score:3},
+    ];
+    setBody(`
+      <div class="q-num">${qLang==='hi'?'जीवनशैली':'Lifestyle'}</div>
+      <div class="q-title">${qLang==='hi'?'आप कितने शारीरिक रूप से सक्रिय हैं?':'How physically active are you?'}</div>
+      <div class="q-sub">${qLang==='hi'?'चलना, साइकिल चलाना, योग, घर का काम, खेती, खेल सब शामिल है।':'Include all movement: walking, cycling, yoga, housework, farming, sport.'}</div>
+      ${makeOpts(qLang==='hi'?hi:en,'activity')}
+      ${hintBox(qLang==='hi'?'रोज़ 30 मिनट तेज़ चलना मधुमेह जोखिम 35% तक कम करता है।':'30 minutes of brisk walking daily reduces diabetes risk by up to 35%.')}
+    `);
+    if(S.activity!==null) setOK(true);
+  },
+  diet(){
+    const en=[
+      {text:'Very healthy — vegetables, whole grains, lean protein daily; minimal sugar',score:0},
+      {text:'Mostly healthy — good most days with occasional treats',score:1},
+      {text:'Mixed — some healthy food but regular refined carbs or fried food',score:2},
+      {text:'Mostly processed — white rice/bread/sugar drinks/fast food daily',score:3},
+    ];
+    const hi=[
+      {text:'बहुत स्वस्थ — रोज़ सब्जी, साबुत अनाज, प्रोटीन; न्यूनतम चीनी',score:0},
+      {text:'ज्यादातर स्वस्थ — अधिकांश दिन अच्छा, कभी-कभार मीठा',score:1},
+      {text:'मिश्रित — कुछ स्वस्थ भोजन पर नियमित मैदा या तला हुआ भी',score:2},
+      {text:'ज्यादातर प्रोसेस्ड — रोज़ सफेद चावल/ब्रेड/मीठे पेय/फास्ट फूड',score:3},
+    ];
+    setBody(`
+      <div class="q-num">${qLang==='hi'?'जीवनशैली':'Lifestyle'}</div>
+      <div class="q-title">${qLang==='hi'?'आपका सामान्य आहार कैसा है?':'How would you describe your typical diet?'}</div>
+      <div class="q-sub">${qLang==='hi'?'चपाती, दाल, सब्जी बनाम बिरयानी, सफेद चावल, मिठाई के बारे में सोचें।':'Think of chapati, dal, sabzi vs biryani, white rice, sweets, oil.'}</div>
+      ${makeOpts(qLang==='hi'?hi:en,'diet')}
+      ${hintBox(qLang==='hi'?'एक सामान्य दिन के बारे में सोचें — सबसे अच्छा या सबसे बुरा नहीं।':'Focus on a typical day — not your best day or your worst.')}
+    `);
+    if(S.diet!==null) setOK(true);
+  },
+  sleep(){
+    const en=[
+      {text:'7–9 hours — consistent, feel well-rested',score:0},
+      {text:'6–7 hours — slightly short but manageable',score:1},
+      {text:'Under 6 hours — often sleep-deprived',score:2},
+      {text:'Over 9 hours regularly — or very poor quality sleep',score:2},
+    ];
+    const hi=[
+      {text:'7–9 घंटे — नियमित, आराम महसूस होता है',score:0},
+      {text:'6–7 घंटे — थोड़ा कम पर ठीक है',score:1},
+      {text:'6 घंटे से कम — अक्सर नींद की कमी',score:2},
+      {text:'नियमित रूप से 9 घंटे से अधिक — या बहुत खराब गुणवत्ता',score:2},
+    ];
+    setBody(`
+      <div class="q-num">${qLang==='hi'?'जीवनशैली':'Lifestyle'}</div>
+      <div class="q-title">${qLang==='hi'?'आप औसतन कितना सोते हैं?':'How much do you sleep on average?'}</div>
+      <div class="q-sub">${qLang==='hi'?'बहुत कम और बहुत ज़्यादा नींद दोनों इंसुलिन प्रतिरोध से जुड़े हैं।':'Both too little and too much sleep are linked to insulin resistance and higher diabetes risk.'}</div>
+      ${makeOpts(qLang==='hi'?hi:en,'sleep')}
+    `);
+    if(S.sleep!==null) setOK(true);
+  },
+  stress(){
+    const en=[
+      {text:'Low — generally calm, stress is manageable',score:0},
+      {text:'Moderate — some stress but I cope well',score:1},
+      {text:'High — frequent stress, anxiety, or burnout',score:2},
+      {text:'Very high — chronic stress affecting daily life',score:3},
+    ];
+    const hi=[
+      {text:'कम — आमतौर पर शांत, तनाव संभालने योग्य',score:0},
+      {text:'मध्यम — कुछ तनाव पर मैं अच्छे से संभाल लेता/लेती हूं',score:1},
+      {text:'उच्च — बार-बार तनाव, चिंता, या बर्नआउट',score:2},
+      {text:'बहुत उच्च — दैनिक जीवन को प्रभावित करने वाला तनाव',score:3},
+    ];
+    setBody(`
+      <div class="q-num">${qLang==='hi'?'जीवनशैली':'Lifestyle'}</div>
+      <div class="q-title">${qLang==='hi'?'आपका सामान्य तनाव स्तर क्या है?':'What is your typical stress level?'}</div>
+      <div class="q-sub">${qLang==='hi'?'लगातार तनाव कोर्टिसोल बढ़ाता है, जो रक्त शर्करा बढ़ाता है।':'Chronic stress raises cortisol, which increases blood sugar — a clinically recognized risk factor.'}</div>
+      ${makeOpts(qLang==='hi'?hi:en,'stress')}
+    `);
+    if(S.stress!==null) setOK(true);
+  },
+  smoking(){
+    const en=[
+      {text:'Never smoked',score:0},
+      {text:'Former smoker — quit more than 1 year ago',score:1},
+      {text:'Former smoker — quit less than 1 year ago',score:2},
+      {text:'Current smoker',score:3},
+    ];
+    const hi=[
+      {text:'कभी धूम्रपान नहीं किया',score:0},
+      {text:'पूर्व धूम्रपान करने वाला — 1 साल से अधिक पहले छोड़ा',score:1},
+      {text:'पूर्व धूम्रपान करने वाला — 1 साल से कम पहले छोड़ा',score:2},
+      {text:'वर्तमान धूम्रपान करने वाला',score:3},
+    ];
+    setBody(`
+      <div class="q-num">${qLang==='hi'?'जीवनशैली':'Lifestyle'}</div>
+      <div class="q-title">${qLang==='hi'?'आपकी धूम्रपान स्थिति क्या है?':'What is your smoking status?'}</div>
+      <div class="q-sub">${qLang==='hi'?'धूम्रपान करने वालों में टाइप 2 मधुमेह का खतरा 30–40% अधिक होता है।':'Smokers are 30–40% more likely to develop Type 2 diabetes than non-smokers.'}</div>
+      ${makeOpts(qLang==='hi'?hi:en,'smoking')}
+    `);
+    if(S.smoking!==null) setOK(true);
+  },
+  alcohol(){
+    const en=[
+      {text:'None — I don\'t drink alcohol',score:0},
+      {text:'Occasional — 1–2 drinks per week or less',score:0},
+      {text:'Moderate — 3–7 drinks per week',score:1},
+      {text:'Heavy — more than 7 drinks per week',score:2},
+      {text:'Binge drinking — 4+ drinks in one sitting regularly',score:3},
+    ];
+    const hi=[
+      {text:'नहीं — मैं शराब नहीं पीता/पीती',score:0},
+      {text:'कभी-कभार — सप्ताह में 1–2 या कम',score:0},
+      {text:'मध्यम — सप्ताह में 3–7',score:1},
+      {text:'अधिक — सप्ताह में 7 से ज़्यादा',score:2},
+      {text:'द्विअर्थी पीना — एक बार में 4+ नियमित रूप से',score:3},
+    ];
+    setBody(`
+      <div class="q-num">${qLang==='hi'?'जीवनशैली':'Lifestyle'}</div>
+      <div class="q-title">${qLang==='hi'?'आप कितनी शराब पीते हैं?':'How much alcohol do you drink?'}</div>
+      <div class="q-sub">${qLang==='hi'?'अधिक शराब इंसुलिन संवेदनशीलता को कम करती है।':'Heavy drinking impairs insulin sensitivity. Binge drinking causes acute blood sugar spikes.'}</div>
+      ${makeOpts(qLang==='hi'?hi:en,'alcohol')}
+    `);
+    if(S.alcohol!==null) setOK(true);
+  },
+  bp(){
+    const en=[{text:'Normal — always below 130/80',score:0},{text:'Borderline — occasionally high',score:1},{text:'High — diagnosed or on medication',score:2},{text:'Not sure / never measured',score:1}];
+    const hi=[{text:'सामान्य — हमेशा 130/80 से कम',score:0},{text:'बॉर्डरलाइन — कभी-कभी अधिक',score:1},{text:'अधिक — निदान या दवा पर',score:2},{text:'पता नहीं / कभी नहीं मापा',score:1}];
+    setBody(`
+      <div class="q-num">${qLang==='hi'?'चिकित्सा इतिहास':'Medical history'}</div>
+      <div class="q-title">${qLang==='hi'?'आपका रक्तचाप कैसा है?':'What is your blood pressure status?'}</div>
+      <div class="q-sub">${qLang==='hi'?'उच्च रक्तचाप और प्रीडायबिटीज़ अक्सर साथ आते हैं।':'High BP and prediabetes share the same root causes and often appear together.'}</div>
+      ${makeOpts(qLang==='hi'?hi:en,'bp')}
+    `);
+    if(S.bp!==null) setOK(true);
+  },
+  familyHx(){
+    const en=[{text:'No family history of diabetes',score:0},{text:'Grandparent, aunt, uncle, or cousin',score:2},{text:'A parent, sibling, or my own child',score:3},{text:'Both parents have diabetes',score:4}];
+    const hi=[{text:'परिवार में कोई इतिहास नहीं',score:0},{text:'दादा-दादी, चाचा-चाची, कज़िन',score:2},{text:'माता-पिता, भाई-बहन, या बच्चा',score:3},{text:'दोनों माता-पिता को है',score:4}];
+    setBody(`
+      <div class="q-num">${qLang==='hi'?'चिकित्सा इतिहास':'Medical history'}</div>
+      <div class="q-title">${qLang==='hi'?'क्या परिवार में किसी को मधुमेह है?':'Has anyone in your family been diagnosed with diabetes?'}</div>
+      <div class="q-sub">${qLang==='hi'?'टाइप 2 मधुमेह में अनुवांशिकता की बड़ी भूमिका है।':'Type 2 diabetes has a 40% heritability rate — one of the strongest genetic risk factors.'}</div>
+      ${makeOpts(qLang==='hi'?hi:en,'familyHx')}
+    `);
+    if(S.familyHx!==null) setOK(true);
+  },
+  prevSugar(){
+    const en=[{text:'No — always been normal',score:0},{text:'Not sure — never checked',score:1},{text:'Borderline — told to watch it',score:4},{text:'High — previously diagnosed prediabetic',score:5},{text:'Had gestational diabetes',score:4}];
+    const hi=[{text:'नहीं — हमेशा सामान्य रहा',score:0},{text:'पता नहीं — कभी जांच नहीं कराई',score:1},{text:'बॉर्डरलाइन — ध्यान रखने को कहा गया',score:4},{text:'अधिक — पहले प्रीडायबिटिक बताया गया',score:5},{text:'गर्भावस्था में मधुमेह था',score:4}];
+    setBody(`
+      <div class="q-num">${qLang==='hi'?'चिकित्सा इतिहास':'Medical history'}</div>
+      <div class="q-title">${qLang==='hi'?'क्या कभी आपका ब्लड शुगर अधिक बताया गया?':'Have you ever been told your blood sugar was high?'}</div>
+      <div class="q-sub">${qLang==='hi'?'पहले हाई शुगर होना भविष्य में मधुमेह का सबसे मजबूत संकेत है।':'A previous episode of elevated blood sugar is the single strongest predictor of future diabetes.'}</div>
+      ${makeOpts(qLang==='hi'?hi:en,'prevSugar')}
+    `);
+    if(S.prevSugar!==null) setOK(true);
+  },
+};
 
 function pickWaistKnown(v){
   S.waistKnown=v;
   document.querySelectorAll('#q-body .opt').forEach((e,i)=>e.classList.toggle('sel',i===v));
   setOK(true);
 }
-
-// ── HEIGHT UNIT ────────────────────────────────────────────────────────────
-function setHUnit(u){
-  S._hUnit=u;
-  document.querySelectorAll('.unit-tabs .ut').forEach((b,i)=>b.classList.toggle('on',['ft','cm'][i]===u));
-  document.getElementById('h-ft').style.display=u==='ft'?'block':'none';
-  document.getElementById('h-cm').style.display=u==='cm'?'block':'none';
-}
-function calcHft(){
-  const ft=parseFloat(document.getElementById('hft').value)||0;
-  const inc=parseFloat(document.getElementById('hin').value)||0;
-  S.heightCm=ft||inc?Math.round(ft*30.48+inc*2.54):null;
-  document.getElementById('h-conv').textContent=S.heightCm?fmtHt(S.heightCm):'';
-  setOK(S.heightCm>100);
-}
-function calcHcm(){
-  const v=parseFloat(document.getElementById('hcm').value);
-  S.heightCm=v||null;
-  document.getElementById('h-conv').textContent=v?fmtHt(v):'';
-  setOK(v>100&&v<250);
-}
-
-// ── WEIGHT UNIT ────────────────────────────────────────────────────────────
-function setWUnit(u){
-  S._wUnit=u;
-  document.querySelectorAll('.unit-tabs .ut').forEach((b,i)=>b.classList.toggle('on',['kg','lbs','st'][i]===u));
-  ['kg','lbs','st'].forEach(x=>{const el=document.getElementById('w-'+x);if(el)el.style.display=x===u?'block':'none';});
-}
+function setHUnit(u){ S._hUnit=u; document.getElementById('h-cm').style.display=u==='cm'?'block':'none'; document.getElementById('h-ft').style.display=u==='ft'?'block':'none'; document.querySelectorAll('.unit-tabs .ut').forEach((b,i)=>b.classList.toggle('on',['cm','ft'][i]===u)); }
+function calcHcm(){ const v=parseFloat(document.getElementById('hcm').value); S.heightCm=v||null; document.getElementById('h-conv').textContent=v?fmtHt(v):''; setOK(v>100&&v<250); }
+function calcHft(){ const ft=parseFloat(document.getElementById('hft').value)||0, inc=parseFloat(document.getElementById('hin').value)||0; S.heightCm=ft||inc?Math.round(ft*30.48+inc*2.54):null; document.getElementById('h-conv').textContent=S.heightCm?fmtHt(S.heightCm):''; setOK(S.heightCm>100); }
+function setWUnit(u){ S._wUnit=u; document.getElementById('w-kg').style.display=u==='kg'?'block':'none'; document.getElementById('w-lbs').style.display=u==='lbs'?'block':'none'; document.querySelectorAll('.unit-tabs .ut').forEach((b,i)=>b.classList.toggle('on',['kg','lbs'][i]===u)); }
 function calcWkg(){ const v=parseFloat(document.getElementById('wkg').value); S.weightKg=v||null; document.getElementById('w-conv').textContent=v?fmtWt(v):''; setOK(v>30&&v<300); }
 function calcWlbs(){ const v=parseFloat(document.getElementById('wlbs').value); S.weightKg=v?+(v/2.205).toFixed(1):null; document.getElementById('w-conv').textContent=S.weightKg?fmtWt(S.weightKg):''; setOK(v>60); }
-function calcWst(){ const st=parseFloat(document.getElementById('wst').value)||0, lb=parseFloat(document.getElementById('wstlbs').value)||0, t=st*14+lb; S.weightKg=t?+(t/2.205).toFixed(1):null; document.getElementById('w-conv').textContent=S.weightKg?fmtWt(S.weightKg):''; setOK(t>60); }
-
-// ── WAIST UNIT ─────────────────────────────────────────────────────────────
-function setWaUnit(u){
-  S._waUnit=u;
-  document.querySelectorAll('.unit-tabs .ut').forEach((b,i)=>b.classList.toggle('on',['cm','in'][i]===u));
-  document.getElementById('wa-cm').style.display=u==='cm'?'block':'none';
-  document.getElementById('wa-in').style.display=u==='in'?'block':'none';
-}
+function setWaUnit(u){ S._waUnit=u; document.getElementById('wa-cm').style.display=u==='cm'?'block':'none'; document.getElementById('wa-in').style.display=u==='in'?'block':'none'; document.querySelectorAll('.unit-tabs .ut').forEach((b,i)=>b.classList.toggle('on',['cm','in'][i]===u)); }
 function calcWacm(){ const v=parseFloat(document.getElementById('wacm').value); S.waistCm=v||null; document.getElementById('wa-conv').textContent=v?fmtWa(v):''; setOK(v>40&&v<200); }
 function calcWain(){ const v=parseFloat(document.getElementById('wain').value); S.waistCm=v?+(v*2.54).toFixed(1):null; document.getElementById('wa-conv').textContent=S.waistCm?fmtWa(S.waistCm):''; setOK(v>15); }
 
-// ── RESULT ─────────────────────────────────────────────────────────────────
-function showResult(){
+// ════════════════════════════════════════════════════════════════
+// CAPTURE SCREEN (name + city + state + consent)
+// ════════════════════════════════════════════════════════════════
+function showCapture(){
   document.getElementById('quiz-wrap').style.display='none';
+  document.getElementById('capture-wrap').style.display='block';
+  populateStates();
+  document.getElementById('cap-name').value='';
+  document.getElementById('cap-city').value='';
+  document.getElementById('cap-consent').checked=false;
+  ['cap-name','cap-city','cap-consent'].forEach(id=>{
+    document.getElementById(id).oninput = checkCaptureValid;
+  });
+  document.getElementById('cap-consent').onchange = checkCaptureValid;
+  checkCaptureValid();
+  document.getElementById('capture-wrap').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function checkCaptureValid(){
+  const name=document.getElementById('cap-name').value.trim();
+  const city=document.getElementById('cap-city').value.trim();
+  const consent=document.getElementById('cap-consent').checked;
+  document.getElementById('cap-submit').disabled = !(name.length>=2 && city.length>=2 && consent);
+}
+async function submitCapture(){
+  capturedName = document.getElementById('cap-name').value.trim();
+  capturedCity = document.getElementById('cap-city').value.trim();
+  const state = document.getElementById('cap-state').value;
+  const consent = document.getElementById('cap-consent').checked;
+  document.getElementById('capture-wrap').style.display='none';
+  showResult();
+  saveScreeningToBackend(capturedName, capturedCity, state, consent);
+}
+function skipCapture(){
+  capturedName = qLang==='hi'?'दोस्त':'Friend';
+  capturedCity = '';
+  document.getElementById('capture-wrap').style.display='none';
+  showResult();
+}
+
+async function saveScreeningToBackend(name, city, state, consent){
+  try {
+    const sc = totalScore();
+    const level = sc<=5?'low':sc<=12?'moderate':'high';
+    await fetch(`${API_BASE}/save-screening`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        name, city, state,
+        riskLevel: level,
+        score: sc,
+        consentGiven: consent
+      })
+    });
+  } catch(err) {
+    console.error('Could not save screening (non-blocking):', err);
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+// RESULT + SOCIAL CARD + DIET PLAN
+// ════════════════════════════════════════════════════════════════
+function showResult(){
   document.getElementById('result-wrap').style.display='block';
   document.getElementById('result-wrap').scrollIntoView({behavior:'smooth',block:'start'});
 
-  const sc=totalScore(), maxSc=28, bmi=calcBMI();
-
-  const COUNTRY_NAMES={india:'India',usa:'USA',europe:'Europe'};
-  const GENDER_NAMES=['Male','Female','Non-binary'];
-  const ETH_NAMES={
-    india:['South Asian','Other Asian','Other'],
-    usa:['South Asian','East/SE Asian','Black/AA','Hispanic','White','Other'],
-    europe:['South Asian','East Asian','African/Caribbean','White European','Other']
-  };
-
-  let icon,title,sub,pillBg,pillColor,actHtml;
+  const sc=totalScore(), maxSc=26, bmi=calcBMI();
+  const GENDER_NAMES = qLang==='hi'?['पुरुष','महिला','नॉन-बाइनरी']:['Male','Female','Non-binary'];
+  let icon,title,sub,pillBg,pillColor,actHtml,level;
   const rd=retestDate();
 
   if(sc<=5){
-    icon='✅'; title='Low risk — green tick certificate earned!';
-    sub='Your profile shows a low risk of prediabetes right now. Keep up the healthy habits, share your result, and retest in 90 days to maintain your certificate.';
+    level='low'; icon='✅';
+    title = qLang==='hi'?`${capturedName}, कम जोखिम — हरा टिक!`:`${capturedName}, low risk — green tick earned!`;
+    sub = qLang==='hi'?'आपका जोखिम कम है। स्वस्थ आदतें जारी रखें, अपना कार्ड शेयर करें, और 90 दिनों में दोबारा जांच करें।':'Your profile shows low risk. Keep up the healthy habits, share your card, and retest in 90 days.';
     pillBg='#E1F5EE'; pillColor='#085041';
-    actHtml=`<div class="action-card" style="background:#E1F5EE;border:1px solid #9FE1CB"><h4 style="color:#085041">What to do now</h4><ul style="color:#085041"><li>Continue your current activity and diet — it's working</li><li>Get an annual HbA1c test as good practice</li><li>Share your green tick and challenge 3 friends</li><li>Set a reminder to retest on ${rd}</li></ul></div>`;
+    actHtml=`<div class="action-card" style="background:#E1F5EE;border:1px solid #9FE1CB"><h4 style="color:#085041">${qLang==='hi'?'अभी क्या करें':'What to do now'}</h4><ul style="color:#085041">
+      <li>${qLang==='hi'?'अपनी मौजूदा आदतें जारी रखें':'Continue your current habits — they\'re working'}</li>
+      <li>${qLang==='hi'?'साल में एक बार HbA1c जांच कराएं':'Get an annual HbA1c test as good practice'}</li>
+      <li>${qLang==='hi'?'अपना कार्ड शेयर करें और दोस्तों को चुनौती दें':'Share your card and challenge friends'}</li>
+      <li>${qLang==='hi'?'रिमाइंडर सेट करें: '+rd:'Set a reminder to retest on '+rd}</li>
+    </ul></div>`;
   } else if(sc<=12){
-    icon='⚡'; title='Moderate risk — take the 90-day challenge';
-    sub='You have some risk factors worth addressing. The great news: prediabetes risk is highly reversible through lifestyle changes. Accept the 90-day challenge and aim for the green tick next time.';
+    level='moderate'; icon='⚡';
+    title = qLang==='hi'?`${capturedName}, मध्यम जोखिम — चैलेंज लें`:`${capturedName}, moderate risk — take the challenge`;
+    sub = qLang==='hi'?'कुछ जोखिम कारक हैं। अच्छी खबर: जीवनशैली बदलाव से जोखिम पूरी तरह उलटा जा सकता है।':'You have some risk factors. The good news: lifestyle changes can fully reverse this risk over time.';
     pillBg='#FAEEDA'; pillColor='#633806';
-    actHtml=`<div class="action-card" style="background:#FAEEDA;border:1px solid #FAC775"><h4 style="color:#633806">Your 90-day plan</h4><ul style="color:#633806"><li>Walk 30 min/day — reduces risk by up to 58%</li><li>Cut sugary drinks and refined carbs (maida, white rice excess)</li><li>Add vegetables to every meal</li><li>Book an HbA1c blood test to get your exact baseline</li><li>Aim for 7–8 hours of consistent sleep</li><li>Retest on DiabFit on ${rd}</li></ul></div>`;
+    actHtml=`<div class="action-card" style="background:#FAEEDA;border:1px solid #FAC775"><h4 style="color:#633806">${qLang==='hi'?'अनुशंसित कदम':'Recommended steps'}</h4><ul style="color:#633806">
+      <li>${qLang==='hi'?'रोज 30 मिनट टहलें':'Walk 30 min/day — reduces risk significantly'}</li>
+      <li>${qLang==='hi'?'मीठे पेय और मैदा कम करें':'Cut sugary drinks and excess refined carbs'}</li>
+      <li>${qLang==='hi'?'HbA1c रक्त परीक्षण कराएं':'Book an HbA1c blood test for your baseline'}</li>
+      <li>${qLang==='hi'?rd+' को दोबारा जांच करें':'Retest on '+rd}</li>
+    </ul></div>`;
   } else {
-    icon='🔴'; title='High risk — please see a doctor this week';
-    sub='Your risk factors are elevated across multiple areas. This is not a diagnosis — but it is a strong signal. A simple blood test (HbA1c) will tell you exactly where you stand. Knowledge is power.';
+    level='high'; icon='🔴';
+    title = qLang==='hi'?`${capturedName}, उच्च जोखिम — डॉक्टर से मिलें`:`${capturedName}, high risk — please see a doctor`;
+    sub = qLang==='hi'?'आपके जोखिम कारक अधिक हैं। यह निदान नहीं है, पर एक मजबूत संकेत है।':'Your risk factors are elevated. This is not a diagnosis — but it is a strong signal. A blood test will tell you exactly where you stand.';
     pillBg='#FCEBEB'; pillColor='#501313';
-    actHtml=`<div class="action-card" style="background:#FCEBEB;border:1px solid #F7C1C1"><h4 style="color:#501313">Urgent steps</h4><ul style="color:#501313"><li>Book an HbA1c + fasting glucose test this week</li><li>Show this result to your doctor</li><li>Start walking — even 15 min/day helps immediately</li><li>Remove all sugar-sweetened drinks from your home</li><li>Come back and retest after 90 days of changes</li></ul></div><div class="action-card" style="background:#f8f8f8;border:1px solid #eee;margin-top:8px"><h4>Remember</h4><p style="font-size:13px;color:#555;line-height:1.6">This screening tool cannot diagnose prediabetes. Only a blood test and doctor can do that. Many people with high screening scores are still fine — but it's worth checking.</p></div>`;
+    actHtml=`<div class="action-card" style="background:#FCEBEB;border:1px solid #F7C1C1"><h4 style="color:#501313">${qLang==='hi'?'तुरंत कदम':'Urgent steps'}</h4><ul style="color:#501313">
+      <li>${qLang==='hi'?'इस सप्ताह HbA1c जांच कराएं':'Book an HbA1c + fasting glucose test this week'}</li>
+      <li>${qLang==='hi'?'यह परिणाम अपने डॉक्टर को दिखाएं':'Show this result to your doctor'}</li>
+      <li>${qLang==='hi'?'टहलना शुरू करें':'Start walking — even 15 min/day helps'}</li>
+      <li>${qLang==='hi'?'30 दिन बाद दोबारा जांच करें':'Retest after 30 days of changes'}</li>
+    </ul></div>`;
   }
 
   document.getElementById('r-icon').textContent=icon;
   document.getElementById('r-title').textContent=title;
   document.getElementById('r-sub').textContent=sub;
   const pill=document.getElementById('r-pill');
-  pill.textContent=`Risk score: ${sc} / ${maxSc}`;
+  pill.textContent=(qLang==='hi'?'जोखिम स्कोर: ':'Risk score: ')+sc+' / '+maxSc;
   pill.style.background=pillBg; pill.style.color=pillColor;
 
-  // Profile
   document.getElementById('r-profile').innerHTML=`
-    <div class="sc-title">Your profile</div>
-    <div class="sc-row"><span class="sc-label">Country</span><span class="sc-val">${COUNTRY_NAMES[S.country]||'—'}</span></div>
-    <div class="sc-row"><span class="sc-label">Biological sex</span><span class="sc-val">${S.gender!==null?GENDER_NAMES[S.gender]:'—'}</span></div>
-    <div class="sc-row"><span class="sc-label">Ethnicity</span><span class="sc-val">${S.ethnicity!==null&&ETH_NAMES[S.country]?ETH_NAMES[S.country][S.ethnicity]||'—':'—'}</span></div>
-    <div class="sc-row"><span class="sc-label">Height</span><span class="sc-val">${fmtHt(S.heightCm)}</span></div>
-    <div class="sc-row"><span class="sc-label">Weight</span><span class="sc-val">${fmtWt(S.weightKg)}</span></div>
-    ${S.waistCm?`<div class="sc-row"><span class="sc-label">Waist</span><span class="sc-val">${fmtWa(S.waistCm)}</span></div>`:''}
+    <div class="sc-title">${qLang==='hi'?'आपकी प्रोफाइल':'Your profile'}</div>
+    <div class="sc-row"><span class="sc-label">${qLang==='hi'?'जैविक लिंग':'Biological sex'}</span><span class="sc-val">${S.gender!==null?GENDER_NAMES[S.gender]:'—'}</span></div>
+    <div class="sc-row"><span class="sc-label">${qLang==='hi'?'ऊंचाई':'Height'}</span><span class="sc-val">${fmtHt(S.heightCm)}</span></div>
+    <div class="sc-row"><span class="sc-label">${qLang==='hi'?'वजन':'Weight'}</span><span class="sc-val">${fmtWt(S.weightKg)}</span></div>
+    ${S.waistCm?`<div class="sc-row"><span class="sc-label">${qLang==='hi'?'कमर':'Waist'}</span><span class="sc-val">${fmtWa(S.waistCm)}</span></div>`:''}
     ${bmi?`<div class="sc-row"><span class="sc-label">BMI</span><span class="sc-val" style="color:${bmiCat(bmi).color}">${bmi} — ${bmiCat(bmi).label}</span></div>`:''}
   `;
 
-  // BMI meter
   if(bmi){
-    const sa=S.ethnicity===0, cat=bmiCat(bmi);
-    const segs=sa?[
-      {c:'#378ADD',f:15},{c:'#1D9E75',f:20},{c:'#EF9F27',f:10},{c:'#E24B4A',f:12},{c:'#A32D2D',f:43}
-    ]:[
-      {c:'#378ADD',f:10},{c:'#1D9E75',f:25},{c:'#EF9F27',f:20},{c:'#E24B4A',f:20},{c:'#A32D2D',f:25}
-    ];
+    const cat=bmiCat(bmi);
+    const segs=[{c:'#378ADD',f:15},{c:'#1D9E75',f:20},{c:'#EF9F27',f:10},{c:'#E24B4A',f:12},{c:'#A32D2D',f:43}];
     document.getElementById('r-bmi-section').innerHTML=`
       <div class="section-card" style="margin-bottom:.75rem">
-        <div class="sc-title">BMI analysis — ${sa?'South Asian thresholds':'Standard thresholds'}</div>
-        <div style="font-size:13px;color:#555;margin-bottom:6px">Your BMI: <strong style="color:${cat.color}">${bmi} — ${cat.label}</strong></div>
+        <div class="sc-title">${qLang==='hi'?'BMI विश्लेषण — भारतीय मानक':'BMI analysis — Indian thresholds'}</div>
+        <div style="font-size:13px;color:#555;margin-bottom:6px">${qLang==='hi'?'आपका BMI':'Your BMI'}: <strong style="color:${cat.color}">${bmi} — ${cat.label}</strong></div>
         <div class="bmi-bar">${segs.map(s=>`<div class="bmi-seg" style="background:${s.c};flex:${s.f}"></div>`).join('')}</div>
-        <div class="bmi-labels"><span>Under</span><span>Healthy</span><span>Over</span><span>Obese I</span><span>Obese II</span></div>
-        ${sa?'<div style="font-size:11px;color:#888;margin-top:6px">South Asian thresholds: Healthy = BMI 18.5–23, vs Western 18.5–25</div>':''}
+        <div class="bmi-labels"><span>${qLang==='hi'?'कम':'Under'}</span><span>${qLang==='hi'?'स्वस्थ':'Healthy'}</span><span>${qLang==='hi'?'अधिक':'Over'}</span><span>${qLang==='hi'?'मोटापा I':'Obese I'}</span><span>${qLang==='hi'?'मोटापा II':'Obese II'}</span></div>
+        <div style="font-size:11px;color:#888;margin-top:6px">${qLang==='hi'?'भारतीय मानक: स्वस्थ = BMI 18.5–23':'Indian thresholds: Healthy = BMI 18.5–23, vs Western 18.5–25'}</div>
       </div>`;
   } else document.getElementById('r-bmi-section').innerHTML='';
 
-  // Score breakdown
-  const brkItems=[
-    ['BMI', bmi?bmiScore(bmi):0, 'Body weight vs height'],
-    ['Waist size', waistScore(), 'Central adiposity'],
-    ['Ethnicity', S.sc.ethnicity||0, 'Genetic predisposition'],
-    ['Age', S.sc.age||0, 'Biological risk factor'],
-    ['Physical activity', S.sc.activity||0, 'Insulin sensitivity'],
-    ['Diet quality', S.sc.diet||0, 'Blood sugar impact'],
-    ['Sleep quality', S.sc.sleep||0, 'Metabolic regulation'],
-    ['Stress level', S.sc.stress||0, 'Cortisol & insulin'],
-    ['Smoking status', S.sc.smoking||0, 'Cellular insulin resistance'],
-    ['Alcohol intake', S.sc.alcohol||0, 'Blood sugar spikes'],
-    ['Blood pressure', S.sc.bp||0, 'Metabolic syndrome marker'],
-    ['Family history', S.sc.familyHx||0, 'Genetic risk'],
-    ['Previous blood sugar', S.sc.prevSugar||0, 'Strongest single predictor'],
+  const brk=[
+    [qLang==='hi'?'BMI':'BMI', bmi?bmiScore(bmi):0],
+    [qLang==='hi'?'कमर का आकार':'Waist size', waistScore()],
+    [qLang==='hi'?'उम्र':'Age', S.sc.age||0],
+    [qLang==='hi'?'शारीरिक गतिविधि':'Physical activity', S.sc.activity||0],
+    [qLang==='hi'?'आहार गुणवत्ता':'Diet quality', S.sc.diet||0],
+    [qLang==='hi'?'नींद':'Sleep quality', S.sc.sleep||0],
+    [qLang==='hi'?'तनाव':'Stress level', S.sc.stress||0],
+    [qLang==='hi'?'धूम्रपान':'Smoking status', S.sc.smoking||0],
+    [qLang==='hi'?'शराब':'Alcohol intake', S.sc.alcohol||0],
+    [qLang==='hi'?'रक्तचाप':'Blood pressure', S.sc.bp||0],
+    [qLang==='hi'?'पारिवारिक इतिहास':'Family history', S.sc.familyHx||0],
+    [qLang==='hi'?'पिछला ब्लड शुगर':'Previous blood sugar', S.sc.prevSugar||0],
   ];
   document.getElementById('r-breakdown').innerHTML=`
-    <div class="sc-title">Score breakdown — what's driving your risk</div>
-    ${brkItems.map(([label,score,why])=>`
-      <div class="sc-row">
-        <span class="sc-label">${label}<span style="font-size:11px;color:#aaa;display:block">${why}</span></span>
-        <span class="sc-val" style="color:${score===0?'#1D9E75':score<=2?'#EF9F27':'#E24B4A'}">${score===0?'Low risk':'+'+score+' pts'}</span>
-      </div>`).join('')}
+    <div class="sc-title">${qLang==='hi'?'स्कोर विवरण':"Score breakdown"}</div>
+    ${brk.map(([label,score])=>`<div class="sc-row"><span class="sc-label">${label}</span><span class="sc-val" style="color:${score===0?'#1D9E75':score<=2?'#EF9F27':'#E24B4A'}">${score===0?(qLang==='hi'?'कम जोखिम':'Low risk'):'+'+score+(qLang==='hi'?' अंक':' pts')}</span></div>`).join('')}
   `;
   document.getElementById('r-actions').innerHTML=actHtml;
 
-  // Build captions
-  const cLabel=COUNTRY_NAMES[S.country]||'';
-  window._caps={
-    ig: sc<=5?
-      `Just took the free DiabFit prediabetes screening ✅\n\nScore: ${sc}/${maxSc} — Low risk! Green tick earned 🎉\nBMI: ${bmi||'—'} | Country: ${cLabel}\n\nFree 3-minute check that could save your life:\ndiabfit.com\n\n#DiabFit #GreenTick #HealthChecked #PrediabetesAwareness #HealthyIndia`:
-      sc<=12?
-      `Just took the DiabFit prediabetes screening ⚡\n\nScore: ${sc}/${maxSc} — Moderate risk zone\n\nAccepting the #DiabFit90 challenge!\nRetesting on ${rd} — join me!\n\nFree test: diabfit.com\n\n#DiabFit90 #HealthJourney #PrediabetesChallenge #HealthyIndia`:
-      `Took the DiabFit screening today 🔴\n\nScore: ${sc}/${maxSc} — High risk\n\nNot ignoring this. Getting a blood test this week.\nHave YOU checked? It's free and takes 3 min:\ndiabfit.com\n\n#DiabFit #TakeAction #HealthCheck #PrediabetesAwareness`,
-    wa: `Hey! I just took the free DiabFit prediabetes screening.\n\nMy score: ${sc}/${maxSc} — ${sc<=5?'Low risk ✅':sc<=12?'Moderate risk ⚡':'High risk 🔴'}\n\nIt only takes 3 minutes and is completely free:\ndiabfit.com\n\nYou should check yours too!`,
-    x: sc<=5?
-      `Just took the free #DiabFit prediabetes screening ✅ Score: ${sc}/${maxSc} — Low risk! Certificate earned. You should check yours → diabfit.com`:
-      `Took the #DiabFit prediabetes screening. Score: ${sc}/${maxSc}. Accepting the #DiabFit90 challenge to reach green. Retest on ${rd}. Free 3-min check → diabfit.com`
-  };
+  const dietSection = document.getElementById('diet-plan-section');
+  if(level==='moderate' || level==='high'){
+    dietSection.innerHTML = `<button class="diet-plan-btn" id="diet-btn" onclick="generateDietPlan('${level}')">
+      <span>🍽️</span><span id="diet-btn-text">${UI_TEXT[qLang].dietBtn}</span>
+    </button>`;
+  } else {
+    dietSection.innerHTML = '';
+  }
+
+  lastResult = {level, rd};
+  drawSocialCard(lastResult);
+  window._caps = buildCaptions(level, rd);
 }
 
+async function generateDietPlan(level){
+  const btn = document.getElementById('diet-btn');
+  const btnText = document.getElementById('diet-btn-text');
+  btn.disabled = true;
+  btn.innerHTML = `<div class="spinner"></div><span>${UI_TEXT[qLang].dietLoading}</span>`;
+
+  try {
+    const bmi = calcBMI();
+    const flags = activeLifestyleFlags();
+    const response = await fetch(`${API_BASE}/generate-diet-plan`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        name: capturedName,
+        riskLevel: level,
+        bmi: bmi,
+        lifestyleFlags: flags,
+        language: qLang
+      })
+    });
+    const data = await response.json();
+    if(!response.ok || !data.plan){
+      throw new Error(data.error || 'Failed to generate plan');
+    }
+    document.getElementById('diet-plan-section').innerHTML = `
+      <div class="diet-plan-box">
+        <h4>${UI_TEXT[qLang].dietTitle}</h4>
+        ${data.plan.replace(/</g,'&lt;')}
+      </div>`;
+  } catch(err) {
+    console.error(err);
+    document.getElementById('diet-plan-section').innerHTML = `
+      <div class="diet-plan-box" style="background:#FCEBEB;border-color:#F7C1C1;color:#501313">
+        ${qLang==='hi'?'योजना बनाने में समस्या हुई। कृपया फिर कोशिश करें।':'Could not generate your plan right now. Please try again in a moment.'}
+      </div>`;
+  }
+}
+
+function buildCaptions(level, rd){
+  const cityTag = capturedCity ? ` 📍${capturedCity}` : '';
+  if(level==='low'){
+    return {
+      ig: qLang==='hi'?
+        `अभी DiabFit स्वास्थ्य जांच पूरी की ✅\n\nमुझे हरा टिक मिला — कम जोखिम क्षेत्र में!${cityTag}\n\nमुफ़्त जांच जो जीवन बचा सकती है:\ndiabfit.com\n\n#DiabFit #GreenTick #HealthChecked #MakeInIndia`:
+        `Just completed my DiabFit health screening ✅\n\nI earned the green tick — low risk zone!${cityTag}\n\nFree check that could save your life:\ndiabfit.com\n\n#DiabFit #GreenTick #HealthChecked #MakeInIndia`,
+      wa: qLang==='hi'?
+        `मैंने अभी मुफ़्त DiabFit स्वास्थ्य जांच पूरी की — हरा टिक मिला! ✅\n\ndiabfit.com\n\nआप भी जांच करें!`:
+        `Just completed the free DiabFit health screening — got the green tick! ✅\n\ndiabfit.com\n\nYou should check yours too!`,
+      x: qLang==='hi'?
+        `अभी DiabFit स्वास्थ्य जांच पूरी की ✅ हरा टिक मिला! आप भी जांचें → diabfit.com`:
+        `Just completed the DiabFit health screening ✅ Earned the green tick! Check yours → diabfit.com`
+    };
+  } else {
+    return {
+      ig: qLang==='hi'?
+        `मैं #DiabFit30 चैलेंज स्वीकार कर रहा/रही हूं ⚡\n\n30 दिनों में बेहतर स्वास्थ्य की ओर!${cityTag}\nफिर से जांच: ${rd}\n\ndiabfit.com\n\n#DiabFit30 #HealthJourney #ChallengeAccepted`:
+        `I'm accepting the #DiabFit30 challenge ⚡\n\n30 days to a healthier me!${cityTag}\nRetesting on ${rd}\n\ndiabfit.com\n\n#DiabFit30 #HealthJourney #ChallengeAccepted`,
+      wa: qLang==='hi'?
+        `मैं #DiabFit30 चैलेंज ले रहा/रही हूं ⚡\n\ndiabfit.com`:
+        `I'm taking the #DiabFit30 challenge ⚡\n\ndiabfit.com`,
+      x: qLang==='hi'?
+        `मैं #DiabFit30 चैलेंज ले रहा/रही हूं ⚡ ${rd} को फिर से जांच। → diabfit.com`:
+        `Taking the #DiabFit30 challenge ⚡ Retesting on ${rd}. → diabfit.com`
+    };
+  }
+}
+
+function drawSocialCard(result){
+  const canvas = document.getElementById('social-canvas');
+  const ctx = canvas.getContext('2d');
+  const W=1080, H=1080;
+  ctx.clearRect(0,0,W,H);
+  const isLow = result.level==='low';
+
+  const bg = ctx.createLinearGradient(0,0,W,H);
+  if(isLow){ bg.addColorStop(0,'#0d3d2e'); bg.addColorStop(1,'#1a2744'); }
+  else { bg.addColorStop(0,'#3d2a0d'); bg.addColorStop(1,'#1a2744'); }
+  ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+
+  ctx.globalAlpha=0.08; ctx.fillStyle='#ffffff';
+  ctx.beginPath(); ctx.arc(120,140,180,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(960,920,220,0,Math.PI*2); ctx.fill();
+  ctx.globalAlpha=1;
+
+  ctx.textAlign='left';
+  ctx.font='700 36px -apple-system, Segoe UI, sans-serif';
+  ctx.fillStyle='#ffffff';
+  ctx.fillText('DiabFit', 70, 100);
+  drawFlag(ctx, 950, 60, 60, 40);
+
+  ctx.textAlign='center';
+  ctx.font='180px serif';
+  ctx.fillText(isLow?'✅':'⚡', W/2, 420);
+
+  const nameLine = capturedName ? capturedName : (qLang==='hi'?'मैं':'I');
+  ctx.font='800 56px -apple-system, Segoe UI, sans-serif';
+  ctx.fillStyle='#ffffff';
+  const headline = isLow ?
+    (qLang==='hi'?`${nameLine} स्वस्थ है`:`${nameLine} is on track`) :
+    (qLang==='hi'?`${nameLine} ने चुनौती स्वीकार की`:`${nameLine} accepted the challenge`);
+  wrapCanvasText(ctx, headline, W/2, 540, 920, 68);
+
+  ctx.font='500 34px -apple-system, Segoe UI, sans-serif';
+  ctx.fillStyle = isLow ? '#9FE1CB' : '#FAC775';
+  const sub = isLow ?
+    (qLang==='hi'?'DiabFit ग्रीन टिक अर्जित किया':'DiabFit green tick earned') :
+    (qLang==='hi'?'#DiabFit30 — 30 दिनों की चुनौती':'#DiabFit30 — 30 day challenge');
+  wrapCanvasText(ctx, sub, W/2, 680, 880, 44);
+
+  if(capturedCity){
+    ctx.font='500 28px -apple-system, Segoe UI, sans-serif';
+    ctx.fillStyle='rgba(255,255,255,0.6)';
+    ctx.fillText('📍 '+capturedCity, W/2, 740);
+  }
+
+  const pillY=830, pillText = isLow?(qLang==='hi'?'कम जोखिम क्षेत्र':'LOW RISK ZONE'):(qLang==='hi'?'चैलेंज स्वीकार किया':'CHALLENGE ACCEPTED');
+  ctx.font='700 28px -apple-system, Segoe UI, sans-serif';
+  const pillW = ctx.measureText(pillText).width+70;
+  ctx.fillStyle = isLow? 'rgba(29,158,117,0.25)':'rgba(239,159,39,0.25)';
+  roundRect(ctx, W/2-pillW/2, pillY-40, pillW, 64, 32); ctx.fill();
+  ctx.fillStyle = isLow? '#5DCAA5':'#FAC775';
+  ctx.fillText(pillText, W/2, pillY+8);
+
+  ctx.font='500 26px -apple-system, Segoe UI, sans-serif';
+  ctx.fillStyle='rgba(255,255,255,0.55)';
+  ctx.fillText(qLang==='hi'?'मुफ़्त जांच लें · diabfit.com':'Take the free check · diabfit.com', W/2, 990);
+
+  ctx.font='400 22px -apple-system, Segoe UI, sans-serif';
+  ctx.fillStyle='rgba(255,255,255,0.35)';
+  ctx.fillText(qLang==='hi'?'भारत में निर्मित 🇮🇳':'Made in India 🇮🇳', W/2, 1030);
+}
+
+function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight){
+  const words = text.split(' ');
+  let line='', lines=[];
+  for(let n=0;n<words.length;n++){
+    const test=line+words[n]+' ';
+    if(ctx.measureText(test).width>maxWidth && n>0){ lines.push(line); line=words[n]+' '; }
+    else line=test;
+  }
+  lines.push(line);
+  const startY = y - ((lines.length-1)*lineHeight)/2;
+  lines.forEach((l,i)=>ctx.fillText(l.trim(), x, startY+i*lineHeight));
+}
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);
+  ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);
+  ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
+}
+function drawFlag(ctx,x,y,w,h){
+  const stripeH=h/3;
+  ctx.fillStyle='#FF9933'; ctx.fillRect(x,y,w,stripeH);
+  ctx.fillStyle='#FFFFFF'; ctx.fillRect(x,y+stripeH,w,stripeH);
+  ctx.fillStyle='#138808'; ctx.fillRect(x,y+stripeH*2,w,stripeH);
+  ctx.strokeStyle='#0C447C'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.arc(x+w/2,y+h/2,h/8,0,Math.PI*2); ctx.stroke();
+}
+function downloadCard(){
+  const canvas = document.getElementById('social-canvas');
+  const link = document.createElement('a');
+  link.download = 'diabfit-card.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+  showToast(qLang==='hi'?'कार्ड डाउनलोड हो रहा है!':'Card downloading!');
+}
 function doCopy(type){
   navigator.clipboard.writeText(window._caps[type]||'').then(()=>{
-    showToast(type==='ig'?'Instagram caption copied! 📸':type==='wa'?'WhatsApp message copied! 💬':'X post copied! ✖');
-    if(type==='ig') document.getElementById('ig-txt').textContent='Copied! Paste into Instagram ✓';
-    setTimeout(()=>{ if(document.getElementById('ig-txt')) document.getElementById('ig-txt').textContent='Copy Instagram caption'; },3000);
-  }).catch(()=>{
-    prompt('Copy this caption:', window._caps[type]);
-  });
+    showToast(qLang==='hi'?'कॉपी हो गया!':'Copied!');
+  }).catch(()=>{ prompt(qLang==='hi'?'इसे कॉपी करें:':'Copy this:', window._caps[type]); });
 }
+function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2000); }
 
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2500);
-}
-
-// ── INIT ───────────────────────────────────────────────────────────────────
-render();
+// ════════════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════════════
+setUiLang('en');
 </script>
 </body>
 </html>
