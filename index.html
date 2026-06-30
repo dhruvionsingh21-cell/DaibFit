@@ -28,6 +28,8 @@
   nav a { color: rgba(255,255,255,0.75); font-size: 13px; text-decoration: none; margin-left: 1.5rem; }
   nav a:hover { color: #fff; }
   .nav-cta { background: var(--green); color: #fff !important; padding: 6px 16px; border-radius: 99px; font-weight: 600; }
+  .language-toggle { margin-left: 1rem; background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 99px; padding: 6px 10px; font: inherit; font-size: 13px; font-weight: 600; outline: none; }
+  .language-toggle option { color: var(--text); }
 
   /* HERO */
   .hero { background: var(--navy); color: #fff; padding: 3.5rem 1.5rem 4rem; text-align: center; }
@@ -165,11 +167,14 @@
   footer { background: var(--navy); color: rgba(255,255,255,0.5); text-align: center; padding: 1.5rem; font-size: 12px; }
   footer a { color: rgba(255,255,255,0.6); text-decoration: none; }
   footer a:hover { color: #fff; }
+  .footer-credits { margin-top: .65rem; line-height: 1.7; }
+  .footer-credits a { color: rgba(255,255,255,0.78); font-weight: 600; }
 
   @media (max-width: 480px) {
     .hero { padding: 2.5rem 1rem 3rem; }
     .hero-stats { gap: 1.5rem; }
     nav a:not(.nav-cta) { display: none; }
+    .language-toggle { margin-left: .75rem; max-width: 96px; }
     .question-body { padding: 1.25rem; }
     .quiz-header { padding: 1rem 1.25rem 0; }
     .quiz-footer { padding: .75rem 1.25rem 1.25rem; }
@@ -182,8 +187,12 @@
 <nav>
   <div class="logo">Diab<span>Fit</span></div>
   <div style="display:flex;align-items:center">
-    <a href="#how">How it works</a>
-    <a href="#quiz-anchor" class="nav-cta" onclick="scrollToQuiz()">Take the test</a>
+    <a href="#how" data-i18n="navHow">How it works</a>
+    <a href="#quiz-anchor" class="nav-cta" onclick="scrollToQuiz()" data-i18n="navCta">Take the test</a>
+    <select class="language-toggle" id="language-select" onchange="setLanguage(this.value)" aria-label="Language">
+      <option value="en">English</option>
+      <option value="hi">हिन्दी</option>
+    </select>
   </div>
 </nav>
 
@@ -275,6 +284,13 @@
 <footer>
   <div style="margin-bottom:.5rem"><strong style="color:#fff">DiabFit</strong> — Free prediabetes risk screening for India, USA &amp; Europe</div>
   <div>Based on the validated ADA/WHO FINDRISC questionnaire &nbsp;·&nbsp; Not a medical device &nbsp;·&nbsp; <a href="#">Privacy</a> &nbsp;·&nbsp; <a href="#">Disclaimer</a></div>
+  <div class="footer-credits">
+    Manufacturer and creator:
+    <a href="https://www.linkedin.com/in/harmeet-singh-lubana-054456419" target="_blank" rel="noopener noreferrer">Harmeet Singh Lubana</a>
+    &nbsp;·&nbsp;
+    Project manager:
+    <a href="https://www.linkedin.com/in/priyanka-yadav-22316a171/" target="_blank" rel="noopener noreferrer">Priyanaka Yadav</a>
+  </div>
 </footer>
 
 <div class="toast" id="toast">Copied!</div>
@@ -293,6 +309,192 @@ const S = {
 };
 let cur = 0;
 let canNext = false;
+let lang = localStorage.getItem('diabfit-lang') || 'en';
+
+const I18N = {
+  en: {
+    navHow:'How it works', navCta:'Take the test',
+    heroBadge:'Free · 3 minutes · Certified result',
+    heroTitle:'Do you have <em>prediabetes</em> risk?<br>Find out. Share it.',
+    heroCopy:"136 million Indians have diabetes. Billions more don't know they're at risk. Take the 3-minute screening, earn your certificate, and start a movement.",
+    statCost:'Cost', statTime:'To complete', statRisk:'Risk factors checked', statCert:'Certificate valid',
+    heroButton:'Start free screening →', heroNote:'No sign-up required. No personal data stored.',
+    badges:['Green tick certificate','90-day challenge badge','Challenge winner trophy','One-tap Instagram share'],
+    howTitle:'How DiabFit works',
+    how:[
+      ['Select your country','India, USA, or Europe — thresholds adjust to your clinical guidelines'],
+      ['Answer 13 questions','Age, weight, waist, family history, lifestyle — takes 3 minutes'],
+      ['Get your result','Instant risk score with personalised breakdown by factor'],
+      ['Share your badge','Green tick, challenge badge, or winner trophy — post on Instagram'],
+      ['Retest in 90 days','Certificate expires after 3 months. Track your improvement.']
+    ],
+    footerTagline:'DiabFit — Free prediabetes risk screening for India, USA & Europe',
+    footerMeta:'Based on the validated ADA/WHO FINDRISC questionnaire · Not a medical device · Privacy · Disclaimer',
+    creditCreator:'Manufacturer and creator:', creditManager:'Project manager:',
+    shareTitle:'Share your result', copyIg:'Copy Instagram caption', copyWa:'💬 Copy WhatsApp message', copyX:'✖ Copy X (Twitter) post', startOver:'Start over',
+    medicalDisclaimer:'Medical disclaimer: DiabFit uses the validated ADA/WHO FINDRISC questionnaire adapted by country. This is a risk screening tool only — not a medical diagnosis. Only a doctor and blood test (HbA1c or fasting glucose) can diagnose prediabetes. Always consult your healthcare provider. Results are for awareness and education only.',
+    step:(n,total)=>`Step ${n} of ${total}`, next:'Next →', back:'← Back', result:'See my result ✓',
+    lowRisk:'Low risk', pts:s=>`+${s} pts`, copied:'Copied!', igCopied:'Instagram caption copied! 📸', waCopied:'WhatsApp message copied! 💬', xCopied:'X post copied! ✖', igPaste:'Copied! Paste into Instagram ✓',
+    sections:{location:'Your location', about:'About you', body:'Body measurements', lifestyle:'Lifestyle', medical:'Medical history'},
+    common:{men:'Men', women:'Women', country:'Country', biologicalSex:'Biological sex', ethnicity:'Ethnicity', height:'Height', weight:'Weight', waist:'Waist', bmi:'BMI'},
+    q: {
+      country:['Step 1','Where are you located?','Units, risk thresholds and clinical guidelines are adjusted per country.','South Asian guidelines (India) use different BMI and waist thresholds than Western guidelines.'],
+      gender:['About you','What is your biological sex?','Waist size thresholds differ by biological sex. This does not affect your certificate type.'],
+      ethnicity:['About you','What is your ethnic background?','South Asians develop prediabetes at lower BMI thresholds — ethnicity adjusts the calculation, not the judgement.','South Asians are at risk from BMI 23+, not the Western 25+. This is the WHO\'s official guideline.'],
+      age:['About you','How old are you?','Risk increases significantly after 40, and again after 55.'],
+      height:['Body measurements','What is your height?','Used to calculate your BMI.','Feet','Inches','Centimetres','Average Indian adult: 163 cm (5ft 4in) for men, 152 cm (5ft) for women.'],
+      weight:['Body measurements','What is your weight?','Used alongside height to calculate your BMI — a key risk factor.','Kilograms','Pounds','Stone'],
+      waistKnown:['Body measurements','Do you know your waist measurement?','Waist size is one of the strongest indicators — especially for South Asians. If you have a tape measure, it takes 30 seconds to check.','Yes, I know my waist size',"No, I'll skip this measurement",'Measure at navel level, relaxed (not sucked in). Morning before eating gives the most accurate reading.'],
+      waist:['Body measurements','What is your waist circumference?','Measure around your navel, not your hips. Belly fat around organs is the key risk driver.','Centimetres','Inches',(sex,lo,hi)=>`${sex}: risk begins at ${lo} cm (${Math.round(lo/2.54)}"). High risk above ${hi} cm (${Math.round(hi/2.54)}").`],
+      activity:['Lifestyle','How physically active are you?','Include all movement: walking, cycling, yoga, housework, farming, sport.','30 minutes of brisk walking daily reduces diabetes risk by up to 35%.'],
+      diet:['Lifestyle','How would you describe your typical diet?',{india:'Think of chapati, dal, sabzi vs biryani, white rice, sweets, oil.',usa:'Think whole grains and salads vs fast food, soda, white bread.',europe:'Think whole grains, vegetables vs pastries, white bread, soda.'},'Focus on a typical day — not your best day or your worst.'],
+      sleep:['Lifestyle','How much do you sleep on average?','Both too little and too much sleep are linked to insulin resistance and higher diabetes risk.','Poor sleep raises cortisol, which directly impairs blood sugar regulation — even one bad week matters.'],
+      stress:['Lifestyle','What is your typical stress level?','Chronic stress raises cortisol, which increases blood sugar — a clinically recognized risk factor for prediabetes.','Work pressure, financial stress, relationship stress — all count. Any persistent mental load affects cortisol.'],
+      smoking:['Lifestyle','What is your smoking status?','Smokers are 30–40% more likely to develop Type 2 diabetes than non-smokers.'],
+      alcohol:['Lifestyle','How much alcohol do you drink?','Heavy drinking impairs insulin sensitivity. Binge drinking causes acute blood sugar spikes.','One drink = 330 ml beer, 150 ml wine, or 45 ml spirit.'],
+      bp:['Medical history','What is your blood pressure status?','High blood pressure and prediabetes share the same root causes and almost always appear together.'],
+      familyHx:['Medical history','Has anyone in your family been diagnosed with diabetes?','Type 2 diabetes has a 40% heritability rate — having a parent or sibling with diabetes roughly doubles your risk.','Includes both Type 1 and Type 2 diabetes. Gestational diabetes in a close relative also counts.'],
+      prevSugar:['Medical history','Have you ever been told your blood sugar was high?','A previous episode of elevated blood sugar is the single strongest predictor of future diabetes.','Includes any blood test result, health camp reading, or doctor\'s comment about "borderline sugar".']
+    },
+    opts: {
+      gender:['Male','Female','Non-binary / prefer not to say'],
+      ethnicity:{india:['South Asian (Indian, Pakistani, Bangladeshi, Sri Lankan)','Other Asian','Other / prefer not to say'],usa:['South Asian','East / Southeast Asian','Black / African American','Hispanic / Latino','White / Caucasian','Other / prefer not to say'],europe:['South Asian','East Asian','African / Caribbean','White European','Other / prefer not to say']},
+      age:['Under 35','35–44','45–54','55–64','65 or older'],
+      activity:['Very active — physical job or daily exercise (60+ min)','Active most days — 30+ min, 5+ days/week','Moderately active — 30 min, 3–4 days/week','Lightly active — occasional walks, 1–2 days/week','Mostly sedentary — desk job, very little movement'],
+      diet:['Very healthy — vegetables, whole grains, lean protein daily; minimal sugar','Mostly healthy — good most days with occasional treats','Mixed — some healthy food but regular refined carbs or fried food','Mostly processed — white rice/bread/sugar drinks/fast food daily'],
+      sleep:['7–9 hours — consistent, feel well-rested','6–7 hours — slightly short but manageable','Under 6 hours — often sleep-deprived','Over 9 hours regularly — or very poor quality sleep'],
+      stress:['Low — generally calm, stress is manageable','Moderate — some stress but I cope well','High — frequent stress, anxiety, or burnout','Very high — chronic stress affecting daily life'],
+      smoking:['Never smoked','Former smoker — quit more than 1 year ago','Former smoker — quit less than 1 year ago','Current smoker'],
+      alcohol:["None — I don't drink alcohol",'Occasional — 1–2 drinks per week or less','Moderate — 3–7 drinks per week','Heavy — more than 7 drinks per week','Binge drinking — 4+ drinks in one sitting regularly'],
+      bp:['Normal — always below 130/80','Borderline — occasionally high (130–140 / 80–90)','High — diagnosed hypertension or on medication','Not sure / never had it measured'],
+      familyHx:['No family history of diabetes','Grandparent, aunt, uncle, or cousin has diabetes','One parent, sibling, or my own child has diabetes','Both parents have diabetes'],
+      prevSugar:['No — blood sugar has always been normal','Not sure — never had it checked','Borderline — told to "keep an eye on it"','High — previously diagnosed with prediabetes','Had gestational diabetes during pregnancy']
+    },
+    resultText:{low:['Low risk — green tick certificate earned!','Your profile shows a low risk of prediabetes right now. Keep up the healthy habits, share your result, and retest in 90 days to maintain your certificate.'], moderate:['Moderate risk — take the 90-day challenge','You have some risk factors worth addressing. The great news: prediabetes risk is highly reversible through lifestyle changes. Accept the 90-day challenge and aim for the green tick next time.'], high:['High risk — please see a doctor this week','Your risk factors are elevated across multiple areas. This is not a diagnosis — but it is a strong signal. A simple blood test (HbA1c) will tell you exactly where you stand. Knowledge is power.']},
+    actions:{lowTitle:'What to do now', low:['Continue your current activity and diet — it\'s working','Get an annual HbA1c test as good practice','Share your green tick and challenge 3 friends',rd=>`Set a reminder to retest on ${rd}`], modTitle:'Your 90-day plan', mod:['Walk 30 min/day — reduces risk by up to 58%','Cut sugary drinks and refined carbs (maida, white rice excess)','Add vegetables to every meal','Book an HbA1c blood test to get your exact baseline','Aim for 7–8 hours of consistent sleep',rd=>`Retest on DiabFit on ${rd}`], highTitle:'Urgent steps', high:['Book an HbA1c + fasting glucose test this week','Show this result to your doctor','Start walking — even 15 min/day helps immediately','Remove all sugar-sweetened drinks from your home','Come back and retest after 90 days of changes'], remember:'Remember', rememberCopy:"This screening tool cannot diagnose prediabetes. Only a blood test and doctor can do that. Many people with high screening scores are still fine — but it's worth checking."},
+    result:{score:s=>`Risk score: ${s} / 28`, profile:'Your profile', bmiAnalysis:x=>`BMI analysis — ${x}`, saThresholds:'South Asian thresholds', stdThresholds:'Standard thresholds', yourBmi:'Your BMI', labels:['Under','Healthy','Over','Obese I','Obese II'], saNote:'South Asian thresholds: Healthy = BMI 18.5–23, vs Western 18.5–25', breakdown:"Score breakdown — what's driving your risk", brk:[['BMI','Body weight vs height'],['Waist size','Central adiposity'],['Ethnicity','Genetic predisposition'],['Age','Biological risk factor'],['Physical activity','Insulin sensitivity'],['Diet quality','Blood sugar impact'],['Sleep quality','Metabolic regulation'],['Stress level','Cortisol & insulin'],['Smoking status','Cellular insulin resistance'],['Alcohol intake','Blood sugar spikes'],['Blood pressure','Metabolic syndrome marker'],['Family history','Genetic risk'],['Previous blood sugar','Strongest single predictor']]},
+    bmiCat:['Underweight','Healthy (South Asian)','Overweight risk (South Asian)','Obese class I (South Asian)','Obese class II','Healthy weight','Overweight','Obese class I'],
+    names:{countries:{india:'India',usa:'USA',europe:'Europe'}, genders:['Male','Female','Non-binary'], eth:{india:['South Asian','Other Asian','Other'],usa:['South Asian','East/SE Asian','Black/AA','Hispanic','White','Other'],europe:['South Asian','East Asian','African/Caribbean','White European','Other']}}
+  },
+  hi: {
+    navHow:'कैसे काम करता है', navCta:'टेस्ट शुरू करें',
+    heroBadge:'मुफ्त · 3 मिनट · प्रमाणित परिणाम',
+    heroTitle:'क्या आपको <em>प्रीडायबिटीज</em> का जोखिम है?<br>जानें और साझा करें.',
+    heroCopy:'13.6 करोड़ भारतीयों को डायबिटीज है. कई लोगों को अपना जोखिम पता भी नहीं होता. 3 मिनट की स्क्रीनिंग करें, अपना प्रमाणपत्र पाएं और जागरूकता बढ़ाएं.',
+    statCost:'लागत', statTime:'पूरा करने में', statRisk:'जोखिम कारक जांचे गए', statCert:'प्रमाणपत्र मान्य',
+    heroButton:'मुफ्त स्क्रीनिंग शुरू करें →', heroNote:'साइन-अप जरूरी नहीं. व्यक्तिगत डेटा सेव नहीं होता.',
+    badges:['ग्रीन टिक प्रमाणपत्र','90-दिन चुनौती बैज','चुनौती विजेता ट्रॉफी','एक टैप Instagram शेयर'],
+    howTitle:'DiabFit कैसे काम करता है',
+    how:[
+      ['अपना देश चुनें','भारत, USA या Europe — आपके क्लिनिकल दिशानिर्देशों के अनुसार सीमा बदलेगी'],
+      ['13 सवालों के जवाब दें','उम्र, वजन, कमर, परिवार का इतिहास और जीवनशैली — सिर्फ 3 मिनट'],
+      ['अपना परिणाम पाएं','हर कारक के साथ तुरंत जोखिम स्कोर'],
+      ['अपना बैज साझा करें','ग्रीन टिक, चुनौती बैज या ट्रॉफी — Instagram पर पोस्ट करें'],
+      ['90 दिन बाद फिर टेस्ट करें','प्रमाणपत्र 3 महीने बाद समाप्त होता है. अपनी प्रगति देखें.']
+    ],
+    footerTagline:'DiabFit — भारत, USA और Europe के लिए मुफ्त प्रीडायबिटीज जोखिम स्क्रीनिंग',
+    footerMeta:'मान्य ADA/WHO FINDRISC प्रश्नावली पर आधारित · मेडिकल डिवाइस नहीं · Privacy · Disclaimer',
+    creditCreator:'निर्माता और क्रिएटर:', creditManager:'प्रोजेक्ट मैनेजर:',
+    shareTitle:'अपना परिणाम साझा करें', copyIg:'Instagram कैप्शन कॉपी करें', copyWa:'💬 WhatsApp संदेश कॉपी करें', copyX:'✖ X (Twitter) पोस्ट कॉपी करें', startOver:'फिर से शुरू करें',
+    medicalDisclaimer:'मेडिकल डिस्क्लेमर: DiabFit देश के अनुसार अनुकूलित मान्य ADA/WHO FINDRISC प्रश्नावली का उपयोग करता है. यह केवल जोखिम स्क्रीनिंग टूल है — मेडिकल डायग्नोसिस नहीं. प्रीडायबिटीज का निदान केवल डॉक्टर और ब्लड टेस्ट (HbA1c या fasting glucose) से हो सकता है. हमेशा अपने हेल्थकेयर प्रोवाइडर से सलाह लें. परिणाम केवल जागरूकता और शिक्षा के लिए हैं.',
+    step:(n,total)=>`स्टेप ${n} / ${total}`, next:'अगला →', back:'← पीछे', result:'मेरा परिणाम देखें ✓',
+    lowRisk:'कम जोखिम', pts:s=>`+${s} अंक`, copied:'कॉपी हो गया!', igCopied:'Instagram कैप्शन कॉपी हो गया! 📸', waCopied:'WhatsApp संदेश कॉपी हो गया! 💬', xCopied:'X पोस्ट कॉपी हो गई! ✖', igPaste:'कॉपी हो गया! Instagram में पेस्ट करें ✓',
+    sections:{location:'आपका स्थान', about:'आपके बारे में', body:'शारीरिक माप', lifestyle:'जीवनशैली', medical:'मेडिकल इतिहास'},
+    common:{men:'पुरुष', women:'महिलाएं', country:'देश', biologicalSex:'जैविक लिंग', ethnicity:'जातीय पृष्ठभूमि', height:'लंबाई', weight:'वजन', waist:'कमर', bmi:'BMI'},
+    q: {
+      country:['स्टेप 1','आप कहां रहते हैं?','देश के अनुसार यूनिट, जोखिम सीमा और क्लिनिकल दिशानिर्देश बदले जाते हैं.','दक्षिण एशियाई दिशानिर्देश (भारत) Western guidelines से अलग BMI और कमर सीमा इस्तेमाल करते हैं.'],
+      gender:['आपके बारे में','आपका जैविक लिंग क्या है?','कमर की जोखिम सीमा जैविक लिंग के अनुसार अलग होती है. इससे आपके प्रमाणपत्र पर असर नहीं पड़ता.'],
+      ethnicity:['आपके बारे में','आपकी जातीय पृष्ठभूमि क्या है?','दक्षिण एशियाई लोगों में कम BMI पर भी प्रीडायबिटीज का जोखिम बढ़ सकता है — यह गणना को समायोजित करता है, फैसला नहीं सुनाता.','दक्षिण एशियाई लोगों में जोखिम BMI 23+ से माना जाता है, Western 25+ से नहीं. यह WHO दिशानिर्देश है.'],
+      age:['आपके बारे में','आपकी उम्र कितनी है?','40 के बाद जोखिम बढ़ता है, और 55 के बाद फिर बढ़ता है.'],
+      height:['शारीरिक माप','आपकी लंबाई कितनी है?','BMI निकालने के लिए इस्तेमाल होता है.','फीट','इंच','सेंटीमीटर','औसत भारतीय वयस्क: पुरुष 163 cm (5ft 4in), महिलाएं 152 cm (5ft).'],
+      weight:['शारीरिक माप','आपका वजन कितना है?','लंबाई के साथ BMI निकालने में इस्तेमाल होता है — यह मुख्य जोखिम कारक है.','किलोग्राम','पाउंड','स्टोन'],
+      waistKnown:['शारीरिक माप','क्या आपको अपनी कमर का माप पता है?','कमर का माप सबसे मजबूत संकेतकों में से एक है — खासकर दक्षिण एशियाई लोगों के लिए. टेप हो तो 30 सेकंड लगते हैं.','हां, मुझे कमर का माप पता है','नहीं, मैं यह माप छोड़ूंगा','नाभि के स्तर पर मापें, सामान्य अवस्था में. सुबह खाने से पहले माप सबसे सही रहता है.'],
+      waist:['शारीरिक माप','आपकी कमर की परिधि कितनी है?','नाभि के आसपास मापें, कूल्हों पर नहीं. अंगों के आसपास जमा पेट की चर्बी मुख्य जोखिम है.','सेंटीमीटर','इंच',(sex,lo,hi)=>`${sex}: जोखिम ${lo} cm (${Math.round(lo/2.54)}") से शुरू होता है. ${hi} cm (${Math.round(hi/2.54)}") से ऊपर उच्च जोखिम.`],
+      activity:['जीवनशैली','आप कितने शारीरिक रूप से सक्रिय हैं?','चलना, साइकिल, योग, घर का काम, खेती, खेल — सभी गतिविधियां शामिल करें.','रोज 30 मिनट तेज चलना डायबिटीज जोखिम को 35% तक कम कर सकता है.'],
+      diet:['जीवनशैली','आप अपने सामान्य भोजन को कैसे बताएंगे?',{india:'चपाती, दाल, सब्जी बनाम बिरयानी, सफेद चावल, मिठाई, ज्यादा तेल के बारे में सोचें.',usa:'Whole grains और salad बनाम fast food, soda, white bread सोचें.',europe:'Whole grains, vegetables बनाम pastries, white bread, soda सोचें.'},'अपने सामान्य दिन के बारे में सोचें — सबसे अच्छे या सबसे खराब दिन के बारे में नहीं.'],
+      sleep:['जीवनशैली','आप औसतन कितनी नींद लेते हैं?','बहुत कम और बहुत ज्यादा, दोनों तरह की नींद insulin resistance और diabetes risk से जुड़ी हैं.','खराब नींद cortisol बढ़ाती है, जिससे blood sugar regulation प्रभावित होता है — एक खराब सप्ताह भी मायने रखता है.'],
+      stress:['जीवनशैली','आपका सामान्य तनाव स्तर कैसा है?','लगातार तनाव cortisol बढ़ाता है, जिससे blood sugar बढ़ सकती है — यह prediabetes का मान्य जोखिम कारक है.','काम, पैसे, रिश्ते — हर तरह का तनाव गिना जाता है. लगातार mental load cortisol को प्रभावित करता है.'],
+      smoking:['जीवनशैली','आपकी smoking स्थिति क्या है?','Smokers में Type 2 diabetes होने की संभावना non-smokers से 30–40% ज्यादा होती है.'],
+      alcohol:['जीवनशैली','आप कितना alcohol पीते हैं?','ज्यादा alcohol insulin sensitivity घटाता है. Binge drinking से blood sugar अचानक बढ़ सकती है.','एक drink = 330 ml beer, 150 ml wine, या 45 ml spirit.'],
+      bp:['मेडिकल इतिहास','आपका blood pressure status क्या है?','High blood pressure और prediabetes की जड़ें अक्सर समान होती हैं और ये साथ दिखते हैं.'],
+      familyHx:['मेडिकल इतिहास','क्या आपके परिवार में किसी को diabetes है?','Type 2 diabetes में पारिवारिक प्रभाव होता है — parent या sibling में diabetes होने से आपका जोखिम लगभग दोगुना हो सकता है.','Type 1 और Type 2 diabetes दोनों शामिल हैं. करीबी रिश्तेदार में gestational diabetes भी गिना जाता है.'],
+      prevSugar:['मेडिकल इतिहास','क्या कभी आपको बताया गया है कि आपकी blood sugar high थी?','पहले कभी blood sugar high होना भविष्य के diabetes risk का सबसे मजबूत संकेत है.','किसी भी blood test, health camp reading या doctor की "borderline sugar" टिप्पणी को शामिल करें.']
+    },
+    opts: {
+      gender:['पुरुष','महिला','Non-binary / बताना नहीं चाहते'],
+      ethnicity:{india:['दक्षिण एशियाई (Indian, Pakistani, Bangladeshi, Sri Lankan)','अन्य एशियाई','अन्य / बताना नहीं चाहते'],usa:['दक्षिण एशियाई','East / Southeast Asian','Black / African American','Hispanic / Latino','White / Caucasian','अन्य / बताना नहीं चाहते'],europe:['दक्षिण एशियाई','East Asian','African / Caribbean','White European','अन्य / बताना नहीं चाहते']},
+      age:['35 से कम','35–44','45–54','55–64','65 या अधिक'],
+      activity:['बहुत सक्रिय — physical job या रोज exercise (60+ min)','ज्यादातर दिन सक्रिय — 30+ min, 5+ दिन/सप्ताह','मध्यम सक्रिय — 30 min, 3–4 दिन/सप्ताह','हल्का सक्रिय — कभी-कभी walk, 1–2 दिन/सप्ताह','ज्यादातर बैठे रहते हैं — desk job, बहुत कम movement'],
+      diet:['बहुत healthy — सब्जियां, whole grains, lean protein रोज; sugar कम','ज्यादातर healthy — अधिकतर दिन अच्छा, कभी-कभी treats','Mixed — कुछ healthy food लेकिन refined carbs या fried food regular','ज्यादातर processed — white rice/bread/sugar drinks/fast food daily'],
+      sleep:['7–9 घंटे — नियमित, आराम महसूस होता है','6–7 घंटे — थोड़ा कम लेकिन manageable','6 घंटे से कम — अक्सर नींद की कमी','9 घंटे से ज्यादा नियमित — या बहुत खराब sleep quality'],
+      stress:['कम — सामान्यतः शांत, stress manageable','मध्यम — कुछ stress लेकिन संभल जाता है','ज्यादा — frequent stress, anxiety या burnout','बहुत ज्यादा — chronic stress daily life को प्रभावित करता है'],
+      smoking:['कभी smoke नहीं किया','पहले smoker — 1 साल से ज्यादा पहले छोड़ा','पहले smoker — 1 साल से कम पहले छोड़ा','वर्तमान smoker'],
+      alcohol:['नहीं — मैं alcohol नहीं पीता/पीती','कभी-कभी — 1–2 drinks/week या कम','मध्यम — 3–7 drinks/week','ज्यादा — 7 से ज्यादा drinks/week','Binge drinking — एक बार में 4+ drinks नियमित'],
+      bp:['Normal — हमेशा 130/80 से कम','Borderline — कभी-कभी high (130–140 / 80–90)','High — hypertension diagnosed या medication पर','पता नहीं / कभी measure नहीं किया'],
+      familyHx:['परिवार में diabetes history नहीं','Grandparent, aunt, uncle या cousin को diabetes','एक parent, sibling या मेरे बच्चे को diabetes','दोनों parents को diabetes'],
+      prevSugar:['नहीं — blood sugar हमेशा normal रही','पता नहीं — कभी check नहीं कराया','Borderline — "ध्यान रखें" कहा गया','High — पहले prediabetes diagnosed','Pregnancy में gestational diabetes हुआ था']
+    },
+    resultText:{low:['कम जोखिम — green tick certificate मिला!','आपकी profile अभी prediabetes के कम जोखिम को दिखाती है. Healthy habits जारी रखें, result share करें, और certificate बनाए रखने के लिए 90 दिन बाद retest करें.'], moderate:['मध्यम जोखिम — 90-day challenge लें','आपके कुछ risk factors सुधारने योग्य हैं. अच्छी बात यह है कि lifestyle बदलावों से prediabetes risk काफी कम हो सकता है. 90-day challenge लें और अगली बार green tick का लक्ष्य रखें.'], high:['उच्च जोखिम — इस सप्ताह doctor से मिलें','आपके कई risk factors बढ़े हुए हैं. यह diagnosis नहीं है — लेकिन एक मजबूत संकेत है. एक simple blood test (HbA1c) आपको सही स्थिति बता सकता है.']},
+    actions:{lowTitle:'अब क्या करें', low:['अपनी current activity और diet जारी रखें — यह काम कर रही है','सावधानी के लिए annual HbA1c test कराएं','अपना green tick share करें और 3 friends को challenge दें',rd=>`${rd} को retest reminder सेट करें`], modTitle:'आपका 90-day plan', mod:['रोज 30 min walk करें — risk 58% तक घट सकता है','Sugary drinks और refined carbs (maida, white rice excess) कम करें','हर meal में vegetables जोड़ें','Exact baseline के लिए HbA1c blood test book करें','7–8 घंटे consistent sleep का लक्ष्य रखें',rd=>`${rd} को DiabFit पर retest करें`], highTitle:'जरूरी कदम', high:['इस सप्ताह HbA1c + fasting glucose test book करें','यह result अपने doctor को दिखाएं','Walking शुरू करें — 15 min/day भी तुरंत मदद करता है','घर से sugar-sweetened drinks हटाएं','90 दिन बदलाव के बाद वापस आकर retest करें'], remember:'याद रखें', rememberCopy:'यह screening tool prediabetes diagnose नहीं कर सकता. diagnosis केवल blood test और doctor कर सकते हैं. High screening score वाले कई लोग ठीक भी हो सकते हैं — लेकिन check कराना जरूरी है.'},
+    result:{score:s=>`जोखिम स्कोर: ${s} / 28`, profile:'आपकी profile', bmiAnalysis:x=>`BMI analysis — ${x}`, saThresholds:'South Asian thresholds', stdThresholds:'Standard thresholds', yourBmi:'आपका BMI', labels:['Under','Healthy','Over','Obese I','Obese II'], saNote:'South Asian thresholds: Healthy = BMI 18.5–23, Western 18.5–25 की तुलना में', breakdown:'Score breakdown — आपका risk किससे बढ़ रहा है', brk:[['BMI','Body weight vs height'],['कमर का माप','Central adiposity'],['Ethnicity','Genetic predisposition'],['उम्र','Biological risk factor'],['Physical activity','Insulin sensitivity'],['Diet quality','Blood sugar impact'],['Sleep quality','Metabolic regulation'],['Stress level','Cortisol & insulin'],['Smoking status','Cellular insulin resistance'],['Alcohol intake','Blood sugar spikes'],['Blood pressure','Metabolic syndrome marker'],['Family history','Genetic risk'],['Previous blood sugar','Strongest single predictor']]},
+    bmiCat:['Underweight','Healthy (South Asian)','Overweight risk (South Asian)','Obese class I (South Asian)','Obese class II','Healthy weight','Overweight','Obese class I'],
+    names:{countries:{india:'भारत',usa:'USA',europe:'Europe'}, genders:['पुरुष','महिला','Non-binary'], eth:{india:['दक्षिण एशियाई','अन्य एशियाई','अन्य'],usa:['दक्षिण एशियाई','East/SE Asian','Black/AA','Hispanic','White','अन्य'],europe:['दक्षिण एशियाई','East Asian','African/Caribbean','White European','अन्य']}}
+  }
+};
+const L = ()=>I18N[lang] || I18N.en;
+
+function setLanguage(nextLang){
+  lang = nextLang === 'hi' ? 'hi' : 'en';
+  localStorage.setItem('diabfit-lang', lang);
+  document.documentElement.lang = lang === 'hi' ? 'hi' : 'en';
+  const select=document.getElementById('language-select');
+  if(select) select.value=lang;
+  translateStatic();
+  if(document.getElementById('result-wrap').style.display==='block') showResult(false);
+  else render();
+}
+
+function setText(sel, value){ const el=document.querySelector(sel); if(el) el.textContent=value; }
+function setHtml(sel, value){ const el=document.querySelector(sel); if(el) el.innerHTML=value; }
+function translateStatic(){
+  const l=L();
+  setText('[data-i18n="navHow"]', l.navHow);
+  setText('[data-i18n="navCta"]', l.navCta);
+  setText('.hero-badge', l.heroBadge);
+  setHtml('.hero h1', l.heroTitle);
+  setText('.hero p', l.heroCopy);
+  const statLabels=document.querySelectorAll('.stat-label');
+  [l.statCost,l.statTime,l.statRisk,l.statCert].forEach((txt,i)=>{ if(statLabels[i]) statLabels[i].textContent=txt; });
+  setText('.hero-btn', l.heroButton);
+  setText('.hero-note', l.heroNote);
+  document.querySelectorAll('.badge-chip').forEach((el,i)=>{
+    const icon=el.querySelector('.badge-icon')?.outerHTML || '';
+    el.innerHTML=`${icon} ${l.badges[i]}`;
+  });
+  setText('.how h2', l.howTitle);
+  document.querySelectorAll('.step-item').forEach((el,i)=>{
+    const pair=l.how[i]; if(!pair) return;
+    const h=el.querySelector('h3'), p=el.querySelector('p');
+    if(h) h.textContent=pair[0];
+    if(p) p.textContent=pair[1];
+  });
+  setText('.share-title', l.shareTitle);
+  setText('#ig-txt', l.copyIg);
+  setText('.share-wa', l.copyWa);
+  setText('.share-x', l.copyX);
+  setText('.restart-btn', l.startOver);
+  const parts=l.medicalDisclaimer.split(':');
+  setHtml('.disclaimer', `<strong>${parts[0]}:</strong> ${parts.slice(1).join(':').trim()}`);
+  const footer=document.querySelector('footer');
+  if(footer){
+    const divs=footer.querySelectorAll(':scope > div');
+    if(divs[0]) divs[0].innerHTML=`<strong style="color:#fff">DiabFit</strong>${l.footerTagline.replace('DiabFit','')}`;
+    if(divs[1]) divs[1].innerHTML=l.footerMeta.replaceAll(' · ',' &nbsp;·&nbsp; ');
+    const spans=footer.querySelectorAll('.footer-credits span');
+    if(spans[0]) spans[0].textContent=l.creditCreator;
+    if(spans[1]) spans[1].textContent=l.creditManager;
+  }
+}
 
 // ── STEPS ──────────────────────────────────────────────────────────────────
 const STEPS = [
