@@ -169,11 +169,13 @@
 
   .how { padding: 3rem 1.5rem; background: var(--white); }
   .how h2 { text-align: center; font-size: 1.5rem; font-weight: 800; color: var(--text); margin-bottom: 2rem; }
-  .steps-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.5rem; max-width: 760px; margin: 0 auto; }
+  .steps-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.25rem; max-width: 860px; margin: 0 auto; }
   .step-item { text-align: center; }
   .step-num { width: 40px; height: 40px; border-radius: 50%; background: var(--navy); color: #fff; font-size: 16px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto .75rem; }
-  .step-item h3 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
-  .step-item p { font-size: 13px; color: var(--text2); line-height: 1.55; }
+  .step-item h3 { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .step-item p { font-size: 12px; color: var(--text2); line-height: 1.5; }
+  @media (max-width: 700px) { .steps-row { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 480px) { .steps-row { grid-template-columns: repeat(2, 1fr); } }
 
   footer { background: var(--navy); color: rgba(255,255,255,0.5); text-align: center; padding: 1.75rem 1.5rem; font-size: 12px; }
   footer a { color: rgba(255,255,255,0.6); text-decoration: none; }
@@ -214,8 +216,8 @@
     .quiz-footer { padding: .75rem 1.25rem 1.25rem; }
   }
 </style>
-<!-- Razorpay checkout script — loads only when needed -->
-<script src="https://checkout.razorpay.com/v1/checkout.js" defer></script>
+<!-- Razorpay checkout — loaded synchronously for mobile compatibility -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
 <body>
 
@@ -386,8 +388,6 @@
   <div class="footer-credit">
     <span id="footer-made-by">Made with care by</span>
     <a class="creator-link" href="https://www.linkedin.com/in/harmeet-singh-lubana-054456419" target="_blank" rel="noopener noreferrer">@Harmeet Singh Lubana</a>
-    <span> &nbsp;|&nbsp; Project manager: </span>
-    <a class="creator-link" href="https://www.linkedin.com/in/priyanka-yadav-22316a171/?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BDacQOzR%2BSMmJeqnzBgMlzA%3D%3D" target="_blank" rel="noopener noreferrer">Priyanka Yadav</a>
   </div>
   <div class="footer-flag-row">
     <span class="mini-flag"><div style="background:#FF9933"></div><div style="background:#FFFFFF"></div><div style="background:#138808"></div></span>
@@ -990,30 +990,134 @@ function skipCapture(){
   capturedCity = '';
   _pendingState = null;
   document.getElementById('capture-wrap').style.display='none';
-  showResult();
+  showResult(false); // free = basic result, no diet plan
+}
+
+// ════════════════════════════════════════════════════════════════
+// PAYMENT SCREEN
+// ════════════════════════════════════════════════════════════════
+// IMPORTANT: Replace 'rzp_test_XXXXXXXXXXXXXXXX' with your actual
+// Razorpay Key ID from razorpay.com after creating your account.
+// Use rzp_test_... for testing, rzp_live_... for production.
+const RAZORPAY_KEY = 'rzp_test_XXXXXXXXXXXXXXXX';
+
+function showPayment(){
+  document.getElementById('payment-wrap').style.display='block';
+  document.getElementById('payment-wrap').scrollIntoView({behavior:'smooth',block:'start'});
+  // Update payment screen text in current language
+  const hi = qLang==='hi';
+  document.getElementById('pay-title').textContent = hi?'अपनी पूरी रिपोर्ट अनलॉक करें':'Unlock your full report';
+  document.getElementById('pay-sub').textContent = hi?'एकमुश्त ₹6 भुगतान करके अपनी व्यक्तिगत जोखिम रिपोर्ट, डाउनलोड करने योग्य सोशल कार्ड और (जोखिम होने पर) 30-दिन की AI आहार योजना अनलॉक करें।':
+    'A one-time ₹6 payment unlocks your personalised risk report, downloadable social card, and (if at risk) a 30-day AI diet plan.';
+  const includes = document.getElementById('pay-includes');
+  includes.innerHTML = (hi?[
+    'सभी 17 जोखिम कारकों का पूरा विवरण',
+    'व्यक्तिगत डाउनलोड करने योग्य सोशल कार्ड',
+    '30-दिन AI आहार योजना (जोखिम होने पर)',
+    '90 दिनों के लिए वैध सर्टिफिकेट',
+    'आपका डेटा भारत भर में मधुमेह जोखिम मैप करने में मदद करता है'
+  ]:[
+    'Full risk breakdown across 17 factors',
+    'Personalised downloadable social card',
+    '30-day AI diet plan (if at risk)',
+    'Certificate valid for 90 days',
+    'Your data helps map diabetes risk across India'
+  ]).map(t=>`<li>${t}</li>`).join('');
+  document.getElementById('pay-btn').textContent = hi?'₹6 UPI / कार्ड से भुगतान करें':'Pay ₹6 with UPI / Card';
+  document.getElementById('pay-upi-note').textContent = hi?'🔒 Razorpay द्वारा सुरक्षित · UPI, डेबिट/क्रेडिट कार्ड स्वीकृत':'🔒 Secured by Razorpay · UPI, Debit/Credit Cards accepted';
+  document.getElementById('pay-trust1').textContent = hi?'सुरक्षित भुगतान':'Secure payment';
+  document.getElementById('pay-trust2').textContent = hi?'तत्काल पहुंच':'Instant access';
+  document.getElementById('pay-trust3').textContent = hi?'कोई आवर्ती शुल्क नहीं':'No recurring charges';
+  document.getElementById('pay-skip-link').textContent = hi?'बिना भुगतान के जारी रखें (केवल बेसिक परिणाम)':'Continue without paying (basic result only)';
+}
+
+function loadRazorpay(callback){
+  if(window.Razorpay){ callback(); return; }
+  const s = document.createElement('script');
+  s.src = 'https://checkout.razorpay.com/v1/checkout.js';
+  s.onload = callback;
+  s.onerror = ()=>{ showToast('Could not load payment gateway. Check internet connection.'); };
+  document.head.appendChild(s);
+}
+
+function initiatePayment(){
+  const btn = document.getElementById('pay-btn');
+  btn.disabled = true;
+  btn.textContent = qLang==='hi'?'लोड हो रहा है...':'Loading...';
+
+  loadRazorpay(function(){
+    const options = {
+      key: RAZORPAY_KEY,
+      amount: 600,
+      currency: 'INR',
+      name: 'DiabFit',
+      description: 'Prediabetes risk report + social card',
+      handler: function(response){
+        console.log('Payment OK:', response.razorpay_payment_id);
+        document.getElementById('payment-wrap').style.display='none';
+        if(_pendingState){
+          saveScreeningToBackend(
+            _pendingState.name, _pendingState.city,
+            _pendingState.state, _pendingState.consent
+          );
+        }
+        showResult(true);
+        showToast(qLang==='hi'?'भुगतान सफल! रिपोर्ट तैयार है':'Payment successful! Your report is ready');
+      },
+      prefill: { name: capturedName||'', contact:'', email:'' },
+      notes: {
+        city: capturedCity||'unknown',
+        riskLevel: totalScore()<=5?'low':totalScore()<=12?'moderate':'high'
+      },
+      theme: { color: '#1D9E75' },
+      modal: {
+        ondismiss: function(){
+          btn.disabled=false;
+          btn.textContent=qLang==='hi'?'₹6 UPI / कार्ड से भुगतान करें':'Pay ₹6 with UPI / Card';
+        }
+      }
+    };
+    try {
+      const rzp = new Razorpay(options);
+      rzp.on('payment.failed', function(resp){
+        showToast('Payment failed: '+resp.error.description);
+        btn.disabled=false;
+        btn.textContent=qLang==='hi'?'₹6 UPI / कार्ड से भुगतान करें':'Pay ₹6 with UPI / Card';
+      });
+      rzp.open();
+    } catch(e){
+      console.error('Razorpay error:', e);
+      btn.disabled=false;
+      btn.textContent=qLang==='hi'?'₹6 UPI / कार्ड से भुगतान करें':'Pay ₹6 with UPI / Card';
+      showToast('Payment error. Is your Razorpay Key ID correct?');
+    }
+  });
+}
+
+function skipPayment(){
+  document.getElementById('payment-wrap').style.display='none';
+  showResult(false); // no diet plan for skippers
 }
 
 async function saveScreeningToBackend(name, city, state, consent){
   try {
     const sc = totalScore();
-    // Fix 4: threshold aligned with result screen (<=5=low, <=12=moderate, >12=high)
     const level = sc<=5?'low':sc<=12?'moderate':'high';
+    const body = JSON.stringify({ name, city, state, riskLevel:level, score:sc, consentGiven:consent });
+    console.log('Saving screening:', body);
     const res = await fetch(`${API_BASE}/save-screening`, {
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        name, city, state,
-        riskLevel: level,
-        score: sc,
-        consentGiven: consent
-      })
+      body
     });
+    const txt = await res.text();
     if(!res.ok){
-      const txt = await res.text();
       console.error('save-screening failed:', res.status, txt);
+    } else {
+      console.log('Screening saved OK:', txt);
     }
   } catch(err) {
-    console.error('Could not save screening (non-blocking):', err);
+    console.error('Could not save screening:', err.message);
   }
 }
 
@@ -1345,26 +1449,43 @@ function roundRect(ctx,x,y,w,h,r){
   ctx.closePath();
 }
 function drawFlag(ctx,x,y,w,h){
-  const stripeH=h/3;
-  ctx.fillStyle='#FF9933'; ctx.fillRect(x,y,w,stripeH);
-  ctx.fillStyle='#FFFFFF'; ctx.fillRect(x,y+stripeH,w,stripeH);
-  ctx.fillStyle='#138808'; ctx.fillRect(x,y+stripeH*2,w,stripeH);
-  // Ashoka Chakra with 24 spokes
-  const cx=x+w/2, cy=y+h/2, r=h*0.28, sr=h*0.10;
-  ctx.strokeStyle='#000080'; ctx.fillStyle='#000080';
-  ctx.lineWidth=Math.max(1,h*0.045);
-  ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.stroke();
-  ctx.lineWidth=Math.max(0.5,h*0.02);
-  ctx.beginPath(); ctx.arc(cx,cy,sr,0,Math.PI*2); ctx.stroke();
-  ctx.lineWidth=Math.max(0.5,h*0.018);
+  const s=h/3;
+  // Three stripes
+  ctx.fillStyle='#FF9933'; ctx.fillRect(x,y,w,s);
+  ctx.fillStyle='#FFFFFF'; ctx.fillRect(x,y+s,w,s);
+  ctx.fillStyle='#138808'; ctx.fillRect(x,y+s*2,w,s);
+  // Thin border
+  ctx.strokeStyle='rgba(0,0,0,0.15)'; ctx.lineWidth=0.5;
+  ctx.strokeRect(x,y,w,h);
+  // Ashoka Chakra — navy blue, centered in white stripe
+  const cx=x+w/2, cy=y+s+s/2;
+  const R=s*0.4, sr=s*0.09, hubR=s*0.045;
+  const NAVY='#000080';
+  // Outer ring
+  ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2);
+  ctx.strokeStyle=NAVY; ctx.lineWidth=R*0.14; ctx.stroke();
+  // Inner ring
+  ctx.beginPath(); ctx.arc(cx,cy,sr,0,Math.PI*2);
+  ctx.lineWidth=R*0.07; ctx.stroke();
+  // 24 spokes + teardrop tips
+  ctx.fillStyle=NAVY;
+  ctx.lineWidth=Math.max(0.4,R*0.06);
   for(let i=0;i<24;i++){
-    const a=(i*Math.PI*2)/24;
+    const a=(i*Math.PI*2/24)-(Math.PI/2);
     ctx.beginPath();
-    ctx.moveTo(cx+Math.cos(a)*sr,cy+Math.sin(a)*sr);
-    ctx.lineTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r);
-    ctx.stroke();
+    ctx.moveTo(cx+Math.cos(a)*sr*1.5, cy+Math.sin(a)*sr*1.5);
+    ctx.lineTo(cx+Math.cos(a)*(R*0.88), cy+Math.sin(a)*(R*0.88));
+    ctx.strokeStyle=NAVY; ctx.stroke();
+    // teardrop tip
+    const tA=0.2, tR=R*0.1;
+    ctx.beginPath();
+    ctx.moveTo(cx+Math.cos(a)*R*0.94,    cy+Math.sin(a)*R*0.94);
+    ctx.lineTo(cx+Math.cos(a-tA)*R*0.8,  cy+Math.sin(a-tA)*R*0.8);
+    ctx.lineTo(cx+Math.cos(a+tA)*R*0.8,  cy+Math.sin(a+tA)*R*0.8);
+    ctx.closePath(); ctx.fill();
   }
-  ctx.beginPath(); ctx.arc(cx,cy,h*0.04,0,Math.PI*2); ctx.fill();
+  // Hub dot
+  ctx.beginPath(); ctx.arc(cx,cy,hubR,0,Math.PI*2); ctx.fill();
 }
 function downloadCard(){
   const canvas = document.getElementById('social-canvas');
