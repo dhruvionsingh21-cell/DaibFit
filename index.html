@@ -25,13 +25,9 @@
   nav { background: var(--navy); padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; height: 56px; position: sticky; top: 0; z-index: 100; }
   .logo { color: #fff; font-size: 20px; font-weight: 700; letter-spacing: -0.5px; }
   .logo span { color: var(--green); }
-  .mini-flag { width: 16px; height: 11px; border-radius: 1px; overflow: hidden; display: inline-block; flex-shrink: 0; position: relative; box-shadow: 0 0 0 1px rgba(0,0,0,0.12); }
+  .mini-flag { width: 16px; height: 11px; border-radius: 1px; overflow: hidden; display: inline-block; flex-shrink: 0; }
   .mini-flag div { height: 33.33%; }
-  .mini-flag::after { content: ""; position: absolute; left: 50%; top: 50%; width: 4px; height: 4px; transform: translate(-50%, -50%); border: 1px solid #000080; border-radius: 50%; background: repeating-conic-gradient(#000080 0 8deg, transparent 8deg 15deg); }
   nav .nav-right { display: flex; align-items: center; }
-  .nav-india-mark { display: inline-flex; align-items: center; gap: 6px; margin-left: 1.25rem; color: rgba(255,255,255,0.72); font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; }
-  .nav-india-mark .mini-flag { width: 22px; height: 15px; }
-  .nav-india-mark .mini-flag::after { width: 6px; height: 6px; }
   nav a { color: rgba(255,255,255,0.75); font-size: 13px; text-decoration: none; margin-left: 1.5rem; }
   nav a:hover { color: #fff; }
   .nav-cta { background: var(--green); color: #fff !important; padding: 6px 16px; border-radius: 99px; font-weight: 600; }
@@ -189,32 +185,43 @@
   .footer-social { display: flex; justify-content: center; gap: 14px; margin-top: .75rem; }
   .footer-social a { display: flex; align-items: center; gap: 5px; font-size: 12px; }
 
+  /* Payment screen */
+  .payment-card { background: var(--white); border-radius: 18px; box-shadow: var(--shadow-lg); overflow: hidden; padding: 2rem 1.5rem; text-align: center; }
+  .payment-icon { font-size: 3rem; margin-bottom: .75rem; }
+  .payment-title { font-size: 1.3rem; font-weight: 800; margin-bottom: .5rem; color: var(--text); }
+  .payment-sub { font-size: 13px; color: var(--text2); line-height: 1.65; margin-bottom: 1.5rem; }
+  .payment-amount { display: inline-flex; align-items: baseline; gap: 4px; background: var(--green-light); border: 1.5px solid var(--green); border-radius: 12px; padding: 12px 28px; margin-bottom: 1.25rem; }
+  .payment-amount .rupee { font-size: 1.5rem; font-weight: 700; color: var(--green-dark); }
+  .payment-amount .amount { font-size: 2.8rem; font-weight: 800; color: var(--green-dark); line-height: 1; }
+  .payment-includes { background: #fafafa; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: .85rem 1rem; margin-bottom: 1.25rem; text-align: left; }
+  .payment-includes li { font-size: 13px; color: var(--text2); line-height: 1.8; }
+  .payment-includes li::before { content: "✓ "; color: var(--green); font-weight: 700; }
+  .payment-btn { width: 100%; padding: 14px; border: none; border-radius: var(--radius-sm); background: var(--green); color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; font-family: inherit; margin-bottom: 8px; transition: all .15s; }
+  .payment-btn:hover { filter: brightness(1.05); transform: translateY(-1px); }
+  .payment-btn:disabled { opacity:.5; cursor:wait; transform:none; }
+  .payment-upi-note { font-size: 11px; color: var(--text3); margin-top: 6px; }
+  .payment-skip-link { font-size: 12px; color: var(--text3); margin-top: 10px; display: block; cursor: pointer; text-decoration: underline; }
+  .payment-trust { display: flex; justify-content: center; gap: 1.5rem; margin-top: 1rem; flex-wrap: wrap; }
+  .payment-trust span { font-size: 11px; color: var(--text3); display: flex; align-items: center; gap: 4px; }
+
   @media (max-width: 480px) {
     .hero { padding: 2.25rem 1rem 2.75rem; }
     .hero-stats { gap: 1.4rem; }
     nav a:not(.nav-cta) { display: none; }
-    nav { padding: 0 .75rem; }
-    .nav-india-mark { margin-left: .5rem; gap: 4px; font-size: 9px; }
-    .nav-india-mark .mini-flag { width: 18px; height: 12px; }
-    .nav-india-mark .mini-flag::after { width: 5px; height: 5px; }
-    .nav-cta { margin-left: .55rem; padding: 6px 10px; }
     .lang-switch { margin-left: .5rem; }
-    .lang-switch button { padding: 4px 7px; }
     .question-body { padding: 1.25rem; }
     .quiz-header { padding: 1rem 1.25rem 0; }
     .quiz-footer { padding: .75rem 1.25rem 1.25rem; }
   }
 </style>
+<!-- Razorpay checkout script — loads only when needed -->
+<script src="https://checkout.razorpay.com/v1/checkout.js" defer></script>
 </head>
 <body>
 
 <nav>
   <div class="logo">Diab<span>Fit</span></div>
   <div class="nav-right">
-    <div class="nav-india-mark" aria-label="Make in India">
-      <span class="mini-flag"><div style="background:#FF9933"></div><div style="background:#FFFFFF"></div><div style="background:#138808"></div></span>
-      <span>Make in India</span>
-    </div>
     <a href="#how" id="nav-how">How it works</a>
     <div class="lang-switch">
       <button id="lang-en" class="on" onclick="setUiLang('en')">EN</button>
@@ -308,6 +315,33 @@
     </div>
   </div>
 
+  <div id="payment-wrap" style="display:none">
+    <div class="payment-card">
+      <div class="payment-icon">🔐</div>
+      <div class="payment-title" id="pay-title">Unlock your full report</div>
+      <div class="payment-sub" id="pay-sub">A one-time ₹6 payment unlocks your personalised risk report, downloadable social card, and (if at risk) a 30-day AI diet plan.</div>
+      <div class="payment-amount">
+        <span class="rupee">₹</span>
+        <span class="amount">6</span>
+      </div>
+      <ul class="payment-includes" id="pay-includes">
+        <li>Full risk breakdown across 17 factors</li>
+        <li>Personalised shareable social card</li>
+        <li>30-day AI diet plan (if at risk)</li>
+        <li>Certificate valid for 90 days</li>
+        <li>Your data helps map diabetes risk across India</li>
+      </ul>
+      <button class="payment-btn" id="pay-btn" onclick="initiatePayment()">Pay ₹6 with UPI / Card</button>
+      <div class="payment-upi-note" id="pay-upi-note">🔒 Secured by Razorpay · UPI, Debit/Credit Cards accepted</div>
+      <div class="payment-trust">
+        <span>🛡️ <span id="pay-trust1">Secure payment</span></span>
+        <span>⚡ <span id="pay-trust2">Instant access</span></span>
+        <span>💯 <span id="pay-trust3">No recurring charges</span></span>
+      </div>
+      <span class="payment-skip-link" id="pay-skip-link" onclick="skipPayment()">Continue without paying (basic result only)</span>
+    </div>
+  </div>
+
   <div id="result-wrap" style="display:none">
     <div class="result-card">
       <div class="result-header">
@@ -352,12 +386,14 @@
   <div class="footer-credit">
     <span id="footer-made-by">Made with care by</span>
     <a class="creator-link" href="https://www.linkedin.com/in/harmeet-singh-lubana-054456419" target="_blank" rel="noopener noreferrer">@Harmeet Singh Lubana</a>
-    <span> &nbsp;|&nbsp; Project manager: </span>
-    <a class="creator-link" href="https://www.linkedin.com/in/priyanka-yadav-22316a171/?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BDacQOzR%2BSMmJeqnzBgMlzA%3D%3D" target="_blank" rel="noopener noreferrer">Priyanka Yadav</a>
+    <div style="margin-top:.35rem">
+      <span>Project Manager:</span>
+      <a class="creator-link" href="https://www.linkedin.com/in/priyanka-yadav-22316a171/?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BHWzBMQOBRqqWvysT3sbyCA%3D%3D" target="_blank" rel="noopener noreferrer">Priyanka Yadav</a>
+    </div>
   </div>
   <div class="footer-flag-row">
     <span class="mini-flag"><div style="background:#FF9933"></div><div style="background:#FFFFFF"></div><div style="background:#138808"></div></span>
-    <span id="footer-mii">Make in India</span>
+    <span id="footer-mii">Made in India 🇮🇳</span>
   </div>
 </footer>
 
@@ -445,7 +481,7 @@ const UI_TEXT = {
     dietBtn:'Generate my 30-day AI diet plan', dietLoading:'Creating your plan...', dietTitle:'Your 30-day plan',
     footerTag:'Free prediabetes risk screening for India',
     footerBased:'Based on the validated ADA/WHO FINDRISC questionnaire, adapted for India',
-    footerMadeBy:'Made with care by', footerMii:'Make in India',
+    footerMadeBy:'Made with care by', footerMii:'Made in India 🇮🇳',
     disclaimer:'<strong>Medical disclaimer:</strong> DiabFit uses the validated ADA/WHO FINDRISC questionnaire adapted for India. This is a risk <em>screening tool only</em> — not a medical diagnosis. Only a doctor and blood test (HbA1c or fasting glucose) can diagnose prediabetes. The diet plan is general wellness guidance, not medical advice. Always consult your doctor.',
   },
   hi: {
@@ -474,7 +510,7 @@ const UI_TEXT = {
     dietBtn:'मेरी 30-दिन AI आहार योजना बनाएं', dietLoading:'आपकी योजना बन रही है...', dietTitle:'आपकी 30-दिन योजना',
     footerTag:'भारत के लिए मुफ़्त प्रीडायबिटीज़ जोखिम जांच',
     footerBased:'मान्य ADA/WHO FINDRISC प्रश्नावली पर आधारित, भारत के लिए अनुकूलित',
-    footerMadeBy:'द्वारा सावधानी से बनाया गया', footerMii:'Make in India',
+    footerMadeBy:'द्वारा सावधानी से बनाया गया', footerMii:'भारत में निर्मित 🇮🇳',
     disclaimer:'<strong>चिकित्सा अस्वीकरण:</strong> DiabFit भारत के लिए अनुकूलित मान्य ADA/WHO FINDRISC प्रश्नावली का उपयोग करता है। यह केवल एक जोखिम <em>स्क्रीनिंग टूल</em> है — चिकित्सा निदान नहीं। आहार योजना सामान्य कल्याण मार्गदर्शन है, चिकित्सा सलाह नहीं। हमेशा अपने डॉक्टर से सलाह लें।',
   }
 };
@@ -568,6 +604,7 @@ function restart(){
   cur=0; lastResult=null; capturedName=''; capturedCity='';
   document.getElementById('quiz-wrap').style.display='block';
   document.getElementById('capture-wrap').style.display='none';
+  document.getElementById('payment-wrap').style.display='none';
   document.getElementById('result-wrap').style.display='none';
   render();
   scrollToQuiz();
@@ -935,27 +972,132 @@ function checkCaptureValid(){
   const consent=document.getElementById('cap-consent').checked;
   document.getElementById('cap-submit').disabled = !(name.length>=2 && city.length>=2 && consent);
 }
+// Temp storage for capture data while payment is pending
+let _pendingState = null;
+
 async function submitCapture(){
   capturedName = document.getElementById('cap-name').value.trim();
   capturedCity = document.getElementById('cap-city').value.trim();
-  const state = document.getElementById('cap-state').value;
-  const consent = document.getElementById('cap-consent').checked;
+  _pendingState = {
+    name: capturedName,
+    city: capturedCity,
+    state: document.getElementById('cap-state').value,
+    consent: document.getElementById('cap-consent').checked
+  };
   document.getElementById('capture-wrap').style.display='none';
-  showResult();
-  saveScreeningToBackend(capturedName, capturedCity, state, consent);
+  showPayment();
 }
 function skipCapture(){
   capturedName = qLang==='hi'?'दोस्त':'Friend';
   capturedCity = '';
+  _pendingState = null;
   document.getElementById('capture-wrap').style.display='none';
-  showResult();
+  showResult(false); // free = basic result, no diet plan
+}
+
+// ════════════════════════════════════════════════════════════════
+// PAYMENT SCREEN
+// ════════════════════════════════════════════════════════════════
+// IMPORTANT: Replace 'rzp_test_XXXXXXXXXXXXXXXX' with your actual
+// Razorpay Key ID from razorpay.com after creating your account.
+// Use rzp_test_... for testing, rzp_live_... for production.
+const RAZORPAY_KEY = 'rzp_test_XXXXXXXXXXXXXXXX';
+
+function showPayment(){
+  document.getElementById('payment-wrap').style.display='block';
+  document.getElementById('payment-wrap').scrollIntoView({behavior:'smooth',block:'start'});
+  // Update payment screen text in current language
+  const hi = qLang==='hi';
+  document.getElementById('pay-title').textContent = hi?'अपनी पूरी रिपोर्ट अनलॉक करें':'Unlock your full report';
+  document.getElementById('pay-sub').textContent = hi?'एकमुश्त ₹6 भुगतान करके अपनी व्यक्तिगत जोखिम रिपोर्ट, डाउनलोड करने योग्य सोशल कार्ड और (जोखिम होने पर) 30-दिन की AI आहार योजना अनलॉक करें।':
+    'A one-time ₹6 payment unlocks your personalised risk report, downloadable social card, and (if at risk) a 30-day AI diet plan.';
+  const includes = document.getElementById('pay-includes');
+  includes.innerHTML = (hi?[
+    'सभी 17 जोखिम कारकों का पूरा विवरण',
+    'व्यक्तिगत डाउनलोड करने योग्य सोशल कार्ड',
+    '30-दिन AI आहार योजना (जोखिम होने पर)',
+    '90 दिनों के लिए वैध सर्टिफिकेट',
+    'आपका डेटा भारत भर में मधुमेह जोखिम मैप करने में मदद करता है'
+  ]:[
+    'Full risk breakdown across 17 factors',
+    'Personalised downloadable social card',
+    '30-day AI diet plan (if at risk)',
+    'Certificate valid for 90 days',
+    'Your data helps map diabetes risk across India'
+  ]).map(t=>`<li>${t}</li>`).join('');
+  document.getElementById('pay-btn').textContent = hi?'₹6 UPI / कार्ड से भुगतान करें':'Pay ₹6 with UPI / Card';
+  document.getElementById('pay-upi-note').textContent = hi?'🔒 Razorpay द्वारा सुरक्षित · UPI, डेबिट/क्रेडिट कार्ड स्वीकृत':'🔒 Secured by Razorpay · UPI, Debit/Credit Cards accepted';
+  document.getElementById('pay-trust1').textContent = hi?'सुरक्षित भुगतान':'Secure payment';
+  document.getElementById('pay-trust2').textContent = hi?'तत्काल पहुंच':'Instant access';
+  document.getElementById('pay-trust3').textContent = hi?'कोई आवर्ती शुल्क नहीं':'No recurring charges';
+  document.getElementById('pay-skip-link').textContent = hi?'बिना भुगतान के जारी रखें (केवल बेसिक परिणाम)':'Continue without paying (basic result only)';
+}
+
+function initiatePayment(){
+  const btn = document.getElementById('pay-btn');
+  btn.disabled = true;
+  btn.textContent = qLang==='hi'?'लोड हो रहा है...':'Loading...';
+
+  const options = {
+    key: RAZORPAY_KEY,
+    amount: 600, // ₹6 in paise
+    currency: 'INR',
+    name: 'DiabFit',
+    description: 'Prediabetes risk report + social card',
+    image: 'https://diabfit.netlify.app/favicon.ico',
+    handler: function(response){
+      // Payment successful — response.razorpay_payment_id is the transaction ID
+      console.log('Payment successful:', response.razorpay_payment_id);
+      document.getElementById('payment-wrap').style.display='none';
+      if(_pendingState){
+        saveScreeningToBackend(
+          _pendingState.name, _pendingState.city,
+          _pendingState.state, _pendingState.consent
+        );
+      }
+      showResult(true); // paid = full result with diet plan
+      showToast(qLang==='hi'?'भुगतान सफल! आपकी रिपोर्ट तैयार है':'Payment successful! Your report is ready');
+    },
+    prefill: {
+      name: capturedName || '',
+      contact: '',
+      email: ''
+    },
+    notes: {
+      city: capturedCity || 'unknown',
+      riskLevel: totalScore()<=5?'low':totalScore()<=12?'moderate':'high'
+    },
+    theme: { color: '#1D9E75' },
+    modal: {
+      ondismiss: function(){
+        btn.disabled = false;
+        btn.textContent = qLang==='hi'?'₹6 UPI / कार्ड से भुगतान करें':'Pay ₹6 with UPI / Card';
+      }
+    }
+  };
+
+  try {
+    const rzp = new Razorpay(options);
+    rzp.open();
+  } catch(e){
+    console.error('Razorpay error:', e);
+    btn.disabled=false;
+    btn.textContent=qLang==='hi'?'₹6 UPI / कार्ड से भुगतान करें':'Pay ₹6 with UPI / Card';
+    showToast(qLang==='hi'?'भुगतान लोड नहीं हो सका। Razorpay Key जाँचें।':'Payment could not load. Check Razorpay Key.');
+  }
+}
+
+function skipPayment(){
+  document.getElementById('payment-wrap').style.display='none';
+  showResult(false); // no diet plan for skippers
 }
 
 async function saveScreeningToBackend(name, city, state, consent){
   try {
     const sc = totalScore();
+    // Fix 4: threshold aligned with result screen (<=5=low, <=12=moderate, >12=high)
     const level = sc<=5?'low':sc<=12?'moderate':'high';
-    await fetch(`${API_BASE}/save-screening`, {
+    const res = await fetch(`${API_BASE}/save-screening`, {
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
@@ -965,6 +1107,10 @@ async function saveScreeningToBackend(name, city, state, consent){
         consentGiven: consent
       })
     });
+    if(!res.ok){
+      const txt = await res.text();
+      console.error('save-screening failed:', res.status, txt);
+    }
   } catch(err) {
     console.error('Could not save screening (non-blocking):', err);
   }
@@ -972,8 +1118,10 @@ async function saveScreeningToBackend(name, city, state, consent){
 
 // ════════════════════════════════════════════════════════════════
 // RESULT + SOCIAL CARD + DIET PLAN
+// isPaid: true = full report (diet plan unlocked), false = basic
+// Score thresholds: 0-5 = healthy (green card), 6-12 = moderate challenge, 13+ = high challenge
 // ════════════════════════════════════════════════════════════════
-function showResult(){
+function showResult(isPaid = true){
   document.getElementById('result-wrap').style.display='block';
   document.getElementById('result-wrap').scrollIntoView({behavior:'smooth',block:'start'});
 
@@ -982,17 +1130,25 @@ function showResult(){
   let icon,title,sub,pillBg,pillColor,actHtml,level;
   const rd=retestDate();
 
+  // ── HEALTHY: score ≤5 → green "DiabFit Verified Healthy" card
   if(sc<=5){
     level='low'; icon='✅';
-    title = qLang==='hi'?`${capturedName}, कम जोखिम — हरा टिक!`:`${capturedName}, low risk — green tick earned!`;
-    sub = qLang==='hi'?'आपका जोखिम कम है। स्वस्थ आदतें जारी रखें, अपना कार्ड शेयर करें, और 90 दिनों में दोबारा जांच करें।':'Your profile shows low risk. Keep up the healthy habits, share your card, and retest in 90 days.';
+    title = qLang==='hi'
+      ? `${capturedName} — DiabFit स्वास्थ्य सत्यापित ✓`
+      : `${capturedName} — DiabFit Verified Healthy ✓`;
+    sub = qLang==='hi'
+      ? 'बधाई! आपका स्वास्थ्य प्रोफाइल कम जोखिम दिखाता है। अपना DiabFit हेल्दी कार्ड शेयर करें और दोस्तों को चैलेंज करें।'
+      : 'Congratulations! Your health profile shows low risk. Share your DiabFit Healthy card and challenge your friends to get screened.';
     pillBg='#E1F5EE'; pillColor='#085041';
-    actHtml=`<div class="action-card" style="background:#E1F5EE;border:1px solid #9FE1CB"><h4 style="color:#085041">${qLang==='hi'?'अभी क्या करें':'What to do now'}</h4><ul style="color:#085041">
-      <li>${qLang==='hi'?'अपनी मौजूदा आदतें जारी रखें':'Continue your current habits — they\'re working'}</li>
-      <li>${qLang==='hi'?'साल में एक बार HbA1c जांच कराएं':'Get an annual HbA1c test as good practice'}</li>
-      <li>${qLang==='hi'?'अपना कार्ड शेयर करें और दोस्तों को चुनौती दें':'Share your card and challenge friends'}</li>
-      <li>${qLang==='hi'?'रिमाइंडर सेट करें: '+rd:'Set a reminder to retest on '+rd}</li>
-    </ul></div>`;
+    actHtml=`<div class="action-card" style="background:#E1F5EE;border:1px solid #9FE1CB">
+      <h4 style="color:#085041">${qLang==='hi'?'आप स्वस्थ हैं — यह करें':'You\'re healthy — keep it up'}</h4>
+      <ul style="color:#085041">
+        <li>${qLang==='hi'?'अपनी मौजूदा आदतें जारी रखें':'Continue your current habits — they\'re clearly working'}</li>
+        <li>${qLang==='hi'?'साल में एक बार HbA1c जांच कराएं':'Get an annual HbA1c blood test as good practice'}</li>
+        <li>${qLang==='hi'?'अपना हेल्दी कार्ड शेयर करें — 3 दोस्तों को टैग करें':'Share your healthy card — tag 3 friends to get screened'}</li>
+        <li>${qLang==='hi'?rd+' को दोबारा जांच करें':'Retest on '+rd+' to keep your certificate active'}</li>
+      </ul>
+    </div>`;
   } else if(sc<=12){
     level='moderate'; icon='⚡';
     title = qLang==='hi'?`${capturedName}, मध्यम जोखिम — चैलेंज लें`:`${capturedName}, moderate risk — take the challenge`;
@@ -1067,15 +1223,19 @@ function showResult(){
   document.getElementById('r-actions').innerHTML=actHtml;
 
   const dietSection = document.getElementById('diet-plan-section');
-  if(level==='moderate' || level==='high'){
+  if((level==='moderate' || level==='high') && isPaid){
     dietSection.innerHTML = `<button class="diet-plan-btn" id="diet-btn" onclick="generateDietPlan('${level}')">
       <span>🍽️</span><span id="diet-btn-text">${UI_TEXT[qLang].dietBtn}</span>
     </button>`;
+  } else if((level==='moderate' || level==='high') && !isPaid){
+    dietSection.innerHTML = `<div class="action-card" style="background:#fafafa;border:1px solid #ddd;text-align:center;padding:1rem">
+      <p style="font-size:13px;color:#888">${qLang==='hi'?'🍽️ 30-दिन AI आहार योजना ₹6 भुगतान के साथ उपलब्ध है':'🍽️ 30-day AI diet plan available with ₹6 payment'}</p>
+    </div>`;
   } else {
     dietSection.innerHTML = '';
   }
 
-  lastResult = {level, rd};
+  lastResult = {level, rd, isPaid};
   drawSocialCard(lastResult);
   window._caps = buildCaptions(level, rd);
 }
@@ -1153,63 +1313,113 @@ function drawSocialCard(result){
   const W=1080, H=1080;
   ctx.clearRect(0,0,W,H);
   const isLow = result.level==='low';
+  const hi = qLang==='hi';
+  const name = capturedName || (hi?'मैं':'DiabFit User');
 
+  // ── Background
   const bg = ctx.createLinearGradient(0,0,W,H);
-  if(isLow){ bg.addColorStop(0,'#0d3d2e'); bg.addColorStop(1,'#1a2744'); }
-  else { bg.addColorStop(0,'#3d2a0d'); bg.addColorStop(1,'#1a2744'); }
+  if(isLow){ bg.addColorStop(0,'#062a1e'); bg.addColorStop(0.6,'#0d3d2e'); bg.addColorStop(1,'#1a2744'); }
+  else { bg.addColorStop(0,'#2d1a06'); bg.addColorStop(0.6,'#3d2a0d'); bg.addColorStop(1,'#1a2744'); }
   ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
 
-  ctx.globalAlpha=0.08; ctx.fillStyle='#ffffff';
-  ctx.beginPath(); ctx.arc(120,140,180,0,Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.arc(960,920,220,0,Math.PI*2); ctx.fill();
+  // Decorative circles
+  ctx.globalAlpha=0.06; ctx.fillStyle='#ffffff';
+  ctx.beginPath(); ctx.arc(100,150,200,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(980,930,240,0,Math.PI*2); ctx.fill();
   ctx.globalAlpha=1;
 
+  // ── Top bar: DiabFit logo + flag
   ctx.textAlign='left';
-  ctx.font='700 36px -apple-system, Segoe UI, sans-serif';
+  ctx.font='700 40px -apple-system, Segoe UI, sans-serif';
   ctx.fillStyle='#ffffff';
-  ctx.fillText('DiabFit', 70, 100);
-  drawFlag(ctx, 950, 60, 60, 40);
+  ctx.fillText('Diab', 70, 108);
+  ctx.fillStyle= isLow?'#1D9E75':'#EF9F27';
+  ctx.fillText('Fit', 70+ctx.measureText('Diab').width, 108);
+  // Proper Indian flag top-right
+  drawFlag(ctx, 930, 58, 90, 60);
 
-  ctx.textAlign='center';
-  ctx.font='180px serif';
-  ctx.fillText(isLow?'✅':'⚡', W/2, 420);
+  if(isLow){
+    // ══════ HEALTHY CARD ══════
+    // Large verified checkmark
+    ctx.textAlign='center';
+    ctx.font='200px serif';
+    ctx.fillText('✅', W/2, 430);
 
-  const nameLine = capturedName ? capturedName : (qLang==='hi'?'मैं':'I');
-  ctx.font='800 56px -apple-system, Segoe UI, sans-serif';
-  ctx.fillStyle='#ffffff';
-  const headline = isLow ?
-    (qLang==='hi'?`${nameLine} स्वस्थ है`:`${nameLine} is on track`) :
-    (qLang==='hi'?`${nameLine} ने चुनौती स्वीकार की`:`${nameLine} accepted the challenge`);
-  wrapCanvasText(ctx, headline, W/2, 540, 920, 68);
+    // Person name
+    ctx.font='800 62px -apple-system, Segoe UI, sans-serif';
+    ctx.fillStyle='#ffffff';
+    wrapCanvasText(ctx, name, W/2, 550, 920, 72);
 
-  ctx.font='500 34px -apple-system, Segoe UI, sans-serif';
-  ctx.fillStyle = isLow ? '#9FE1CB' : '#FAC775';
-  const sub = isLow ?
-    (qLang==='hi'?'DiabFit ग्रीन टिक अर्जित किया':'DiabFit green tick earned') :
-    (qLang==='hi'?'#DiabFit30 — 30 दिनों की चुनौती':'#DiabFit30 — 30 day challenge');
-  wrapCanvasText(ctx, sub, W/2, 680, 880, 44);
+    // Verified tag — the key element
+    const verifiedText = hi?'DiabFit स्वास्थ्य सत्यापित':'DiabFit Verified Healthy';
+    ctx.font='700 32px -apple-system, Segoe UI, sans-serif';
+    const vw = ctx.measureText(verifiedText).width+60;
+    ctx.fillStyle='rgba(29,158,117,0.3)';
+    roundRect(ctx, W/2-vw/2, 628, vw, 58, 29); ctx.fill();
+    ctx.strokeStyle='#1D9E75'; ctx.lineWidth=2;
+    roundRect(ctx, W/2-vw/2, 628, vw, 58, 29); ctx.stroke();
+    ctx.fillStyle='#5DCAA5';
+    ctx.fillText(verifiedText, W/2, 667);
 
-  if(capturedCity){
-    ctx.font='500 28px -apple-system, Segoe UI, sans-serif';
-    ctx.fillStyle='rgba(255,255,255,0.6)';
-    ctx.fillText('📍 '+capturedCity, W/2, 740);
+    // Green tick badge (like blue tick but health)
+    const tickBadge = hi?'✓ स्वास्थ्य सत्यापित व्यक्ति':'✓ Health Verified Person';
+    ctx.font='600 26px -apple-system, Segoe UI, sans-serif';
+    ctx.fillStyle='rgba(255,255,255,0.65)';
+    ctx.fillText(tickBadge, W/2, 730);
+
+    if(capturedCity){
+      ctx.font='500 26px -apple-system, Segoe UI, sans-serif';
+      ctx.fillStyle='rgba(255,255,255,0.5)';
+      ctx.fillText('📍 '+capturedCity, W/2, 780);
+    }
+
+    // Retest date
+    ctx.font='400 24px -apple-system, Segoe UI, sans-serif';
+    ctx.fillStyle='rgba(255,255,255,0.38)';
+    ctx.fillText((hi?'अगली जांच: ':'Next check: ')+result.rd, W/2, 850);
+
+  } else {
+    // ══════ CHALLENGE CARD ══════
+    ctx.textAlign='center';
+    ctx.font='180px serif';
+    ctx.fillText('⚡', W/2, 410);
+
+    ctx.font='800 58px -apple-system, Segoe UI, sans-serif';
+    ctx.fillStyle='#ffffff';
+    const headline = hi?`${name} ने चुनौती स्वीकार की`:`${name} accepted the challenge`;
+    wrapCanvasText(ctx, headline, W/2, 540, 920, 70);
+
+    ctx.font='500 32px -apple-system, Segoe UI, sans-serif';
+    ctx.fillStyle='#FAC775';
+    const chalSub = hi?'#DiabFit30 — 30 दिनों में बेहतर स्वास्थ्य':'#DiabFit30 — 30 days to better health';
+    wrapCanvasText(ctx, chalSub, W/2, 660, 880, 44);
+
+    if(capturedCity){
+      ctx.font='500 26px -apple-system, Segoe UI, sans-serif';
+      ctx.fillStyle='rgba(255,255,255,0.55)';
+      ctx.fillText('📍 '+capturedCity, W/2, 730);
+    }
+
+    const pillText = hi?'चैलेंज स्वीकार किया':'CHALLENGE ACCEPTED';
+    ctx.font='700 28px -apple-system, Segoe UI, sans-serif';
+    const pillW = ctx.measureText(pillText).width+70;
+    ctx.fillStyle='rgba(239,159,39,0.25)';
+    roundRect(ctx, W/2-pillW/2, 790, pillW, 60, 30); ctx.fill();
+    ctx.fillStyle='#FAC775';
+    ctx.fillText(pillText, W/2, 830);
+
+    ctx.font='400 24px -apple-system, Segoe UI, sans-serif';
+    ctx.fillStyle='rgba(255,255,255,0.38)';
+    ctx.fillText((hi?'पुनः जांच: ':'Retesting: ')+result.rd, W/2, 910);
   }
 
-  const pillY=830, pillText = isLow?(qLang==='hi'?'कम जोखिम क्षेत्र':'LOW RISK ZONE'):(qLang==='hi'?'चैलेंज स्वीकार किया':'CHALLENGE ACCEPTED');
-  ctx.font='700 28px -apple-system, Segoe UI, sans-serif';
-  const pillW = ctx.measureText(pillText).width+70;
-  ctx.fillStyle = isLow? 'rgba(29,158,117,0.25)':'rgba(239,159,39,0.25)';
-  roundRect(ctx, W/2-pillW/2, pillY-40, pillW, 64, 32); ctx.fill();
-  ctx.fillStyle = isLow? '#5DCAA5':'#FAC775';
-  ctx.fillText(pillText, W/2, pillY+8);
-
-  ctx.font='500 26px -apple-system, Segoe UI, sans-serif';
-  ctx.fillStyle='rgba(255,255,255,0.55)';
-  ctx.fillText(qLang==='hi'?'मुफ़्त जांच लें · diabfit.com':'Take the free check · diabfit.com', W/2, 990);
-
-  ctx.font='400 22px -apple-system, Segoe UI, sans-serif';
-  ctx.fillStyle='rgba(255,255,255,0.35)';
-  ctx.fillText(qLang==='hi'?'भारत में निर्मित 🇮🇳':'Made in India 🇮🇳', W/2, 1030);
+  // ── Bottom branding
+  ctx.font='500 24px -apple-system, Segoe UI, sans-serif';
+  ctx.fillStyle='rgba(255,255,255,0.45)';
+  ctx.fillText(hi?'मुफ़्त जांच लें · diabfit.com':'Take the free check · diabfit.com', W/2, 990);
+  ctx.font='400 20px -apple-system, Segoe UI, sans-serif';
+  ctx.fillStyle='rgba(255,255,255,0.28)';
+  ctx.fillText(hi?'भारत में निर्मित':'Made in India', W/2, 1030);
 }
 
 function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight){
@@ -1238,8 +1448,22 @@ function drawFlag(ctx,x,y,w,h){
   ctx.fillStyle='#FF9933'; ctx.fillRect(x,y,w,stripeH);
   ctx.fillStyle='#FFFFFF'; ctx.fillRect(x,y+stripeH,w,stripeH);
   ctx.fillStyle='#138808'; ctx.fillRect(x,y+stripeH*2,w,stripeH);
-  ctx.strokeStyle='#0C447C'; ctx.lineWidth=1;
-  ctx.beginPath(); ctx.arc(x+w/2,y+h/2,h/8,0,Math.PI*2); ctx.stroke();
+  // Ashoka Chakra with 24 spokes
+  const cx=x+w/2, cy=y+h/2, r=h*0.28, sr=h*0.10;
+  ctx.strokeStyle='#000080'; ctx.fillStyle='#000080';
+  ctx.lineWidth=Math.max(1,h*0.045);
+  ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.stroke();
+  ctx.lineWidth=Math.max(0.5,h*0.02);
+  ctx.beginPath(); ctx.arc(cx,cy,sr,0,Math.PI*2); ctx.stroke();
+  ctx.lineWidth=Math.max(0.5,h*0.018);
+  for(let i=0;i<24;i++){
+    const a=(i*Math.PI*2)/24;
+    ctx.beginPath();
+    ctx.moveTo(cx+Math.cos(a)*sr,cy+Math.sin(a)*sr);
+    ctx.lineTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r);
+    ctx.stroke();
+  }
+  ctx.beginPath(); ctx.arc(cx,cy,h*0.04,0,Math.PI*2); ctx.fill();
 }
 function downloadCard(){
   const canvas = document.getElementById('social-canvas');
