@@ -7,91 +7,122 @@
 //   SUPABASE_URL       — your project URL, e.g. https://xxxxx.supabase.co
 //   SUPABASE_ANON_KEY  — your project's anon/public API key
 
-exports.handler = async function (event) {
+exports.handler = async (event) => {
   const headers = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'Content-Type',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
   };
 
-  if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 200, headers, body: '' };
+  if (event.httpMethod === "OPTIONS") {
+    return {
+      statusCode: 200,
+      headers,
+      body: "",
+    };
   }
 
-  if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, headers, body: JSON.stringify({ error: 'Method not allowed' }) };
+  if (event.httpMethod !== "POST") {
+    return {
+      statusCode: 405,
+      headers,
+      body: JSON.stringify({
+        error: "Method not allowed",
+      }),
+    };
   }
 
   try {
+    console.log("========== NEW REQUEST ==========");
+
+    console.log("Raw body:", event.body);
+
     const body = JSON.parse(event.body);
-    const { name, city, state, riskLevel, score, consentGiven } = body;
 
-    if (!name || !city || !riskLevel) {
-      return {
-        statusCode: 400,
-        headers,
-        body: JSON.stringify({ error: 'Missing required fields: name, city, riskLevel' }),
-      };
-    }
+    console.log("Parsed body:", body);
 
-    if (!['low', 'moderate', 'high'].includes(riskLevel)) {
-      return {
-        statusCode: 400,
-        headers,
-        body: JSON.stringify({ error: 'riskLevel must be low, moderate, or high' }),
-      };
-    }
+    const {
+      name,
+      city,
+      state,
+      riskLevel,
+      score,
+      consentGiven,
+    } = body;
 
     const SUPABASE_URL = process.env.SUPABASE_URL;
     const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
+
+    console.log("Supabase URL exists:", !!SUPABASE_URL);
+    console.log("Supabase Key exists:", !!SUPABASE_ANON_KEY);
 
     if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
       return {
         statusCode: 500,
         headers,
-        body: JSON.stringify({ error: 'Server not configured — missing Supabase credentials' }),
+        body: JSON.stringify({
+          error: "Missing Supabase environment variables",
+        }),
       };
     }
 
-    const response = await fetch(`${SUPABASE_URL}/rest/v1/screenings`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        apikey: SUPABASE_ANON_KEY,
-        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-        Prefer: 'return=minimal',
-      },
-      body: JSON.stringify({
-        name: name.trim().slice(0, 100),
-        city: city.trim().slice(0, 100),
-        state: state ? state.trim().slice(0, 100) : null,
-        risk_level: riskLevel,
-        score: typeof score === 'number' ? score : null,
-        consent_given: !!consentGiven,
-      }),
-    });
+    const payload = {
+      name,
+      city,
+      state: state || null,
+      risk_level: riskLevel,
+      score,
+      consent_given: !!consentGiven,
+    };
+
+    console.log("Sending to Supabase:");
+    console.log(JSON.stringify(payload));
+
+    const response = await fetch(
+      `${SUPABASE_URL}/rest/v1/screenings`,
+      {
+        method: "POST",
+        headers: {
+          apikey: SUPABASE_ANON_KEY,
+          Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+          "Content-Type": "application/json",
+          Prefer: "return=representation",
+        },
+        body: JSON.stringify(payload),
+      }
+    );
+
+    console.log("Supabase Status:", response.status);
+
+    const responseText = await response.text();
+
+    console.log("Supabase Response:");
+    console.log(responseText);
 
     if (!response.ok) {
-      const errText = await response.text();
-      console.error('Supabase insert failed:', errText);
       return {
-        statusCode: 502,
+        statusCode: response.status,
         headers,
-        body: JSON.stringify({ error: 'Failed to save screening' }),
+        body: responseText,
       };
     }
 
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify({ success: true }),
+      body: responseText,
     };
   } catch (err) {
-    console.error('save-screening error:', err);
+    console.error("FULL ERROR");
+    console.error(err);
+
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({ error: 'Internal server error' }),
+      body: JSON.stringify({
+        error: err.message,
+        stack: err.stack,
+      }),
     };
   }
 };
