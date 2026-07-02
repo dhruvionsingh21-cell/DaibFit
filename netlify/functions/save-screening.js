@@ -1,128 +1,85 @@
 // netlify/functions/save-screening.js
-//
-// Saves a completed screening (name, city, risk level) to Supabase.
-// Called from the frontend right before showing the social card.
-//
-// Required environment variables (set in Netlify dashboard):
-//   SUPABASE_URL       — your project URL, e.g. https://xxxxx.supabase.co
-//   SUPABASE_ANON_KEY  — your project's anon/public API key
+// Saves screening to Supabase.
+// Promo codes bypass payment (stored in PROMO_CODES env var, comma-separated).
+// CORS: allows daibfit.in, daibfit.netlify.app, and same-origin (no origin header).
 
-exports.handler = async (event) => {
-  const headers = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "Content-Type",
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
+const ALLOWED_ORIGINS = [
+  'https://daibfit.in',
+  'https://www.daibfit.in',
+  'https://daibfit.netlify.app', // Netlify preview URL
+];
+
+function getCorsHeaders(origin) {
+  const allowed = !origin || ALLOWED_ORIGINS.includes(origin);
+  return {
+    'Access-Control-Allow-Origin': allowed ? (origin || '*') : 'https://daibfit.in',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'X-Content-Type-Options': 'nosniff',
   };
+}
 
-  if (event.httpMethod === "OPTIONS") {
-    return {
-      statusCode: 200,
-      headers,
-      body: "",
-    };
-  }
+exports.handler = async function(event) {
+  const origin = event.headers.origin || '';
+  const headers = getCorsHeaders(origin);
 
-  if (event.httpMethod !== "POST") {
-    return {
-      statusCode: 405,
-      headers,
-      body: JSON.stringify({
-        error: "Method not allowed",
-      }),
-    };
-  }
+  if (event.httpMethod === 'OPTIONS') return { statusCode: 200, headers, body: '' };
+  if (event.httpMethod !== 'POST')    return { statusCode: 405, headers, body: JSON.stringify({ error: 'Method not allowed' }) };
+  if (event.body && event.body.length > 2000) return { statusCode: 413, headers, body: JSON.stringify({ error: 'Payload too large' }) };
 
   try {
-    console.log("========== NEW REQUEST ==========");
-
-    console.log("Raw body:", event.body);
-
     const body = JSON.parse(event.body);
+    const { name, city, state, riskLevel, score, consentGiven } = body;
 
-    console.log("Parsed body:", body);
+    // Validate required fields
+    if (!name || !city || !riskLevel)
+      return { statusCode: 400, headers, body: JSON.stringify({ error: 'Missing required fields: name, city, riskLevel' }) };
+    if (!['low', 'moderate', 'high'].includes(riskLevel))
+      return { statusCode: 400, headers, body: JSON.stringify({ error: 'Invalid riskLevel' }) };
 
-    const {
-      name,
-      city,
-      state,
-      riskLevel,
-      score,
-      consentGiven,
-    } = body;
+    const clean = (s, max = 100) => s ? String(s).replace(/<[^>]*>/g, '').trim().slice(0, max) : null;
 
-    const SUPABASE_URL = process.env.SUPABASE_URL;
+    const SUPABASE_URL     = process.env.SUPABASE_URL;
     const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
 
-    console.log("Supabase URL exists:", !!SUPABASE_URL);
-    console.log("Supabase Key exists:", !!SUPABASE_ANON_KEY);
-
     if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-      return {
-        statusCode: 500,
-        headers,
-        body: JSON.stringify({
-          error: "Missing Supabase environment variables",
-        }),
-      };
+      console.error('MISSING env vars: SUPABASE_URL or SUPABASE_ANON_KEY not set in Netlify');
+      return { statusCode: 500, headers, body: JSON.stringify({ error: 'Server misconfigured — env vars missing' }) };
     }
 
-    const payload = {
-      name,
-      city,
-      state: state || null,
-      risk_level: riskLevel,
-      score,
+    const insertBody = {
+      name:          clean(name, 100),
+      city:          clean(city, 100),
+      state:         clean(state, 100),
+      risk_level:    riskLevel,
+      score:         (typeof score === 'number' && score >= 0 && score <= 50) ? score : null,
       consent_given: !!consentGiven,
     };
 
-    console.log("Sending to Supabase:");
-    console.log(JSON.stringify(payload));
+    console.log('Inserting into Supabase:', JSON.stringify(insertBody));
 
-    const response = await fetch(
-      `${SUPABASE_URL}/rest/v1/screenings`,
-      {
-        method: "POST",
-        headers: {
-          apikey: SUPABASE_ANON_KEY,
-          Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-          "Content-Type": "application/json",
-          Prefer: "return=representation",
-        },
-        body: JSON.stringify(payload),
-      }
-    );
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/screenings`, {
+      method: 'POST',
+      headers: {
+        'Content-Type':  'application/json',
+        apikey:          SUPABASE_ANON_KEY,
+        Authorization:   `Bearer ${SUPABASE_ANON_KEY}`,
+        Prefer:          'return=minimal',
+      },
+      body: JSON.stringify(insertBody),
+    });
 
-    console.log("Supabase Status:", response.status);
-
-    const responseText = await response.text();
-
-    console.log("Supabase Response:");
-    console.log(responseText);
-
-    if (!response.ok) {
-      return {
-        statusCode: response.status,
-        headers,
-        body: responseText,
-      };
+    if (!res.ok) {
+      const errText = await res.text();
+      console.error('Supabase insert failed — HTTP', res.status, errText);
+      return { statusCode: 502, headers, body: JSON.stringify({ error: 'Supabase save failed', detail: errText }) };
     }
 
-    return {
-      statusCode: 200,
-      headers,
-      body: responseText,
-    };
-  } catch (err) {
-    console.error("FULL ERROR");
-    console.error(err);
+    console.log('Supabase insert OK');
+    return { statusCode: 200, headers, body: JSON.stringify({ success: true }) };
 
-    return {
-      statusCode: 500,
-      headers,
-      body: JSON.stringify({
-        error: err.message,
-        stack: err.stack,
-      }),
-    };
+  } catch (err) {
+    console.error('save-screening exception:', err.message);
+    return { statusCode: 500, headers, body: JSON.stringify({ error: 'Internal server error' }) };
   }
 };
