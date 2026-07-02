@@ -999,11 +999,24 @@ async function submitCapture(){
   showPayment();
 }
 function skipCapture(){
-  capturedName = qLang==='hi'?'दोस्त':'Friend';
-  capturedCity = '';
-  _pendingState = null;
-  document.getElementById('capture-wrap').style.display='none';
-  showResult(false); // free = basic result, no diet plan
+
+    capturedName = qLang==='hi' ? 'दोस्त' : 'Friend';
+    capturedCity = '';
+
+    if(_pendingState){
+        saveScreeningToBackend(
+            _pendingState.name,
+            _pendingState.city,
+            _pendingState.state,
+            _pendingState.consent
+        );
+    }
+
+    _pendingState = null;
+
+    document.getElementById('capture-wrap').style.display='none';
+
+    showResult(false);
 }
 
 // ════════════════════════════════════════════════════════════════
