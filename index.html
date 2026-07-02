@@ -399,6 +399,9 @@
   <div class="footer-credit">
     <span id="footer-made-by">Made with care by</span>
     <a class="creator-link" href="https://www.linkedin.com/in/harmeet-singh-lubana-054456419" target="_blank" rel="noopener noreferrer">@Harmeet Singh Lubana</a>
+    &nbsp;|&nbsp;
+    <span id="footer-pm-label">Project manager:</span>
+    <a class="creator-link" href="https://www.linkedin.com/in/priyanka-yadav-22316a171/" target="_blank" rel="noopener noreferrer">Priyanka Yadav</a>
   </div>
   <div class="footer-flag-row">
     <span class="mini-flag"><div style="background:#FF9933"></div><div style="background:#FFFFFF"></div><div style="background:#138808"></div></span>
@@ -566,6 +569,7 @@ function setUiLang(l){
   document.getElementById('footer-tag').textContent=t.footerTag;
   document.getElementById('footer-based').textContent=t.footerBased;
   document.getElementById('footer-made-by').textContent=t.footerMadeBy;
+  if(document.getElementById('footer-pm-label')) document.getElementById('footer-pm-label').textContent = l==='hi'?'प्रोजेक्ट मैनेजर:':'Project manager:';
   document.getElementById('footer-mii').textContent=t.footerMii;
   document.getElementById('disclaimer-text').innerHTML=t.disclaimer;
   render();
@@ -1317,40 +1321,58 @@ function showResult(isPaid = true){
 }
 
 async function generateDietPlan(level){
-  const btn = document.getElementById('diet-btn');
-  const btnText = document.getElementById('diet-btn-text');
-  btn.disabled = true;
-  btn.innerHTML = `<div class="spinner"></div><span>${UI_TEXT[qLang].dietLoading}</span>`;
+  const section = document.getElementById('diet-plan-section');
+  section.innerHTML = `<div class="action-card" style="background:#FAEEDA;border:1px solid #FAC775;text-align:center">
+    <div class="spinner" style="margin:0 auto 8px"></div>
+    <p style="font-size:13px;color:#633806">${UI_TEXT[qLang].dietLoading}</p>
+  </div>`;
 
   try {
-    const bmi = calcBMI();
+    const bmi   = calcBMI();
     const flags = activeLifestyleFlags();
     const response = await fetch(`${API_BASE}/generate-diet-plan`, {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        name: capturedName,
-        riskLevel: level,
-        bmi: bmi,
-        lifestyleFlags: flags,
-        language: qLang
-      })
+      method:  'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ name:capturedName, riskLevel:level, bmi, lifestyleFlags:flags, language:qLang })
     });
+
     const data = await response.json();
+    console.log('[DiabFit] generate-diet-plan response:', response.status, JSON.stringify(data).slice(0,200));
+
     if(!response.ok || !data.plan){
-      throw new Error(data.error || 'Failed to generate plan');
+      // Show specific error message based on error code
+      let userMsg = qLang==='hi'
+        ? 'योजना बनाने में समस्या हुई। कृपया फिर कोशिश करें।'
+        : 'Could not generate your plan right now.';
+
+      if(data.error === 'invalid_api_key' || response.status === 401)
+        userMsg = '⚠️ OpenAI API key is invalid or from a different project. Please update OPENAI_API_KEY in Netlify environment variables with a key from the correct project.';
+      else if(data.error === 'quota_exceeded' || response.status === 429)
+        userMsg = '⚠️ OpenAI quota exceeded. Please add billing credit at platform.openai.com — $5 credit lasts thousands of plans.';
+      else if(data.error === 'api_key_missing')
+        userMsg = '⚠️ OPENAI_API_KEY is not set in Netlify environment variables.';
+      else if(data.error === 'model_not_found')
+        userMsg = '⚠️ The gpt-4o-mini model is not available for this API key. The key may need billing enabled.';
+      else if(data.message)
+        userMsg = '⚠️ ' + data.message;
+
+      section.innerHTML = `<div class="diet-plan-box" style="background:#FCEBEB;border-color:#F7C1C1;color:#501313">
+        <h4 style="margin-bottom:8px">Could not generate plan</h4>
+        <p style="font-size:13px;line-height:1.6">${userMsg}</p>
+      </div>`;
+      return;
     }
-    document.getElementById('diet-plan-section').innerHTML = `
-      <div class="diet-plan-box">
-        <h4>${UI_TEXT[qLang].dietTitle}</h4>
-        ${data.plan.replace(/</g,'&lt;')}
-      </div>`;
+
+    section.innerHTML = `<div class="diet-plan-box">
+      <h4>${UI_TEXT[qLang].dietTitle}</h4>
+      ${data.plan.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\n/g,'<br>')}
+    </div>`;
+
   } catch(err) {
-    console.error(err);
-    document.getElementById('diet-plan-section').innerHTML = `
-      <div class="diet-plan-box" style="background:#FCEBEB;border-color:#F7C1C1;color:#501313">
-        ${qLang==='hi'?'योजना बनाने में समस्या हुई। कृपया फिर कोशिश करें।':'Could not generate your plan right now. Please try again in a moment.'}
-      </div>`;
+    console.error('[DiabFit] generateDietPlan error:', err.message);
+    section.innerHTML = `<div class="diet-plan-box" style="background:#FCEBEB;border-color:#F7C1C1;color:#501313">
+      <p style="font-size:13px">${qLang==='hi'?'नेटवर्क त्रुटि। कृपया पुनः प्रयास करें।':'Network error. Please try again.'}</p>
+    </div>`;
   }
 }
 
