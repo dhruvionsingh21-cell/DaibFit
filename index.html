@@ -324,7 +324,7 @@
       <div class="payment-sub" id="pay-sub">A one-time ₹6 payment unlocks your personalised risk report, downloadable social card, and (if at risk) a 30-day AI diet plan.</div>
       <div class="payment-amount">
         <span class="rupee">₹</span>
-        <span class="amount">6</span>
+        <span class="amount" id="pay-amount-display">6</span>
       </div>
       <ul class="payment-includes" id="pay-includes">
         <li>Full risk breakdown across 17 factors</li>
@@ -333,6 +333,17 @@
         <li>Certificate valid for 90 days</li>
         <li>Your data helps map diabetes risk across India</li>
       </ul>
+      <!-- Promo code row -->
+      <div style="display:flex;gap:8px;margin-bottom:.75rem">
+        <input type="text" id="promo-input" placeholder="Have a promo code?" maxlength="20"
+          style="flex:1;padding:9px 12px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:14px;font-family:inherit;outline:none;text-transform:uppercase;letter-spacing:.08em"
+          oninput="this.value=this.value.toUpperCase()" onkeydown="if(event.key==='Enter')applyPromo()">
+        <button onclick="applyPromo()" id="promo-btn"
+          style="padding:9px 16px;border:none;border-radius:var(--radius-sm);background:var(--navy);color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">
+          Apply
+        </button>
+      </div>
+      <div id="promo-msg" style="font-size:12px;margin-bottom:.5rem;min-height:18px;text-align:center"></div>
       <button class="payment-btn" id="pay-btn" onclick="initiatePayment()">Pay ₹6 with UPI / Card</button>
       <div class="payment-upi-note" id="pay-upi-note">🔒 Secured by Razorpay · UPI, Debit/Credit Cards accepted</div>
       <div class="payment-trust">
@@ -387,20 +398,7 @@
   <div style="margin-top:.4rem"><span id="footer-based">Based on the validated ADA/WHO FINDRISC questionnaire, adapted for India</span> &nbsp;·&nbsp; <a href="#">Privacy</a> &nbsp;·&nbsp; <a href="#">Disclaimer</a></div>
   <div class="footer-credit">
     <span id="footer-made-by">Made with care by</span>
-    <a class="creator-link"
-       href="https://www.linkedin.com/in/harmeet-singh-lubana-054456419"
-       target="_blank"
-       rel="noopener noreferrer">
-        @Harmeet Singh Lubana
-    </a>
-    &nbsp;|&nbsp;
-    <span style="color:#bfbfbf;">Project Manager:</span>
-    <a class="creator-link"
-       href="https://www.linkedin.com/in/priyanka-yadav-22316a171/"
-       target="_blank"
-       rel="noopener noreferrer">
-        Priyanka Yadav
-    </a>
+    <a class="creator-link" href="https://www.linkedin.com/in/harmeet-singh-lubana-054456419" target="_blank" rel="noopener noreferrer">@Harmeet Singh Lubana</a>
   </div>
   <div class="footer-flag-row">
     <span class="mini-flag"><div style="background:#FF9933"></div><div style="background:#FFFFFF"></div><div style="background:#138808"></div></span>
@@ -999,33 +997,20 @@ async function submitCapture(){
   showPayment();
 }
 function skipCapture(){
-
-    capturedName = qLang==='hi' ? 'दोस्त' : 'Friend';
-    capturedCity = '';
-
-    if(_pendingState){
-        saveScreeningToBackend(
-            _pendingState.name,
-            _pendingState.city,
-            _pendingState.state,
-            _pendingState.consent
-        );
-    }
-
-    _pendingState = null;
-
-    document.getElementById('capture-wrap').style.display='none';
-
-    showResult(false);
+  capturedName = qLang==='hi'?'दोस्त':'Friend';
+  capturedCity = '';
+  _pendingState = null;
+  document.getElementById('capture-wrap').style.display='none';
+  showResult(false); // free = basic result, no diet plan
 }
 
 // ════════════════════════════════════════════════════════════════
 // PAYMENT SCREEN
 // ════════════════════════════════════════════════════════════════
-// IMPORTANT: Replace 'rzp_test_T87WWMn7zOQ4cT' with your actual
+// IMPORTANT: Replace 'rzp_test_XXXXXXXXXXXXXXXX' with your actual
 // Razorpay Key ID from razorpay.com after creating your account.
 // Use rzp_test_... for testing, rzp_live_... for production.
-const RAZORPAY_KEY = 'rzp_live_T8FFk6vWsmq0PB';
+const RAZORPAY_KEY = 'rzp_test_XXXXXXXXXXXXXXXX';
 
 function showPayment(){
   document.getElementById('payment-wrap').style.display='block';
@@ -1067,6 +1052,20 @@ function loadRazorpay(callback){
 }
 
 function initiatePayment(){
+  // ── PROMO CODE BYPASS ───────────────────────────
+  if(promoApplied){
+    document.getElementById('payment-wrap').style.display='none';
+    if(_pendingState){
+      saveScreeningToBackend(
+        _pendingState.name, _pendingState.city,
+        _pendingState.state, _pendingState.consent
+      );
+    }
+    showResult(true);
+    showToast(qLang==='hi'?'प्रोमो कोड स्वीकृत! पूरी रिपोर्ट खुल गई':'Promo applied — full report unlocked!');
+    return;
+  }
+  // ── PAID FLOW ────────────────────────────────────
   const btn = document.getElementById('pay-btn');
   btn.disabled = true;
   btn.textContent = qLang==='hi'?'लोड हो रहा है...':'Loading...';
@@ -1122,28 +1121,74 @@ function initiatePayment(){
 
 function skipPayment(){
   document.getElementById('payment-wrap').style.display='none';
-  showResult(false); // no diet plan for skippers
+  showResult(false);
+}
+
+// ════════════════════════════════════════════════════════════════
+// PROMO CODES — add your codes here (all caps)
+// DIABFIT0 = always free (your personal testing code)
+// HEALTH24 = free for friends/family
+// Add more as needed
+// ════════════════════════════════════════════════════════════════
+const PROMO_CODES = ['DIABFIT0', 'HEALTH24', 'PRIYANKA', 'HARMEET0'];
+let promoApplied = false;
+
+function applyPromo(){
+  const code = (document.getElementById('promo-input').value || '').trim().toUpperCase();
+  const msg   = document.getElementById('promo-msg');
+  const btn   = document.getElementById('pay-btn');
+  const amt   = document.getElementById('pay-amount-display');
+
+  if(!code){
+    msg.textContent = 'Please enter a promo code.';
+    msg.style.color = 'var(--red)';
+    return;
+  }
+
+  if(PROMO_CODES.includes(code)){
+    promoApplied = true;
+    msg.textContent = '✅ Promo applied — access is free!';
+    msg.style.color = 'var(--green)';
+    amt.textContent  = '0';
+    btn.textContent  = qLang==='hi'?'मुफ़्त पहुँच प्राप्त करें → ':'Get free access →';
+    btn.style.background = 'var(--green)';
+  } else {
+    promoApplied = false;
+    msg.textContent = '❌ Invalid promo code.';
+    msg.style.color = 'var(--red)';
+  }
 }
 
 async function saveScreeningToBackend(name, city, state, consent){
   try {
-    const sc = totalScore();
+    const sc    = totalScore();
     const level = sc<=5?'low':sc<=12?'moderate':'high';
-    const body = JSON.stringify({ name, city, state, riskLevel:level, score:sc, consentGiven:consent });
-    console.log('Saving screening:', body);
+    const payload = { name, city, state, riskLevel:level, score:sc, consentGiven:consent };
+    console.log('[DiabFit] Calling save-screening:', JSON.stringify(payload));
+
     const res = await fetch(`${API_BASE}/save-screening`, {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body
+      method:  'POST',
+      headers: {'Content-Type':'application/json'},
+      body:    JSON.stringify(payload)
     });
+
+    // Log full response for debugging
     const txt = await res.text();
+    console.log('[DiabFit] save-screening response:', res.status, txt);
+
     if(!res.ok){
-      console.error('save-screening failed:', res.status, txt);
+      console.error('[DiabFit] save-screening FAILED. Status:', res.status, 'Body:', txt);
+      // Show visible error banner so you can see it on mobile too
+      const banner = document.createElement('div');
+      banner.style.cssText = 'position:fixed;top:0;left:0;right:0;background:#E24B4A;color:#fff;padding:10px;font-size:12px;z-index:9999;text-align:center';
+      banner.textContent = 'Save error ' + res.status + ': ' + txt.slice(0,100);
+      document.body.appendChild(banner);
+      setTimeout(()=>banner.remove(), 8000);
     } else {
-      console.log('Screening saved OK:', txt);
+      console.log('[DiabFit] Screening saved to Supabase OK ✅');
     }
   } catch(err) {
-    console.error('Could not save screening:', err.message);
+    console.error('[DiabFit] save-screening exception:', err.message);
   }
 }
 
