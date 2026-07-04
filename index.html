@@ -25,6 +25,8 @@
   nav { background: var(--navy); padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; height: 56px; position: sticky; top: 0; z-index: 100; }
   .logo { color: #fff; font-size: 20px; font-weight: 700; letter-spacing: -0.5px; }
   .logo span { color: var(--green); }
+  .mini-flag { width: 16px; height: 11px; border-radius: 1px; overflow: hidden; display: inline-block; flex-shrink: 0; }
+  .mini-flag div { height: 33.33%; }
   nav .nav-right { display: flex; align-items: center; }
   nav a { color: rgba(255,255,255,0.75); font-size: 13px; text-decoration: none; margin-left: 1.5rem; }
   nav a:hover { color: #fff; }
@@ -445,7 +447,8 @@
     <a class="creator-link" href="https://www.linkedin.com/in/priyanka-yadav-22316a171/" target="_blank" rel="noopener noreferrer">Priyanka Yadav</a>
   </div>
   <div class="footer-flag-row">
-    <span id="footer-mii">Made in India</span>
+    <span class="mini-flag"><div style="background:#FF9933"></div><div style="background:#FFFFFF"></div><div style="background:#138808"></div></span>
+    <span id="footer-mii">Made in India 🇮🇳</span>
   </div>
 </footer>
 
@@ -533,7 +536,7 @@ const UI_TEXT = {
     dietBtn:'Generate my 30-day personalised diet plan', dietLoading:'Creating your plan...', dietTitle:'Your 30-day plan',
     footerTag:'Free prediabetes risk screening for India',
     footerBased:'Based on the validated ADA/WHO FINDRISC questionnaire, adapted for India',
-    footerMadeBy:'Made with care by', footerMii:'Made in India',
+    footerMadeBy:'Made with care by', footerMii:'Made in India 🇮🇳',
     disclaimer:'<strong>Medical disclaimer:</strong> DiabFit uses the validated ADA/WHO FINDRISC questionnaire adapted for India. This is a risk <em>screening tool only</em> — not a medical diagnosis. Only a doctor and blood test (HbA1c or fasting glucose) can diagnose prediabetes. The diet plan is general wellness guidance, not medical advice. Always consult your doctor.',
   },
   hi: {
@@ -562,7 +565,7 @@ const UI_TEXT = {
     dietBtn:'मेरी 30-दिन व्यक्तिगत आहार योजना बनाएं', dietLoading:'आपकी योजना बन रही है...', dietTitle:'आपकी 30-दिन योजना',
     footerTag:'भारत के लिए मुफ़्त प्रीडायबिटीज़ जोखिम जांच',
     footerBased:'मान्य ADA/WHO FINDRISC प्रश्नावली पर आधारित, भारत के लिए अनुकूलित',
-    footerMadeBy:'द्वारा सावधानी से बनाया गया', footerMii:'भारत में निर्मित',
+    footerMadeBy:'द्वारा सावधानी से बनाया गया', footerMii:'भारत में निर्मित 🇮🇳',
     disclaimer:'<strong>चिकित्सा अस्वीकरण:</strong> DiabFit भारत के लिए अनुकूलित मान्य ADA/WHO FINDRISC प्रश्नावली का उपयोग करता है। यह केवल एक जोखिम <em>स्क्रीनिंग टूल</em> है — चिकित्सा निदान नहीं। आहार योजना सामान्य कल्याण मार्गदर्शन है, चिकित्सा सलाह नहीं। हमेशा अपने डॉक्टर से सलाह लें।',
   }
 };
@@ -655,7 +658,6 @@ function restart(){
   S.activity=null;S.diet=null;S.sleep=null;S.stress=null;S.smoking=null;S.alcohol=null;
   S.bp=null;S.familyHx=null;S.prevSugar=null;S.sc={ethnicity:2};
   cur=0; lastResult=null; capturedName=''; capturedCity='';
-  promoApplied=false;
   document.getElementById('quiz-wrap').style.display='block';
   document.getElementById('capture-wrap').style.display='none';
   document.getElementById('payment-wrap').style.display='none';
@@ -1080,7 +1082,6 @@ function showPayment(){
   document.getElementById('payment-wrap').scrollIntoView({behavior:'smooth',block:'start'});
   // Update payment screen text in current language
   const hi = qLang==='hi';
-  promoApplied = false;
   document.getElementById('pay-title').textContent = hi?'अपनी पूरी रिपोर्ट अनलॉक करें':'Unlock your full report';
   document.getElementById('pay-sub').textContent = hi?'एकमुश्त ₹6 भुगतान करके अपनी व्यक्तिगत जोखिम रिपोर्ट, डाउनलोड करने योग्य सोशल कार्ड और (जोखिम होने पर) 30-दिन की आहार योजना अनलॉक करें।':
     'A one-time ₹6 payment unlocks your personalised risk report, downloadable social card, and (if at risk) a 30-day personalised diet plan.';
@@ -1099,11 +1100,6 @@ function showPayment(){
     'Your data helps map diabetes risk across India'
   ]).map(t=>`<li>${t}</li>`).join('');
   document.getElementById('pay-btn').textContent = hi?'₹6 UPI / कार्ड से भुगतान करें':'Pay ₹6 with UPI / Card';
-  document.getElementById('pay-btn').style.background = 'var(--green)';
-  document.getElementById('pay-btn').disabled = false;
-  document.getElementById('pay-amount-display').textContent = '6';
-  document.getElementById('promo-input').value = '';
-  document.getElementById('promo-msg').textContent = '';
   document.getElementById('pay-upi-note').textContent = hi?'🔒 Razorpay द्वारा सुरक्षित · UPI, डेबिट/क्रेडिट कार्ड स्वीकृत':'🔒 Secured by Razorpay · UPI, Debit/Credit Cards accepted';
   document.getElementById('pay-trust1').textContent = hi?'सुरक्षित भुगतान':'Secure payment';
   document.getElementById('pay-trust2').textContent = hi?'तत्काल पहुंच':'Instant access';
@@ -1130,8 +1126,8 @@ function initiatePayment(){
         _pendingState.state, _pendingState.consent
       );
     }
-    showResult(true);
-    showToast(qLang==='hi'?'प्रोमो कोड स्वीकृत! पूरी रिपोर्ट खुल गई':'Promo applied — full report unlocked!');
+    showResult(true, true); // true=paid, true=promoFree (diet plan also free)
+    showToast(qLang==='hi'?'प्रोमो कोड स्वीकृत! पूरी रिपोर्ट और योजना मुफ़्त!':'Promo applied — report + plan unlocked free!');
     return;
   }
   // ── PAID FLOW ────────────────────────────────────
@@ -1244,14 +1240,10 @@ function applyPromo(){
     amt.textContent  = '0';
     btn.textContent  = qLang==='hi'?'मुफ़्त पहुँच प्राप्त करें → ':'Get free access →';
     btn.style.background = 'var(--green)';
-    initiatePayment();
   } else {
     promoApplied = false;
     msg.textContent = '❌ Invalid promo code.';
     msg.style.color = 'var(--red)';
-    amt.textContent  = '6';
-    btn.textContent  = qLang==='hi'?'₹6 UPI / कार्ड से भुगतान करें':'Pay ₹6 with UPI / Card';
-    btn.style.background = 'var(--green)';
   }
 }
 
@@ -1290,8 +1282,8 @@ async function saveScreeningToBackend(name, city, state, consent){
 
 // ════════════════════════════════════════════════════════════════
 // RESULT + SOCIAL CARD + DIET PLAN
-// isPaid MUST be true to see any result. false = locked screen.
-function showResult(isPaid = true){
+// isPaid = true means ₹6 report paid (or promo). promoFree = both ₹6 and ₹49 free.
+function showResult(isPaid = true, promoFree = false){
   if(!isPaid){
     skipPayment();
     return;
@@ -1399,33 +1391,42 @@ function showResult(isPaid = true){
   const dietSection = document.getElementById('diet-plan-section');
   if(level==='moderate' || level==='high'){
     const hi = qLang==='hi';
-    dietSection.innerHTML = `
-      <div style="background:linear-gradient(135deg,#1a2744,#0d3d2e);border-radius:14px;overflow:hidden;margin-bottom:.75rem">
-        <div style="padding:1.1rem 1.25rem">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem">
-            <div>
-              <div style="font-size:11px;font-weight:700;color:#EF9F27;text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px">${hi?'व्यक्तिगत 30-दिन योजना':'Personalised 30-day plan'}</div>
-              <div style="font-size:15px;font-weight:700;color:#fff">${hi?'आहार और गतिविधि योजना':'Diet & activity plan'}</div>
-            </div>
-            <div style="text-align:right">
-              <div style="font-size:1.5rem;font-weight:800;color:#EF9F27">₹49</div>
-              <div style="font-size:10px;color:rgba(255,255,255,0.5)">${hi?'एकमुश्त':'one-time'}</div>
-            </div>
-          </div>
-          <ul style="list-style:none;padding:0;margin:0 0 .85rem">
-            ${[
-              hi?'भारतीय खाने पर आधारित 4-सप्ताह का भोजन प्लान':'4-week meal plan using Indian foods',
-              hi?'दैनिक गतिविधि और व्यायाम सुझाव':'Daily activity and exercise recommendations',
-              hi?'जोखिम कम करने के 5 व्यावहारिक सुझाव':'5 practical tips to lower your specific risk factors',
-              hi?'डाउनलोड करने योग्य PNG कार्ड':'Downloadable plan card to save and share',
-            ].map(t=>`<li style="font-size:12px;color:rgba(255,255,255,0.75);padding:2px 0">✓ ${t}</li>`).join('')}
-          </ul>
-          <button onclick="payForDietPlan()" id="diet-pay-btn"
-            style="width:100%;padding:12px;background:#EF9F27;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">
-            ${hi?'₹49 में योजना अनलॉक करें →':'Unlock my plan for ₹49 →'}
-          </button>
-        </div>
+    if(promoFree){
+      // Promo covers everything — auto-generate diet plan immediately
+      dietSection.innerHTML = `<div style="text-align:center;padding:1rem;background:#FAEEDA;border-radius:12px;border:1px solid #FAC775">
+        <p style="font-size:13px;color:#633806;font-weight:500">🎁 ${hi?'प्रोमो कोड — आहार योजना मुफ़्त में तैयार हो रही है...':'Promo code — building your diet plan for free...'}</p>
       </div>`;
+      setTimeout(()=>generateDietPlan(level), 600);
+    } else {
+      // Paid ₹6 report — show ₹49 locked card for diet plan
+      dietSection.innerHTML = `
+        <div style="background:linear-gradient(135deg,#1a2744,#0d3d2e);border-radius:14px;overflow:hidden;margin-bottom:.75rem">
+          <div style="padding:1.1rem 1.25rem">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem">
+              <div>
+                <div style="font-size:11px;font-weight:700;color:#EF9F27;text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px">${hi?'व्यक्तिगत 30-दिन योजना':'Personalised 30-day plan'}</div>
+                <div style="font-size:15px;font-weight:700;color:#fff">${hi?'आहार और गतिविधि योजना':'Diet & activity plan'}</div>
+              </div>
+              <div style="text-align:right">
+                <div style="font-size:1.5rem;font-weight:800;color:#EF9F27">₹49</div>
+                <div style="font-size:10px;color:rgba(255,255,255,0.5)">${hi?'एकमुश्त':'one-time'}</div>
+              </div>
+            </div>
+            <ul style="list-style:none;padding:0;margin:0 0 .85rem">
+              ${[
+                hi?'भारतीय खाने पर आधारित 4-सप्ताह का भोजन प्लान':'4-week meal plan using Indian foods',
+                hi?'दैनिक गतिविधि और व्यायाम सुझाव':'Daily activity and exercise recommendations',
+                hi?'जोखिम कम करने के 5 व्यावहारिक सुझाव':'5 practical tips to lower your specific risk factors',
+                hi?'डाउनलोड करने योग्य PNG कार्ड':'Downloadable plan card to save and share',
+              ].map(t=>`<li style="font-size:12px;color:rgba(255,255,255,0.75);padding:2px 0">✓ ${t}</li>`).join('')}
+            </ul>
+            <button onclick="payForDietPlan()" id="diet-pay-btn"
+              style="width:100%;padding:12px;background:#EF9F27;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">
+              ${hi?'₹49 में योजना अनलॉक करें →':'Unlock my plan for ₹49 →'}
+            </button>
+          </div>
+        </div>`;
+    }
   } else {
     dietSection.innerHTML = '';
   }
@@ -1433,20 +1434,12 @@ function showResult(isPaid = true){
   lastResult = {level, rd, isPaid};
   drawSocialCard(lastResult);
   window._caps = buildCaptions(level, rd);
-  if(promoApplied && (level==='moderate' || level==='high')){
-    generateDietPlan(level);
-  }
 }
 
 function payForDietPlan(){
   const btn = document.getElementById('diet-pay-btn');
   if(btn){ btn.disabled=true; btn.textContent=qLang==='hi'?'लोड हो रहा है...':'Loading...'; }
   const level = lastResult?.level || 'moderate';
-  if(promoApplied){
-    showToast(qLang==='hi'?'प्रोमो कोड से योजना मुफ्त है':'Promo applied — building your plan for free');
-    generateDietPlan(level);
-    return;
-  }
 
   loadRazorpay(function(){
     const options = {
@@ -1523,157 +1516,184 @@ function drawDietPlanCard(planText, level){
   const section = document.getElementById('diet-plan-section');
   const hi = qLang==='hi';
   const isHigh = level==='high';
-
-  // ── Parse text into paragraphs for the 4 week sections ──────────
-  const paras = planText.split(/\n\n+/).filter(p=>p.trim().length>10);
-
-  // Build structured card HTML with canvas-style visuals using CSS
   const accentColor = isHigh ? '#E24B4A' : '#EF9F27';
-  const accentLight = isHigh ? '#FCEBEB' : '#FAEEDA';
-  const weeks = [
-    { icon:'🌱', week: hi?'सप्ताह 1–2':'Week 1–2', theme: hi?'छोटे बदलाव':'Small changes', color:'#1D9E75', bg:'#E1F5EE' },
-    { icon:'💪', week: hi?'सप्ताह 3–4':'Week 3–4', theme: hi?'नियमितता':'Building habits', color:'#378ADD', bg:'#E6F1FB' },
-  ];
 
-  // Tips from last few paragraphs
-  const tips = paras.slice(-2).join(' ');
-  const mainContent = paras.slice(0, -2);
+  // Store globally for canvas download
+  window._lastPlanText = planText;
+  window._lastPlanLevel = level;
 
-  let html = `
-  <div id="diet-plan-canvas" style="background:linear-gradient(135deg,#1a2744 0%,#0d3d2e 100%);border-radius:18px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.18);margin-bottom:.75rem">
+  // Parse: split on newlines, filter blanks
+  const all = planText.split(/\n+/).map(s=>s.trim()).filter(s=>s.length>20);
+  const intro  = all[0] || '';
+  const mid    = Math.ceil(all.length / 2);
+  const week12 = all.slice(1, mid).join(' ');
+  const week34 = all.slice(mid, all.length - 2).join(' ');
+  const tips   = all.slice(-2).join(' ');
 
-    <!-- Header bar -->
-    <div style="padding:1.25rem 1.5rem .75rem;border-bottom:1px solid rgba(255,255,255,0.1)">
-      <div style="display:flex;align-items:center;justify-content:space-between">
+  const planTitle = capturedName
+    ? (hi ? capturedName+' के लिए 30-दिन योजना' : capturedName+"'s 30-Day Plan")
+    : (hi ? '30-दिन योजना' : '30-Day Wellness Plan');
+
+  section.innerHTML = `
+  <div id="diet-plan-canvas" style="background:linear-gradient(160deg,#1a2744 0%,#0a2018 100%);border-radius:18px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.25);margin-bottom:.75rem">
+
+    <div style="padding:1.25rem 1.5rem .9rem;border-bottom:1px solid rgba(255,255,255,0.1)">
+      <div style="font-size:11px;font-weight:700;color:${accentColor};letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">DiabFit ${hi?'व्यक्तिगत योजना':'Personalised Plan'}</div>
+      <div style="font-size:1.2rem;font-weight:800;color:#fff;margin-bottom:8px">${planTitle}</div>
+      <div style="display:inline-flex;align-items:center;gap:6px;background:${accentColor}20;border:1px solid ${accentColor}50;border-radius:99px;padding:4px 12px">
+        <span style="width:6px;height:6px;border-radius:50%;background:${accentColor};flex-shrink:0"></span>
+        <span style="font-size:11px;color:${accentColor};font-weight:600">${isHigh?(hi?'उच्च जोखिम':'High risk'):(hi?'मध्यम जोखिम':'Moderate risk')} · ${hi?'भारतीय आहार':'Indian food based'}</span>
+      </div>
+    </div>
+
+    <div style="padding:1rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.07)">
+      <p style="font-size:13px;color:rgba(255,255,255,0.85);line-height:1.8">${intro}</p>
+    </div>
+
+    <div style="padding:1rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.07);background:rgba(29,158,117,0.07)">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:.6rem">
+        <span style="font-size:1.25rem">🌱</span>
         <div>
-          <div style="font-size:11px;font-weight:700;color:${accentColor};letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px">${hi?'DiabFit व्यक्तिगत योजना':'DiabFit Personalised Plan'}</div>
-          <div style="font-size:1.1rem;font-weight:800;color:#fff">${hi?capturedName+' के लिए 30-दिन योजना':capturedName ? capturedName+"'s 30-Day Plan" : '30-Day Wellness Plan'}</div>
-        </div>
-        <div style="text-align:right">
-          <div style="font-size:1.8rem;line-height:1">📋</div>
-          <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:2px">${hi?'व्यक्तिगत':'Personalised'}</div>
+          <div style="font-size:10px;font-weight:700;color:#1D9E75;text-transform:uppercase;letter-spacing:.07em">${hi?'सप्ताह 1–2':'Week 1–2'}</div>
+          <div style="font-size:13px;font-weight:700;color:#fff">${hi?'छोटे टिकाऊ बदलाव':'Small sustainable changes'}</div>
         </div>
       </div>
-      <!-- Risk pill -->
-      <div style="display:inline-flex;align-items:center;gap:5px;background:${accentColor}22;border:1px solid ${accentColor}55;border-radius:99px;padding:3px 10px;margin-top:8px">
-        <span style="width:6px;height:6px;border-radius:50%;background:${accentColor};display:inline-block"></span>
-        <span style="font-size:11px;color:${accentColor};font-weight:600">${hi?(isHigh?'उच्च जोखिम — तत्काल कदम':'मध्यम जोखिम — जीवनशैली सुधार'):(isHigh?'High risk — immediate action':'Moderate risk — lifestyle improvement')}</span>
+      <p style="font-size:13px;color:rgba(255,255,255,0.82);line-height:1.8">${week12}</p>
+    </div>
+
+    <div style="padding:1rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.07);background:rgba(55,138,221,0.07)">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:.6rem">
+        <span style="font-size:1.25rem">💪</span>
+        <div>
+          <div style="font-size:10px;font-weight:700;color:#378ADD;text-transform:uppercase;letter-spacing:.07em">${hi?'सप्ताह 3–4':'Week 3–4'}</div>
+          <div style="font-size:13px;font-weight:700;color:#fff">${hi?'नियमितता बनाना':'Building consistency'}</div>
+        </div>
       </div>
+      <p style="font-size:13px;color:rgba(255,255,255,0.82);line-height:1.8">${week34}</p>
     </div>
 
-    <!-- Intro para -->
-    <div style="padding:1rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.08)">
-      <p style="font-size:13px;color:rgba(255,255,255,0.8);line-height:1.7">${paras[0]||''}</p>
+    <div style="padding:1rem 1.5rem;background:rgba(239,159,39,0.07)">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:.5rem">
+        <span style="font-size:1.1rem">💡</span>
+        <span style="font-size:11px;font-weight:700;color:${accentColor};text-transform:uppercase;letter-spacing:.07em">${hi?'भारतीय आहार टिप्स':'Indian Diet Tips'}</span>
+      </div>
+      <p style="font-size:13px;color:rgba(255,255,255,0.82);line-height:1.8">${tips}</p>
     </div>
 
-    <!-- 4-week grid -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,0.08)">
-      ${weeks.map((w,i)=>{
-        const content = mainContent[i+1]||mainContent[i]||'';
-        return `<div style="background:rgba(255,255,255,0.04);padding:1rem">
-          <div style="display:flex;align-items:center;gap:7px;margin-bottom:.5rem">
-            <span style="font-size:1.2rem">${w.icon}</span>
-            <div>
-              <div style="font-size:10px;font-weight:700;color:${w.color};text-transform:uppercase;letter-spacing:.06em">${w.week}</div>
-              <div style="font-size:12px;font-weight:600;color:#fff">${w.theme}</div>
-            </div>
-          </div>
-          <p style="font-size:12px;color:rgba(255,255,255,0.72);line-height:1.65">${content.slice(0,220)}${content.length>220?'…':''}</p>
-        </div>`;
-      }).join('')}
-    </div>
-
-    <!-- Tips section -->
-    <div style="padding:1rem 1.5rem;border-top:1px solid rgba(255,255,255,0.08)">
-      <div style="font-size:11px;font-weight:700;color:${accentColor};text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem">💡 ${hi?'भारतीय आहार टिप्स':'Indian Diet Tips'}</div>
-      <p style="font-size:12px;color:rgba(255,255,255,0.72);line-height:1.7">${tips.slice(0,400)}${tips.length>400?'…':''}</p>
-    </div>
-
-    <!-- Footer -->
-    <div style="padding:.75rem 1.5rem;background:rgba(0,0,0,0.2);display:flex;align-items:center;justify-content:space-between">
-      <div style="font-size:11px;color:rgba(255,255,255,0.45)">${hi?'यह सामान्य स्वास्थ्य मार्गदर्शन है — चिकित्सा सलाह नहीं':'General wellness guidance — not medical advice. Consult your doctor.'}</div>
-      <div style="font-size:10px;color:rgba(255,255,255,0.3);font-weight:600">DiabFit 🇮🇳</div>
+    <div style="padding:.75rem 1.5rem;background:rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:space-between">
+      <span style="font-size:11px;color:rgba(255,255,255,0.38)">${hi?'सामान्य मार्गदर्शन — चिकित्सा सलाह नहीं':'General wellness guidance — not medical advice'}</span>
+      <span style="font-size:11px;color:rgba(255,255,255,0.3);font-weight:600">DiabFit 🇮🇳</span>
     </div>
   </div>
 
-  <!-- Download button -->
-  <button onclick="downloadDietCard()" style="width:100%;padding:11px;background:var(--navy);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:.5rem">
-    ⬇ ${hi?'योजना डाउनलोड करें':'Download your plan'}
+  <button onclick="downloadDietCard()" style="width:100%;padding:12px;background:var(--navy);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:.5rem">
+    ⬇ ${hi?'योजना डाउनलोड करें':'Download your plan as PNG'}
   </button>`;
-
-  section.innerHTML = html;
 }
 
 function downloadDietCard(){
-  const el = document.getElementById('diet-plan-canvas');
-  if(!el){ showToast('Card not ready'); return; }
-  // Screenshot the div as PNG using native browser print
-  const W=1080, H=1400;
-  const canvas = document.createElement('canvas');
-  canvas.width=W; canvas.height=H;
-  const ctx = canvas.getContext('2d');
-
-  // Recreate as canvas drawing for download
   const hi = qLang==='hi';
-  const level = lastResult?.level||'moderate';
-  const isHigh = level==='high';
-  const accent = isHigh?'#E24B4A':'#EF9F27';
+  const planText = window._lastPlanText || '';
+  const level    = window._lastPlanLevel || lastResult?.level || 'moderate';
+  const isHigh   = level==='high';
+  const accent   = isHigh ? '#E24B4A' : '#EF9F27';
+
+  const W=1080, H=1920;
+  const cv = document.createElement('canvas');
+  cv.width=W; cv.height=H;
+  const ctx = cv.getContext('2d');
 
   // Background
-  const bg = ctx.createLinearGradient(0,0,W,H);
-  bg.addColorStop(0,'#1a2744'); bg.addColorStop(1,'#0d3d2e');
+  const bg = ctx.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0,'#1a2744');
+  bg.addColorStop(0.5,'#0d2a1e');
+  bg.addColorStop(1,'#0a1a0f');
   ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
 
-  // Header
-  ctx.fillStyle='rgba(255,255,255,0.06)'; ctx.fillRect(0,0,W,160);
+  // Subtle lines
+  ctx.globalAlpha=0.025;
+  for(let y=0;y<H;y+=48){ctx.fillStyle='#fff';ctx.fillRect(0,y,W,1);}
+  ctx.globalAlpha=1;
+
+  // Header bg
+  ctx.fillStyle='rgba(255,255,255,0.04)'; ctx.fillRect(0,0,W,190);
+
   ctx.textAlign='left';
-  ctx.font=`700 28px -apple-system, Segoe UI, sans-serif`;
+  ctx.font='700 30px Arial, sans-serif';
   ctx.fillStyle=accent;
-  ctx.fillText(hi?'DiabFit व्यक्तिगत योजना':'DiabFit Personalised Plan', 60, 75);
-  ctx.font=`800 52px -apple-system, Segoe UI, sans-serif`;
-  ctx.fillStyle='#fff';
-  const planTitle = capturedName?(hi?capturedName+' के लिए 30-दिन योजना':capturedName+"'s 30-Day Plan"):'30-Day Wellness Plan';
-  ctx.fillText(planTitle, 60, 140);
+  ctx.fillText('DiabFit '+(hi?'30-दिन व्यक्तिगत योजना':'30-Day Personalised Plan'), 60, 72);
 
-  // Divider
-  ctx.fillStyle='rgba(255,255,255,0.1)'; ctx.fillRect(0,165,W,1);
+  ctx.font='800 56px Arial, sans-serif';
+  ctx.fillStyle='#ffffff';
+  const title = capturedName
+    ? (hi ? capturedName+' की 30-दिन योजना' : capturedName+"'s 30-Day Plan")
+    : (hi?'30-दिन योजना':'30-Day Wellness Plan');
+  ctx.fillText(title, 60, 152);
 
-  // Week boxes
-  const weeks=[
-    {icon:'🌱',color:'#1D9E75',week:hi?'सप्ताह 1–2':'Week 1–2',theme:hi?'छोटे बदलाव':'Small changes'},
-    {icon:'💪',color:'#378ADD',week:hi?'सप्ताह 3–4':'Week 3–4',theme:hi?'नियमितता':'Building habits'},
-  ];
-  const boxW=(W-100)/2, boxH=350;
-  weeks.forEach((w,i)=>{
-    const bx=50+i*(boxW+20), by=200;
-    ctx.fillStyle='rgba(255,255,255,0.05)';
-    roundRectFill(ctx,bx,by,boxW,boxH,16);
-    ctx.font=`700 24px -apple-system, Segoe UI, sans-serif`;
-    ctx.fillStyle=w.color;
-    ctx.fillText(w.icon+' '+w.week, bx+24, by+50);
-    ctx.font=`600 28px -apple-system, Segoe UI, sans-serif`;
-    ctx.fillStyle='#fff';
-    ctx.fillText(w.theme, bx+24, by+88);
-  });
+  ctx.fillStyle='rgba(255,255,255,0.1)'; ctx.fillRect(0,195,W,1);
 
-  // Tips header
-  ctx.fillStyle='rgba(255,255,255,0.08)'; ctx.fillRect(0,580,W,1);
-  ctx.font=`700 26px -apple-system, Segoe UI, sans-serif`;
-  ctx.fillStyle=accent; ctx.textAlign='left';
-  ctx.fillText('💡 '+(hi?'भारतीय आहार टिप्स':'Indian Diet Tips'), 60, 640);
+  // Parse text
+  const all = planText.split(/\n+/).map(s=>s.trim()).filter(s=>s.length>20);
+  const intro  = all[0]||'';
+  const mid    = Math.ceil(all.length/2);
+  const week12 = all.slice(1,mid).join(' ');
+  const week34 = all.slice(mid,all.length-2).join(' ');
+  const tips   = all.slice(-2).join(' ');
+
+  function wrapText(ctx,text,x,y,maxW,lh,maxLines){
+    const words=text.split(' ');
+    let line='',drawn=0;
+    for(let n=0;n<words.length;n++){
+      const test=line+words[n]+' ';
+      if(ctx.measureText(test).width>maxW&&n>0){
+        ctx.fillText(line.trim(),x,y); line=words[n]+' '; y+=lh; drawn++;
+        if(drawn>=maxLines){ctx.fillText('…',x,y);return y+lh;}
+      } else line=test;
+    }
+    if(drawn<maxLines)ctx.fillText(line.trim(),x,y);
+    return y+lh;
+  }
+
+  const pad=60, iW=W-pad*2;
+  let y=220;
+
+  // Intro
+  ctx.font='400 28px Arial, sans-serif'; ctx.fillStyle='rgba(255,255,255,0.83)';
+  y=wrapText(ctx,intro,pad,y,iW,42,4)+20;
+
+  // Week 1-2 box
+  ctx.fillStyle='rgba(29,158,117,0.13)'; roundRectFill(ctx,pad,y,iW,420,18);
+  ctx.fillStyle='rgba(29,158,117,0.5)';  roundRectFill(ctx,pad,y,10,420,10);
+  ctx.font='700 26px Arial, sans-serif'; ctx.fillStyle='#1D9E75';
+  ctx.fillText((hi?'सप्ताह 1–2  ·  छोटे बदलाव':'Week 1–2  ·  Small changes'), pad+28, y+48);
+  ctx.font='400 26px Arial, sans-serif'; ctx.fillStyle='rgba(255,255,255,0.82)';
+  wrapText(ctx,week12,pad+28,y+94,iW-56,40,7);
+  y+=440;
+
+  // Week 3-4 box
+  ctx.fillStyle='rgba(55,138,221,0.13)'; roundRectFill(ctx,pad,y,iW,420,18);
+  ctx.fillStyle='rgba(55,138,221,0.5)';  roundRectFill(ctx,pad,y,10,420,10);
+  ctx.font='700 26px Arial, sans-serif'; ctx.fillStyle='#378ADD';
+  ctx.fillText((hi?'सप्ताह 3–4  ·  नियमितता':'Week 3–4  ·  Building consistency'), pad+28, y+48);
+  ctx.font='400 26px Arial, sans-serif'; ctx.fillStyle='rgba(255,255,255,0.82)';
+  wrapText(ctx,week34,pad+28,y+94,iW-56,40,7);
+  y+=440;
+
+  // Tips
+  ctx.fillStyle='rgba(255,255,255,0.08)'; ctx.fillRect(0,y,W,1); y+=30;
+  ctx.font='700 28px Arial, sans-serif'; ctx.fillStyle=accent;
+  ctx.fillText((hi?'💡 भारतीय आहार टिप्स':'💡 Indian Diet Tips'), pad, y+10); y+=54;
+  ctx.font='400 26px Arial, sans-serif'; ctx.fillStyle='rgba(255,255,255,0.82)';
+  wrapText(ctx,tips,pad,y,iW,40,8);
 
   // Footer
-  ctx.fillStyle='rgba(0,0,0,0.3)'; ctx.fillRect(0,H-80,W,80);
-  ctx.font=`400 20px -apple-system, Segoe UI, sans-serif`;
-  ctx.fillStyle='rgba(255,255,255,0.4)';
-  ctx.fillText(hi?'सामान्य स्वास्थ्य मार्गदर्शन — चिकित्सा सलाह नहीं':'General wellness guidance — not medical advice', 60, H-32);
-  ctx.textAlign='right';
-  ctx.fillStyle='rgba(255,255,255,0.3)';
-  ctx.fillText('DiabFit 🇮🇳', W-60, H-32);
+  ctx.fillStyle='rgba(0,0,0,0.35)'; ctx.fillRect(0,H-80,W,80);
+  ctx.font='400 22px Arial, sans-serif'; ctx.fillStyle='rgba(255,255,255,0.35)';
+  ctx.fillText(hi?'सामान्य स्वास्थ्य मार्गदर्शन — चिकित्सा सलाह नहीं':'General wellness guidance — not medical advice · diabfit.in',pad,H-28);
 
   const link=document.createElement('a');
-  link.download='diabfit-plan.png';
-  link.href=canvas.toDataURL('image/png');
+  link.download=`diabfit-plan-${capturedName||'wellness'}.png`;
+  link.href=cv.toDataURL('image/png');
   link.click();
   showToast(hi?'योजना डाउनलोड हो रही है!':'Plan downloading!');
 }
