@@ -294,7 +294,7 @@
 
 <div class="badges-row">
   <div class="badge-chip"><span>✅</span><span id="b1">Green tick certificate</span></div>
-  <div class="badge-chip"><span>⚡</span><span id="b2">30-day AI diet plan</span></div>
+  <div class="badge-chip"><span>⚡</span><span id="b2">30-day personalised diet plan</span></div>
   <div class="badge-chip"><span>🏆</span><span id="b3">Challenge winner trophy</span></div>
   <div class="badge-chip"><span>📤</span><span id="b4">One-tap Instagram share</span></div>
 </div>
@@ -356,7 +356,7 @@
         <span id="cap-consent-text">I agree to share this anonymised data (city and risk level only, no contact details) for public health awareness mapping across India.</span>
       </label>
       <button class="capture-submit" id="cap-submit" onclick="submitCapture()" disabled>Generate my card</button>
-      <button class="capture-skip" id="cap-skip-btn" onclick="skipCapture()">Skip and view result without saving</button>
+      <button class="capture-skip" id="cap-skip-btn" onclick="skipCapture()">Skip name/city and go to payment</button>
     </div>
   </div>
 
@@ -364,7 +364,7 @@
     <div class="payment-card">
       <div class="payment-icon">🔐</div>
       <div class="payment-title" id="pay-title">Unlock your full report</div>
-      <div class="payment-sub" id="pay-sub">Pay ₹6 to unlock your complete personalised health report — risk breakdown, shareable certificate card, and AI diet plan.</div>
+      <div class="payment-sub" id="pay-sub">Pay ₹6 to unlock your complete personalised health report — risk breakdown, shareable certificate card, and diet plan.</div>
       <div class="payment-amount">
         <span class="rupee">₹</span>
         <span class="amount" id="pay-amount-display">6</span>
@@ -373,7 +373,7 @@
         <li>Complete risk breakdown across all 17 factors</li>
         <li>Know your exact risk level — low, moderate, or high</li>
         <li>Personalised shareable social card with your name</li>
-        <li>30-day AI diet plan if you're at risk</li>
+        <li>30-day personalised diet plan if you're at risk</li>
         <li>90-day certificate — retest reminder included</li>
       </ul>
       <!-- Promo code row -->
@@ -518,13 +518,13 @@ const UI_TEXT = {
     heroP:"136 million Indians have diabetes. Crores more don't know they're at risk. Take the screening, earn your certificate, and start a movement.",
     stat1:'Cost', stat2:'To complete', stat3:'Risk factors checked', stat4:'Certificate valid',
     heroBtn:'Start free screening →', heroNote:'Takes 3 minutes. Your data helps map prediabetes risk across India.',
-    b1:'Green tick certificate', b2:'30-day AI diet plan', b3:'Challenge winner trophy', b4:'One-tap Instagram share',
+    b1:'Green tick certificate', b2:'30-day personalised diet plan', b3:'Challenge winner trophy', b4:'One-tap Instagram share',
     howTitle:'How DiabFit works',
     steps:[
       ['1','Answer 17 quick questions','Age, weight, waist, lifestyle, family history'],
       ['2','Get your result','Instant risk score with full breakdown'],
       ['3','Share your card','Name + city — helps map risk across India'],
-      ['4','Get your AI diet plan','If at risk, a personalised 30-day Indian plan'],
+      ['4','Get your diet plan','If at risk, a personalised 30-day Indian plan'],
       ['5','Retest in 90 days','Certificate expires after 3 months — track progress'],
     ],
     capTitle:'Almost there', capSub:'Tell us your name and city so we can personalise your card and track prediabetes risk across India.',
@@ -533,7 +533,7 @@ const UI_TEXT = {
     capSubmit:'Generate my card', capSkip:'Skip and view result without saving',
     shareTitle:'Share your card', ig:'Copy Instagram caption', wa:'Copy WhatsApp message', x:'Copy X (Twitter) post',
     restart:'Start over', download:'Download your card',
-    dietBtn:'Generate my 30-day AI diet plan', dietLoading:'Creating your plan...', dietTitle:'Your 30-day plan',
+    dietBtn:'Generate my 30-day personalised diet plan', dietLoading:'Creating your plan...', dietTitle:'Your 30-day plan',
     footerTag:'Free prediabetes risk screening for India',
     footerBased:'Based on the validated ADA/WHO FINDRISC questionnaire, adapted for India',
     footerMadeBy:'Made with care by', footerMii:'Made in India 🇮🇳',
@@ -547,13 +547,13 @@ const UI_TEXT = {
     heroP:'13.6 करोड़ भारतीयों को मधुमेह है। करोड़ों और लोगों को पता ही नहीं कि वे जोखिम में हैं। जांच लें, सर्टिफिकेट पाएं, और एक आंदोलन शुरू करें।',
     stat1:'लागत', stat2:'पूरा करने में समय', stat3:'जोखिम कारक जांचे गए', stat4:'सर्टिफिकेट वैधता',
     heroBtn:'मुफ़्त जांच शुरू करें →', heroNote:'3 मिनट लगते हैं। आपका डेटा भारत भर में जोखिम मैपिंग में मदद करता है।',
-    b1:'हरा टिक सर्टिफिकेट', b2:'30-दिन AI आहार योजना', b3:'चैलेंज विजेता ट्रॉफी', b4:'इंस्टाग्राम पर एक-टैप शेयर',
+    b1:'हरा टिक सर्टिफिकेट', b2:'30-दिन व्यक्तिगत आहार योजना', b3:'चैलेंज विजेता ट्रॉफी', b4:'इंस्टाग्राम पर एक-टैप शेयर',
     howTitle:'DiabFit कैसे काम करता है',
     steps:[
       ['1','17 त्वरित प्रश्नों के उत्तर दें','उम्र, वजन, कमर, जीवनशैली, पारिवारिक इतिहास'],
       ['2','अपना परिणाम पाएं','तुरंत जोखिम स्कोर और पूरा विवरण'],
       ['3','अपना कार्ड शेयर करें','नाम + शहर — भारत भर में जोखिम मैप करने में मदद करता है'],
-      ['4','अपनी AI आहार योजना पाएं','जोखिम होने पर व्यक्तिगत 30-दिन भारतीय योजना'],
+      ['4','अपनी आहार योजना पाएं','जोखिम होने पर व्यक्तिगत 30-दिन भारतीय योजना'],
       ['5','90 दिनों में दोबारा जांच करें','सर्टिफिकेट 3 महीने बाद समाप्त — प्रगति ट्रैक करें'],
     ],
     capTitle:'लगभग हो गया', capSub:'अपना नाम और शहर बताएं ताकि हम आपका कार्ड व्यक्तिगत बना सकें और भारत भर में प्रीडायबिटीज़ जोखिम ट्रैक कर सकें।',
@@ -562,7 +562,7 @@ const UI_TEXT = {
     capSubmit:'मेरा कार्ड बनाएं', capSkip:'सहेजे बिना परिणाम देखें',
     shareTitle:'अपना कार्ड शेयर करें', ig:'इंस्टाग्राम कैप्शन कॉपी करें', wa:'व्हाट्सएप मैसेज कॉपी करें', x:'X (ट्विटर) पोस्ट कॉपी करें',
     restart:'फिर से शुरू करें', download:'अपना कार्ड डाउनलोड करें',
-    dietBtn:'मेरी 30-दिन AI आहार योजना बनाएं', dietLoading:'आपकी योजना बन रही है...', dietTitle:'आपकी 30-दिन योजना',
+    dietBtn:'मेरी 30-दिन व्यक्तिगत आहार योजना बनाएं', dietLoading:'आपकी योजना बन रही है...', dietTitle:'आपकी 30-दिन योजना',
     footerTag:'भारत के लिए मुफ़्त प्रीडायबिटीज़ जोखिम जांच',
     footerBased:'मान्य ADA/WHO FINDRISC प्रश्नावली पर आधारित, भारत के लिए अनुकूलित',
     footerMadeBy:'द्वारा सावधानी से बनाया गया', footerMii:'भारत में निर्मित 🇮🇳',
@@ -1083,19 +1083,19 @@ function showPayment(){
   // Update payment screen text in current language
   const hi = qLang==='hi';
   document.getElementById('pay-title').textContent = hi?'अपनी पूरी रिपोर्ट अनलॉक करें':'Unlock your full report';
-  document.getElementById('pay-sub').textContent = hi?'एकमुश्त ₹6 भुगतान करके अपनी व्यक्तिगत जोखिम रिपोर्ट, डाउनलोड करने योग्य सोशल कार्ड और (जोखिम होने पर) 30-दिन की AI आहार योजना अनलॉक करें।':
-    'A one-time ₹6 payment unlocks your personalised risk report, downloadable social card, and (if at risk) a 30-day AI diet plan.';
+  document.getElementById('pay-sub').textContent = hi?'एकमुश्त ₹6 भुगतान करके अपनी व्यक्तिगत जोखिम रिपोर्ट, डाउनलोड करने योग्य सोशल कार्ड और (जोखिम होने पर) 30-दिन की आहार योजना अनलॉक करें।':
+    'A one-time ₹6 payment unlocks your personalised risk report, downloadable social card, and (if at risk) a 30-day personalised diet plan.';
   const includes = document.getElementById('pay-includes');
   includes.innerHTML = (hi?[
     'सभी 17 जोखिम कारकों का पूरा विवरण',
     'व्यक्तिगत डाउनलोड करने योग्य सोशल कार्ड',
-    '30-दिन AI आहार योजना (जोखिम होने पर)',
+    '30-दिन व्यक्तिगत आहार योजना (जोखिम होने पर)',
     '90 दिनों के लिए वैध सर्टिफिकेट',
     'आपका डेटा भारत भर में मधुमेह जोखिम मैप करने में मदद करता है'
   ]:[
     'Full risk breakdown across 17 factors',
     'Personalised downloadable social card',
-    '30-day AI diet plan (if at risk)',
+    '30-day personalised diet plan (if at risk)',
     'Certificate valid for 90 days',
     'Your data helps map diabetes risk across India'
   ]).map(t=>`<li>${t}</li>`).join('');
@@ -1185,8 +1185,31 @@ function initiatePayment(){
 }
 
 function skipPayment(){
+  // No free result — show a locked screen instead
   document.getElementById('payment-wrap').style.display='none';
-  showResult(false);
+  document.getElementById('result-wrap').style.display='block';
+  document.getElementById('result-wrap').scrollIntoView({behavior:'smooth',block:'start'});
+  const hi = qLang==='hi';
+  document.getElementById('result-wrap').innerHTML = `
+    <div class="result-card" style="text-align:center;padding:3rem 1.5rem">
+      <div style="font-size:3.5rem;margin-bottom:1rem">🔒</div>
+      <div style="font-size:1.3rem;font-weight:800;color:var(--text);margin-bottom:.75rem">
+        ${hi?'रिपोर्ट देखने के लिए ₹6 का भुगतान करें':'Pay ₹6 to see your report'}
+      </div>
+      <p style="font-size:14px;color:var(--text2);line-height:1.7;max-width:400px;margin:0 auto 1.5rem">
+        ${hi?'आपने सभी सवालों के जवाब दे दिए हैं। अपना पूरा जोखिम विश्लेषण, सर्टिफिकेट कार्ड और व्यक्तिगत सुझाव देखने के लिए ₹6 का भुगतान करें।':'You\'ve completed all the questions. Pay ₹6 to unlock your full risk analysis, shareable certificate card, and personalised recommendations.'}
+      </p>
+      <div style="background:var(--green-light);border:1.5px solid var(--green);border-radius:12px;padding:1rem;max-width:320px;margin:0 auto 1.5rem">
+        <div style="font-size:2rem;font-weight:800;color:var(--green-dark)">₹6</div>
+        <div style="font-size:12px;color:var(--green-dark);margin-top:2px">${hi?'एकमुश्त भुगतान — कोई सदस्यता नहीं':'One-time · No subscription'}</div>
+      </div>
+      <button onclick="showPayment()" style="width:100%;max-width:320px;padding:14px;border:none;border-radius:10px;background:var(--green);color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:10px">
+        ${hi?'₹6 भुगतान करें और रिपोर्ट देखें →':'Pay ₹6 and see my report →'}
+      </button>
+      <button onclick="restart()" style="width:100%;max-width:320px;padding:11px;border:1.5px solid var(--border);border-radius:10px;background:#fff;color:var(--text2);font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">
+        ${hi?'फिर से शुरू करें':'Start over'}
+      </button>
+    </div>`;
 }
 
 // ════════════════════════════════════════════════════════════════
@@ -1259,10 +1282,12 @@ async function saveScreeningToBackend(name, city, state, consent){
 
 // ════════════════════════════════════════════════════════════════
 // RESULT + SOCIAL CARD + DIET PLAN
-// isPaid: true = full report (diet plan unlocked), false = basic
-// Score thresholds: 0-5 = healthy (green card), 6-12 = moderate challenge, 13+ = high challenge
-// ════════════════════════════════════════════════════════════════
+// isPaid MUST be true to see any result. false = locked screen.
 function showResult(isPaid = true){
+  if(!isPaid){
+    skipPayment();
+    return;
+  }
   document.getElementById('result-wrap').style.display='block';
   document.getElementById('result-wrap').scrollIntoView({behavior:'smooth',block:'start'});
 
@@ -1364,14 +1389,35 @@ function showResult(isPaid = true){
   document.getElementById('r-actions').innerHTML=actHtml;
 
   const dietSection = document.getElementById('diet-plan-section');
-  if((level==='moderate' || level==='high') && isPaid){
-    dietSection.innerHTML = `<button class="diet-plan-btn" id="diet-btn" onclick="generateDietPlan('${level}')">
-      <span>🍽️</span><span id="diet-btn-text">${UI_TEXT[qLang].dietBtn}</span>
-    </button>`;
-  } else if((level==='moderate' || level==='high') && !isPaid){
-    dietSection.innerHTML = `<div class="action-card" style="background:#fafafa;border:1px solid #ddd;text-align:center;padding:1rem">
-      <p style="font-size:13px;color:#888">${qLang==='hi'?'🍽️ 30-दिन AI आहार योजना ₹6 भुगतान के साथ उपलब्ध है':'🍽️ 30-day AI diet plan available with ₹6 payment'}</p>
-    </div>`;
+  if(level==='moderate' || level==='high'){
+    const hi = qLang==='hi';
+    dietSection.innerHTML = `
+      <div style="background:linear-gradient(135deg,#1a2744,#0d3d2e);border-radius:14px;overflow:hidden;margin-bottom:.75rem">
+        <div style="padding:1.1rem 1.25rem">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem">
+            <div>
+              <div style="font-size:11px;font-weight:700;color:#EF9F27;text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px">${hi?'व्यक्तिगत 30-दिन योजना':'Personalised 30-day plan'}</div>
+              <div style="font-size:15px;font-weight:700;color:#fff">${hi?'आहार और गतिविधि योजना':'Diet & activity plan'}</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:1.5rem;font-weight:800;color:#EF9F27">₹49</div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.5)">${hi?'एकमुश्त':'one-time'}</div>
+            </div>
+          </div>
+          <ul style="list-style:none;padding:0;margin:0 0 .85rem">
+            ${[
+              hi?'भारतीय खाने पर आधारित 4-सप्ताह का भोजन प्लान':'4-week meal plan using Indian foods',
+              hi?'दैनिक गतिविधि और व्यायाम सुझाव':'Daily activity and exercise recommendations',
+              hi?'जोखिम कम करने के 5 व्यावहारिक सुझाव':'5 practical tips to lower your specific risk factors',
+              hi?'डाउनलोड करने योग्य PNG कार्ड':'Downloadable plan card to save and share',
+            ].map(t=>`<li style="font-size:12px;color:rgba(255,255,255,0.75);padding:2px 0">✓ ${t}</li>`).join('')}
+          </ul>
+          <button onclick="payForDietPlan()" id="diet-pay-btn"
+            style="width:100%;padding:12px;background:#EF9F27;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">
+            ${hi?'₹49 में योजना अनलॉक करें →':'Unlock my plan for ₹49 →'}
+          </button>
+        </div>
+      </div>`;
   } else {
     dietSection.innerHTML = '';
   }
@@ -1379,6 +1425,45 @@ function showResult(isPaid = true){
   lastResult = {level, rd, isPaid};
   drawSocialCard(lastResult);
   window._caps = buildCaptions(level, rd);
+}
+
+function payForDietPlan(){
+  const btn = document.getElementById('diet-pay-btn');
+  if(btn){ btn.disabled=true; btn.textContent=qLang==='hi'?'लोड हो रहा है...':'Loading...'; }
+  const level = lastResult?.level || 'moderate';
+
+  loadRazorpay(function(){
+    const options = {
+      key: RAZORPAY_KEY,
+      amount: 4900, // ₹49 in paise
+      currency: 'INR',
+      name: 'DiabFit',
+      description: '30-day personalised diet & activity plan',
+      handler: function(response){
+        console.log('[DiabFit] Diet plan payment OK:', response.razorpay_payment_id);
+        showToast(qLang==='hi'?'भुगतान सफल! योजना तैयार हो रही है...':'Payment successful! Building your plan...');
+        generateDietPlan(level);
+      },
+      prefill: { name: capturedName||'', contact:'', email:'' },
+      theme: { color: '#EF9F27' },
+      modal: {
+        ondismiss: function(){
+          if(btn){ btn.disabled=false; btn.textContent=qLang==='hi'?'₹49 में योजना अनलॉक करें →':'Unlock my plan for ₹49 →'; }
+        }
+      }
+    };
+    try {
+      const rzp = new Razorpay(options);
+      rzp.on('payment.failed', function(){
+        if(btn){ btn.disabled=false; btn.textContent=qLang==='hi'?'₹49 में योजना अनलॉक करें →':'Unlock my plan for ₹49 →'; }
+        showToast(qLang==='hi'?'भुगतान विफल। पुनः प्रयास करें।':'Payment failed. Please try again.');
+      });
+      rzp.open();
+    } catch(e){
+      if(btn){ btn.disabled=false; btn.textContent=qLang==='hi'?'₹49 में योजना अनलॉक करें →':'Unlock my plan for ₹49 →'; }
+      showToast('Payment error: ' + e.message);
+    }
+  });
 }
 
 async function generateDietPlan(level){
