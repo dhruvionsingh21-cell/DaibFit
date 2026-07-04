@@ -655,6 +655,7 @@ function restart(){
   S.activity=null;S.diet=null;S.sleep=null;S.stress=null;S.smoking=null;S.alcohol=null;
   S.bp=null;S.familyHx=null;S.prevSugar=null;S.sc={ethnicity:2};
   cur=0; lastResult=null; capturedName=''; capturedCity='';
+  promoApplied=false;
   document.getElementById('quiz-wrap').style.display='block';
   document.getElementById('capture-wrap').style.display='none';
   document.getElementById('payment-wrap').style.display='none';
@@ -1072,13 +1073,14 @@ function skipCapture(){
 // IMPORTANT: Replace 'rzp_test_XXXXXXXXXXXXXXXX' with your actual
 // Razorpay Key ID from razorpay.com after creating your account.
 // Use rzp_test_... for testing, rzp_live_... for production.
-const RAZORPAY_KEY = 'rzp_test_XXXXXXXXXXXXXXXX';
+const RAZORPAY_KEY = 'rzp_live_T8FFk6vWsmq0PB';
 
 function showPayment(){
   document.getElementById('payment-wrap').style.display='block';
   document.getElementById('payment-wrap').scrollIntoView({behavior:'smooth',block:'start'});
   // Update payment screen text in current language
   const hi = qLang==='hi';
+  promoApplied = false;
   document.getElementById('pay-title').textContent = hi?'अपनी पूरी रिपोर्ट अनलॉक करें':'Unlock your full report';
   document.getElementById('pay-sub').textContent = hi?'एकमुश्त ₹6 भुगतान करके अपनी व्यक्तिगत जोखिम रिपोर्ट, डाउनलोड करने योग्य सोशल कार्ड और (जोखिम होने पर) 30-दिन की आहार योजना अनलॉक करें।':
     'A one-time ₹6 payment unlocks your personalised risk report, downloadable social card, and (if at risk) a 30-day personalised diet plan.';
@@ -1097,6 +1099,11 @@ function showPayment(){
     'Your data helps map diabetes risk across India'
   ]).map(t=>`<li>${t}</li>`).join('');
   document.getElementById('pay-btn').textContent = hi?'₹6 UPI / कार्ड से भुगतान करें':'Pay ₹6 with UPI / Card';
+  document.getElementById('pay-btn').style.background = 'var(--green)';
+  document.getElementById('pay-btn').disabled = false;
+  document.getElementById('pay-amount-display').textContent = '6';
+  document.getElementById('promo-input').value = '';
+  document.getElementById('promo-msg').textContent = '';
   document.getElementById('pay-upi-note').textContent = hi?'🔒 Razorpay द्वारा सुरक्षित · UPI, डेबिट/क्रेडिट कार्ड स्वीकृत':'🔒 Secured by Razorpay · UPI, Debit/Credit Cards accepted';
   document.getElementById('pay-trust1').textContent = hi?'सुरक्षित भुगतान':'Secure payment';
   document.getElementById('pay-trust2').textContent = hi?'तत्काल पहुंच':'Instant access';
@@ -1237,10 +1244,14 @@ function applyPromo(){
     amt.textContent  = '0';
     btn.textContent  = qLang==='hi'?'मुफ़्त पहुँच प्राप्त करें → ':'Get free access →';
     btn.style.background = 'var(--green)';
+    initiatePayment();
   } else {
     promoApplied = false;
     msg.textContent = '❌ Invalid promo code.';
     msg.style.color = 'var(--red)';
+    amt.textContent  = '6';
+    btn.textContent  = qLang==='hi'?'₹6 UPI / कार्ड से भुगतान करें':'Pay ₹6 with UPI / Card';
+    btn.style.background = 'var(--green)';
   }
 }
 
@@ -1422,12 +1433,20 @@ function showResult(isPaid = true){
   lastResult = {level, rd, isPaid};
   drawSocialCard(lastResult);
   window._caps = buildCaptions(level, rd);
+  if(promoApplied && (level==='moderate' || level==='high')){
+    generateDietPlan(level);
+  }
 }
 
 function payForDietPlan(){
   const btn = document.getElementById('diet-pay-btn');
   if(btn){ btn.disabled=true; btn.textContent=qLang==='hi'?'लोड हो रहा है...':'Loading...'; }
   const level = lastResult?.level || 'moderate';
+  if(promoApplied){
+    showToast(qLang==='hi'?'प्रोमो कोड से योजना मुफ्त है':'Promo applied — building your plan for free');
+    generateDietPlan(level);
+    return;
+  }
 
   loadRazorpay(function(){
     const options = {
