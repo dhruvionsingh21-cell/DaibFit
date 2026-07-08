@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DiabFit — Weekly Health Tracker</title>
+<style>
+:root{
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;
+  --amber:#EF9F27;--amber-light:#FAEEDA;--amber-dark:#633806;
+  --red:#E24B4A;--red-light:#FCEBEB;
+  --blue:#378ADD;--blue-light:#E6F1FB;
+  --navy:#1a2744;--navy-light:#253460;
+  --text:#1a1a1a;--text2:#555;--text3:#888;
+  --border:#e0e0e0;--bg:#f7f8fc;--white:#fff;
+  --radius:12px;--shadow:0 2px 12px rgba(0,0,0,0.08);--shadow-lg:0 8px 32px rgba(0,0,0,0.12);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+nav{background:var(--navy);padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:52px;position:sticky;top:0;z-index:100}
+.logo{color:#fff;font-size:18px;font-weight:700}.logo span{color:var(--green)}
+.nav-back{color:rgba(255,255,255,0.7);font-size:13px;text-decoration:none;display:flex;align-items:center;gap:5px}
+.nav-back:hover{color:#fff}
+.main{max-width:680px;margin:0 auto;padding:1.5rem 1rem 4rem}
+.card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:1.25rem;margin-bottom:1rem}
+h2{font-size:1.2rem;font-weight:700;color:var(--text);margin-bottom:.25rem}
+.sub{font-size:13px;color:var(--text3);margin-bottom:1rem}
+
+/* Week selector */
+.week-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem}
+.week-tab{padding:6px 14px;border-radius:99px;font-size:13px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:#fff;color:var(--text2);transition:all .15s;font-family:inherit}
+.week-tab.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.week-tab.done{border-color:var(--green);color:var(--green)}
+
+/* Habit rows */
+.habit-row{display:flex;align-items:center;gap:12px;padding:.75rem 0;border-bottom:1px solid #f0f0f0}
+.habit-row:last-child{border:none}
+.habit-icon{font-size:1.4rem;flex-shrink:0;width:32px;text-align:center}
+.habit-info{flex:1}
+.habit-name{font-size:14px;font-weight:600;color:var(--text)}
+.habit-target{font-size:12px;color:var(--text3);margin-top:1px}
+.habit-controls{display:flex;align-items:center;gap:8px}
+.check-btn{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .15s;flex-shrink:0}
+.check-btn.checked{background:var(--green);border-color:var(--green);color:#fff}
+.num-input{width:64px;padding:5px 8px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;text-align:center;font-family:inherit;color:var(--text)}
+.num-input:focus{outline:none;border-color:var(--green)}
+.unit-label{font-size:12px;color:var(--text3);width:36px}
+
+/* Progress ring */
+.progress-wrap{display:flex;justify-content:center;margin:1rem 0}
+.ring-container{position:relative;width:120px;height:120px}
+.ring-container svg{transform:rotate(-90deg)}
+.ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-pct{font-size:1.5rem;font-weight:800;color:var(--navy)}
+.ring-label{font-size:11px;color:var(--text3)}
+
+/* Summary grid */
+.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:.75rem}
+.summary-item{background:#fafafa;border:1px solid var(--border);border-radius:10px;padding:.75rem .6rem;text-align:center}
+.summary-num{font-size:1.3rem;font-weight:800;color:var(--navy);display:block}
+.summary-label{font-size:11px;color:var(--text3)}
+
+/* Log notes */
+.log-area{width:100%;padding:.75rem;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;resize:vertical;min-height:80px;color:var(--text)}
+.log-area:focus{outline:none;border-color:var(--green)}
+
+/* Chart bars */
+.chart-row{display:flex;align-items:flex-end;gap:6px;height:80px;margin:1rem 0 4px}
+.chart-bar{flex:1;border-radius:6px 6px 0 0;transition:height .4s ease;min-height:4px;position:relative}
+.chart-label{font-size:10px;color:var(--text3);text-align:center}
+.chart-val{position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:700;white-space:nowrap}
+
+/* Toast */
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:var(--text);color:#fff;padding:10px 20px;border-radius:99px;font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999;white-space:nowrap}
+.toast.show{opacity:1}
+
+/* Save button */
+.save-btn{width:100%;padding:13px;border:none;border-radius:10px;background:var(--green);color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s}
+.save-btn:hover{filter:brightness(1.05);transform:translateY(-1px)}
+
+/* Streak badge */
+.streak{display:inline-flex;align-items:center;gap:6px;background:var(--amber-light);border:1px solid var(--amber);border-radius:99px;padding:4px 14px;font-size:12px;font-weight:700;color:var(--amber-dark)}
+
+/* Risk history */
+.risk-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:99px;font-size:12px;font-weight:600}
+.tag-low{background:var(--green-light);color:var(--green-dark)}
+.tag-mod{background:var(--amber-light);color:var(--amber-dark)}
+.tag-high{background:var(--red-light);color:var(--red)}
+.tag-none{background:#f0f0f0;color:#999}
+
+@media(max-width:480px){.summary-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Diab<span>Fit</span> <span style="font-size:12px;opacity:.6;font-weight:400">Tracker</span></div>
+  <a href="/" class="nav-back">← Back to screening</a>
+</nav>
+
+<div class="main">
+
+  <!-- Header -->
+  <div class="card">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+      <div>
+        <h2 id="greeting">Your Weekly Health Tracker</h2>
+        <p class="sub" id="tracker-sub">Track your daily habits across your 30-day plan. Every check-in counts.</p>
+        <div class="streak" id="streak-badge">🔥 0 day streak</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div style="font-size:11px;color:var(--text3);margin-bottom:2px">Last check-in</div>
+        <div id="last-checkin" style="font-size:13px;font-weight:600;color:var(--navy)">Never</div>
+      </div>
+    </div>
+
+    <!-- Progress ring -->
+    <div class="progress-wrap">
+      <div class="ring-container">
+        <svg width="120" height="120" viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="50" fill="none" stroke="#eee" stroke-width="10"/>
+          <circle id="ring-progress" cx="60" cy="60" r="50" fill="none" stroke="var(--green)" stroke-width="10"
+            stroke-dasharray="314" stroke-dashoffset="314" stroke-linecap="round"/>
+        </svg>
+        <div class="ring-center">
+          <div class="ring-pct" id="ring-pct">0%</div>
+          <div class="ring-label">Today</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="summary-grid">
+      <div class="summary-item"><span class="summary-num" id="sum-today">0</span><span class="summary-label">Today's habits</span></div>
+      <div class="summary-item"><span class="summary-num" id="sum-week">0</span><span class="summary-label">This week</span></div>
+      <div class="summary-item"><span class="summary-num" id="sum-total">0</span><span class="summary-label">All time days</span></div>
+    </div>
+  </div>
+
+  <!-- Week selector -->
+  <div class="card">
+    <h2 style="margin-bottom:.75rem" id="week-label">Select Week</h2>
+    <div class="week-tabs" id="week-tabs"></div>
+    <div style="font-size:12px;color:var(--text3)" id="week-theme-label"></div>
+  </div>
+
+  <!-- Daily habits -->
+  <div class="card">
+    <h2 style="margin-bottom:.25rem" id="habits-title">Today's Habits</h2>
+    <p class="sub" id="habits-date"></p>
+    <div id="habits-list"></div>
+  </div>
+
+  <!-- Log / Notes -->
+  <div class="card">
+    <h2 style="margin-bottom:.5rem" id="log-title">How do you feel today?</h2>
+    <textarea class="log-area" id="log-note" placeholder="Note anything — energy level, what you ate, how the walk went..."></textarea>
+    <div style="display:flex;gap:8px;margin-top:.75rem">
+      <select id="log-mood" style="flex:1;padding:9px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;color:var(--text);background:#fff">
+        <option value="">Mood today...</option>
+        <option value="great">😄 Feeling great</option>
+        <option value="good">🙂 Pretty good</option>
+        <option value="okay">😐 Okay</option>
+        <option value="tired">😴 Tired</option>
+        <option value="stressed">😓 Stressed</option>
+      </select>
+      <button class="save-btn" style="flex:1" onclick="saveDay()">✓ Save today</button>
+    </div>
+  </div>
+
+  <!-- Weekly chart -->
+  <div class="card">
+    <h2 style="margin-bottom:.25rem" id="chart-title">This Week's Progress</h2>
+    <p class="sub">Habit completion per day</p>
+    <div class="chart-row" id="chart-bars"></div>
+    <div style="display:flex;gap:6px" id="chart-labels"></div>
+  </div>
+
+  <!-- Risk history -->
+  <div class="card">
+    <h2 style="margin-bottom:.75rem" id="history-title">Screening History</h2>
+    <p class="sub" id="history-sub">Log your DiabFit screening results here to track improvement over time.</p>
+    <div id="risk-history-list"></div>
+    <div style="display:flex;gap:8px;margin-top:.75rem;flex-wrap:wrap">
+      <select id="add-risk-level" style="flex:1;min-width:140px;padding:9px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;color:var(--text);background:#fff">
+        <option value="">Risk level...</option>
+        <option value="low">✅ Low risk</option>
+        <option value="moderate">⚡ Moderate risk</option>
+        <option value="high">🔴 High risk</option>
+      </select>
+      <input type="number" id="add-risk-score" placeholder="Score (e.g. 7)" min="0" max="26"
+        style="flex:1;min-width:80px;padding:9px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;color:var(--text)">
+      <button onclick="addRiskEntry()" style="padding:9px 18px;border:none;border-radius:10px;background:var(--navy);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">
+        + Add
+      </button>
+    </div>
+  </div>
+
+  <!-- Reset -->
+  <div style="text-align:center;margin-top:.5rem">
+    <button onclick="resetAll()" style="background:transparent;border:1.5px solid var(--border);color:var(--text3);padding:8px 20px;border-radius:99px;font-size:12px;cursor:pointer;font-family:inherit">
+      Reset all data
+    </button>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+// DATA — stored in localStorage. Key: 'diabfit_tracker'
+// Structure: { days:{[dateStr]: DayRecord}, riskHistory:[...], streak:N, lastSave:str }
+// DayRecord: { week:N, habits:{[key]:val}, note:str, mood:str, checkedAt:str }
+// ════════════════════════════════════════════════════════════════
+
+const WEEKS = [
+  { n:1, label:'Week 1', theme:'Small sustainable changes', themeHi:'छोटे टिकाऊ बदलाव', color:'#1D9E75' },
+  { n:2, label:'Week 2', theme:'Building rhythm',           themeHi:'नियमितता बनाना',    color:'#4CAF50' },
+  { n:3, label:'Week 3', theme:'Building momentum',         themeHi:'गति बढ़ाएं',          color:'#EF9F27' },
+  { n:4, label:'Week 4', theme:'See the results',           themeHi:'परिणाम देखें',        color:'#378ADD' },
+];
+
+const HABITS = [
+  { key:'walk',    icon:'🚶', name:'Walk / Exercise',  nameHi:'टहलना / व्यायाम',  type:'number', unit:'min',  targets:[15,22,30,40] },
+  { key:'water',   icon:'💧', name:'Water intake',      nameHi:'पानी',              type:'number', unit:'glass',targets:[6,7,8,8]   },
+  { key:'veggies', icon:'🥗', name:'Vegetables',        nameHi:'सब्जी',             type:'check',  unit:'',     targets:[1,2,3,3]   },
+  { key:'sugar',   icon:'🍬', name:'No sugar drinks',   nameHi:'मीठे पेय नहीं',    type:'check',  unit:'',     targets:[1,1,1,1]   },
+  { key:'sleep',   icon:'😴', name:'Sleep 7–8 hours',   nameHi:'7-8 घंटे नींद',   type:'check',  unit:'',     targets:[1,1,1,1]   },
+  { key:'meds',    icon:'💊', name:'Medication / vitamins', nameHi:'दवा / विटामिन', type:'check',  unit:'',     targets:[1,1,1,1]   },
+  { key:'weight',  icon:'⚖️', name:'Weight check',      nameHi:'वजन',              type:'number', unit:'kg',   targets:[0,0,0,0]   },
+  { key:'stress',  icon:'🧘', name:'Stress relief activity', nameHi:'तनाव मुक्ति', type:'check',  unit:'',     targets:[1,1,1,1]   },
+];
+
+const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+let hi = false; // language — matches main site if user set it
+let currentWeek = 1;
+let today = todayStr();
+let data = loadData();
+
+function todayStr(){ return new Date().toISOString().split('T')[0]; }
+function loadData(){
+  try { return JSON.parse(localStorage.getItem('diabfit_tracker')) || {days:{},riskHistory:[],streak:0}; }
+  catch(e){ return {days:{},riskHistory:[],streak:0}; }
+}
+function saveData(){ localStorage.setItem('diabfit_tracker',JSON.stringify(data)); }
+
+function getDayRecord(dateStr){
+  return data.days[dateStr] || {week:currentWeek,habits:{},note:'',mood:'',checkedAt:null};
+}
+
+// ── INIT ──────────────────────────────────────────────────────
+function init(){
+  // Try to detect language from main site
+  try { hi = localStorage.getItem('diabfit_lang')==='hi'; } catch(e){}
+
+  renderWeekTabs();
+  setCurrentWeek(currentWeek);
+  updateHeader();
+  renderRiskHistory();
+  renderWeekChart();
+}
+
+// ── HEADER ───────────────────────────────────────────────────
+function updateHeader(){
+  const rec = getDayRecord(today);
+  const totalHabits = HABITS.length;
+  const done = countChecked(rec);
+  const pct = Math.round((done/totalHabits)*100);
+
+  // Ring
+  const circ = 314;
+  const offset = circ - (circ*pct/100);
+  document.getElementById('ring-progress').style.strokeDashoffset = offset;
+  document.getElementById('ring-pct').textContent = pct+'%';
+
+  // Streak
+  const streak = calcStreak();
+  document.getElementById('streak-badge').textContent = '🔥 '+streak+' day streak';
+
+  // Summary
+  document.getElementById('sum-today').textContent = done+'/'+totalHabits;
+  document.getElementById('sum-week').textContent = weekScore();
+  document.getElementById('sum-total').textContent = Object.keys(data.days).length;
+
+  // Last check-in
+  const last = Object.keys(data.days).sort().reverse()[0];
+  document.getElementById('last-checkin').textContent = last
+    ? new Date(last).toLocaleDateString('en-IN',{day:'numeric',month:'short'})
+    : 'Never';
+}
+
+function countChecked(rec){
+  return HABITS.filter(h=>{
+    const v = rec.habits[h.key];
+    if(h.type==='check') return !!v;
+    return v>0;
+  }).length;
+}
+
+function weekScore(){
+  const days = getThisWeekDays();
+  return days.reduce((sum,d)=>sum+countChecked(getDayRecord(d)),0);
+}
+
+function getThisWeekDays(){
+  const result=[];
+  const d=new Date();
+  const day=d.getDay();
+  for(let i=0;i<7;i++){
+    const dd=new Date(d); dd.setDate(d.getDate()-day+i);
+    result.push(dd.toISOString().split('T')[0]);
+  }
+  return result;
+}
+
+function calcStreak(){
+  let streak=0, d=new Date();
+  while(true){
+    const ds=d.toISOString().split('T')[0];
+    const rec=getDayRecord(ds);
+    if(countChecked(rec)>0) streak++;
+    else if(ds!==today) break;
+    d.setDate(d.getDate()-1);
+    if(streak>100) break;
+  }
+  return streak;
+}
+
+// ── WEEK TABS ────────────────────────────────────────────────
+function renderWeekTabs(){
+  const el = document.getElementById('week-tabs');
+  el.innerHTML = WEEKS.map(w=>{
+    const weeklyCnt = Object.values(data.days).filter(d=>d.week===w.n).length;
+    const isDone = weeklyCnt>=5;
+    const isActive = w.n===currentWeek;
+    return `<button class="week-tab${isActive?' active':''}${isDone&&!isActive?' done':''}"
+      onclick="setCurrentWeek(${w.n})">${w.label}${isDone?' ✓':''}</button>`;
+  }).join('');
+}
+
+function setCurrentWeek(n){
+  currentWeek=n;
+  const w=WEEKS[n-1];
+  document.getElementById('week-theme-label').textContent =
+    (hi?w.themeHi:w.theme)+' · '+[15,22,30,40][n-1]+' min activity target';
+  renderWeekTabs();
+  renderHabits();
+}
+
+// ── HABITS LIST ──────────────────────────────────────────────
+function renderHabits(){
+  const rec = getDayRecord(today);
+  const wIdx = currentWeek-1;
+  const dateLabel = new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'});
+  document.getElementById('habits-date').textContent = dateLabel;
+  document.getElementById('log-note').value = rec.note||'';
+  document.getElementById('log-mood').value = rec.mood||'';
+
+  document.getElementById('habits-list').innerHTML = HABITS.map(h=>{
+    const target = h.targets[wIdx];
+    const val = rec.habits[h.key];
+    const targetLabel = h.type==='number'
+      ? 'Target: '+target+' '+h.unit
+      : 'Mark complete';
+
+    if(h.type==='check'){
+      const checked = !!val;
+      return `<div class="habit-row">
+        <div class="habit-icon">${h.icon}</div>
+        <div class="habit-info">
+          <div class="habit-name">${hi?h.nameHi:h.name}</div>
+          <div class="habit-target">${targetLabel}</div>
+        </div>
+        <div class="habit-controls">
+          <button class="check-btn${checked?' checked':''}" onclick="toggleCheck('${h.key}')">
+            ${checked?'✓':''}
+          </button>
+        </div>
+      </div>`;
+    } else {
+      return `<div class="habit-row">
+        <div class="habit-icon">${h.icon}</div>
+        <div class="habit-info">
+          <div class="habit-name">${hi?h.nameHi:h.name}</div>
+          <div class="habit-target">${targetLabel}</div>
+        </div>
+        <div class="habit-controls">
+          <input class="num-input" type="number" min="0" max="999" step="1"
+            value="${val||''}" placeholder="0"
+            onchange="setNum('${h.key}',this.value)" oninput="setNum('${h.key}',this.value)">
+          <span class="unit-label">${h.unit}</span>
+        </div>
+      </div>`;
+    }
+  }).join('');
+}
+
+function toggleCheck(key){
+  const rec = getDayRecord(today);
+  rec.habits[key] = rec.habits[key] ? 0 : 1;
+  rec.week = currentWeek;
+  data.days[today] = rec;
+  saveData();
+  renderHabits();
+  updateHeader();
+}
+
+function setNum(key,val){
+  const rec = getDayRecord(today);
+  rec.habits[key] = parseFloat(val)||0;
+  rec.week = currentWeek;
+  data.days[today] = rec;
+  saveData();
+  updateHeader();
+}
+
+function saveDay(){
+  const rec = getDayRecord(today);
+  rec.note  = document.getElementById('log-note').value;
+  rec.mood  = document.getElementById('log-mood').value;
+  rec.week  = currentWeek;
+  rec.checkedAt = new Date().toISOString();
+  data.days[today] = rec;
+  saveData();
+  updateHeader();
+  renderWeekChart();
+  showToast('✓ Day saved!');
+}
+
+// ── WEEK CHART ───────────────────────────────────────────────
+function renderWeekChart(){
+  const weekDays = getThisWeekDays();
+  const max = HABITS.length;
+  const bars = document.getElementById('chart-bars');
+  const labels = document.getElementById('chart-labels');
+  const todayIdx = new Date().getDay();
+
+  bars.innerHTML = weekDays.map((d,i)=>{
+    const cnt = countChecked(getDayRecord(d));
+    const pct = max>0?Math.round((cnt/max)*100):0;
+    const h = Math.round((pct/100)*64);
+    const col = d===today?'var(--green)':(cnt>0?'var(--blue)':'var(--border)');
+    return `<div style="flex:1;display:flex;flex-direction:column;align-items:center">
+      <div class="chart-bar" style="width:100%;background:${col};height:${Math.max(4,h)}px;position:relative">
+        ${cnt>0?`<span class="chart-val" style="color:${col}">${cnt}</span>`:''}
+      </div>
+    </div>`;
+  }).join('');
+
+  labels.innerHTML = weekDays.map((d,i)=>`
+    <div style="flex:1;text-align:center;font-size:10px;color:${d===today?'var(--navy)':'var(--text3)'};font-weight:${d===today?'700':'400'}">
+      ${DAYS[i]}
+    </div>`).join('');
+}
+
+// ── RISK HISTORY ─────────────────────────────────────────────
+function renderRiskHistory(){
+  const list = document.getElementById('risk-history-list');
+  const history = (data.riskHistory||[]).slice().reverse();
+
+  if(history.length===0){
+    list.innerHTML=`<p style="font-size:13px;color:var(--text3);padding:.5rem 0">No screening results logged yet. Complete a DiabFit screening and add your result here.</p>`;
+    return;
+  }
+
+  list.innerHTML = history.map(r=>{
+    const cls = r.level==='low'?'tag-low':r.level==='moderate'?'tag-mod':'tag-high';
+    const icon = r.level==='low'?'✅':r.level==='moderate'?'⚡':'🔴';
+    const date = new Date(r.date).toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+    return `<div style="display:flex;align-items:center;justify-content:space-between;padding:.65rem 0;border-bottom:1px solid #f0f0f0">
+      <div>
+        <span class="risk-tag ${cls}">${icon} ${r.level.charAt(0).toUpperCase()+r.level.slice(1)} risk</span>
+        ${r.score?`<span style="font-size:12px;color:var(--text3);margin-left:8px">Score: ${r.score}/26</span>`:''}
+      </div>
+      <span style="font-size:12px;color:var(--text3)">${date}</span>
+    </div>`;
+  }).join('');
+}
+
+function addRiskEntry(){
+  const level = document.getElementById('add-risk-level').value;
+  const score = document.getElementById('add-risk-score').value;
+  if(!level){ showToast('Please select a risk level'); return; }
+  if(!data.riskHistory) data.riskHistory=[];
+  data.riskHistory.push({ level, score:score?parseInt(score):null, date:new Date().toISOString() });
+  saveData();
+  renderRiskHistory();
+  document.getElementById('add-risk-level').value='';
+  document.getElementById('add-risk-score').value='';
+  showToast('Result logged ✓');
+}
+
+function resetAll(){
+  if(!confirm('Reset all tracker data? This cannot be undone.')) return;
+  localStorage.removeItem('diabfit_tracker');
+  data={days:{},riskHistory:[],streak:0};
+  init();
+  showToast('Data reset.');
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2000);
+}
+
+init();
+</script>
+</body>
+</html>

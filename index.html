@@ -239,7 +239,8 @@
 <nav>
   <div class="logo">Diab<span>Fit</span></div>
   <div class="nav-right">
-    <a href="#how" id="nav-how">How it works</a>
+    <a href="/about.html" id="nav-how">About us</a>
+    <a href="/tracker.html" style="color:rgba(255,255,255,0.75);font-size:13px;text-decoration:none;margin-left:1.5rem" id="nav-tracker">Tracker</a>
     <div class="lang-switch">
       <button id="lang-en" class="on" onclick="setUiLang('en')">EN</button>
       <button id="lang-hi" onclick="setUiLang('hi')">हिं</button>
@@ -440,11 +441,10 @@
   <div><strong style="color:#fff">DiabFit</strong> — <span id="footer-tag">Free prediabetes risk screening for India</span></div>
   <div style="margin-top:.4rem"><span id="footer-based">Based on the validated ADA/WHO FINDRISC questionnaire, adapted for India</span> &nbsp;·&nbsp; <a href="#">Privacy</a> &nbsp;·&nbsp; <a href="#">Disclaimer</a></div>
   <div class="footer-credit">
-    <span id="footer-made-by">Made with care by</span>
-    <a class="creator-link" href="https://www.linkedin.com/in/harmeet-singh-lubana-054456419" target="_blank" rel="noopener noreferrer">@Harmeet Singh Lubana</a>
-    &nbsp;|&nbsp;
-    <span id="footer-pm-label">Project manager:</span>
-    <a class="creator-link" href="https://www.linkedin.com/in/priyanka-yadav-22316a171/" target="_blank" rel="noopener noreferrer">Priyanka Yadav</a>
+    <div style="font-size:13px;color:rgba(255,255,255,0.75);font-style:italic;margin-bottom:.5rem;line-height:1.6">
+      "DiabFit exists to help 100 million people detect and prevent diabetes before it becomes irreversible."
+    </div>
+    <span style="color:rgba(255,255,255,0.45)" id="footer-made-by">Made by Preventive Health Care Initiator</span>
   </div>
   <div class="footer-flag-row">
     <span class="mini-flag"><div style="background:#FF9933"></div><div style="background:#FFFFFF"></div><div style="background:#138808"></div></span>
@@ -611,8 +611,7 @@ function setUiLang(l){
   document.getElementById('download-txt').textContent=t.download;
   document.getElementById('footer-tag').textContent=t.footerTag;
   document.getElementById('footer-based').textContent=t.footerBased;
-  document.getElementById('footer-made-by').textContent=t.footerMadeBy;
-  if(document.getElementById('footer-pm-label')) document.getElementById('footer-pm-label').textContent = l==='hi'?'प्रोजेक्ट मैनेजर:':'Project manager:';
+  document.getElementById('footer-made-by').textContent = l==='hi'?'निवारक स्वास्थ्य देखभाल प्रवर्तक द्वारा निर्मित':'Made by Preventive Health Care Initiator';
   document.getElementById('footer-mii').textContent=t.footerMii;
   document.getElementById('disclaimer-text').innerHTML=t.disclaimer;
   render();
@@ -1516,180 +1515,379 @@ function drawDietPlanCard(planText, level){
   const section = document.getElementById('diet-plan-section');
   const hi = qLang==='hi';
   const isHigh = level==='high';
-  const accentColor = isHigh ? '#E24B4A' : '#EF9F27';
+  const accent = isHigh ? '#E24B4A' : '#EF9F27';
+  const accentBg = isHigh ? 'rgba(226,75,74,0.1)' : 'rgba(239,159,39,0.1)';
 
-  // Store globally for canvas download
   window._lastPlanText = planText;
   window._lastPlanLevel = level;
 
-  // Parse: split on newlines, filter blanks
-  const all = planText.split(/\n+/).map(s=>s.trim()).filter(s=>s.length>20);
-  const intro  = all[0] || '';
-  const mid    = Math.ceil(all.length / 2);
-  const week12 = all.slice(1, mid).join(' ');
-  const week34 = all.slice(mid, all.length - 2).join(' ');
-  const tips   = all.slice(-2).join(' ');
+  // ── Parse structured plan from AI text ──────────────────────────
+  // Split into individual sentences/lines, group into 4 weeks + activity + tips
+  const lines = planText.split(/\n+/).map(s=>s.trim()).filter(s=>s.length>15);
+  const total = lines.length;
 
+  // Distribute lines across sections
+  const chunk = Math.max(1, Math.floor(total / 6));
+  const intro    = lines.slice(0, 1).join(' ');
+  const w1Diet   = lines.slice(1, 1+chunk).join(' ');
+  const w2Diet   = lines.slice(1+chunk, 1+chunk*2).join(' ');
+  const w3Diet   = lines.slice(1+chunk*2, 1+chunk*3).join(' ');
+  const w4Diet   = lines.slice(1+chunk*3, 1+chunk*4).join(' ');
+  const activity = lines.slice(1+chunk*4, 1+chunk*5).join(' ');
+  const tips     = lines.slice(1+chunk*5).join(' ');
+
+  const name = capturedName || (hi?'आप':'You');
   const planTitle = capturedName
-    ? (hi ? capturedName+' के लिए 30-दिन योजना' : capturedName+"'s 30-Day Plan")
-    : (hi ? '30-दिन योजना' : '30-Day Wellness Plan');
+    ? (hi ? name+' की 30-दिन योजना' : name+"'s 30-Day Activity & Diet Plan")
+    : (hi ? '30-दिन गतिविधि और आहार योजना' : '30-Day Activity & Diet Plan');
+
+  // ── Week card builder ────────────────────────────────────────────
+  function weekCard(icon, color, weekLabel, theme, dietText, actText){
+    return `
+    <div style="border-radius:14px;overflow:hidden;margin-bottom:10px;border:1px solid ${color}30">
+      <!-- Week header -->
+      <div style="background:${color}18;padding:.75rem 1rem;display:flex;align-items:center;gap:10px;border-bottom:1px solid ${color}25">
+        <span style="font-size:1.4rem">${icon}</span>
+        <div>
+          <div style="font-size:10px;font-weight:700;color:${color};text-transform:uppercase;letter-spacing:.08em">${weekLabel}</div>
+          <div style="font-size:14px;font-weight:700;color:#fff">${theme}</div>
+        </div>
+      </div>
+      <!-- Diet row -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid rgba(255,255,255,0.06)">
+        <div style="padding:.75rem 1rem;border-right:1px solid rgba(255,255,255,0.06)">
+          <div style="font-size:10px;font-weight:700;color:#1D9E75;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">🥗 ${hi?'आहार':'Diet'}</div>
+          <p style="font-size:12px;color:rgba(255,255,255,0.8);line-height:1.65">${dietText}</p>
+        </div>
+        <div style="padding:.75rem 1rem">
+          <div style="font-size:10px;font-weight:700;color:#378ADD;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">🏃 ${hi?'गतिविधि':'Activity'}</div>
+          <p style="font-size:12px;color:rgba(255,255,255,0.8);line-height:1.65">${actText}</p>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  // ── Activity schematic ───────────────────────────────────────────
+  const weeklyActivity = [
+    {week:1, label:hi?'सप्ताह 1':'Week 1', mins:15, color:'#1D9E75', desc:hi?'15 मिनट टहलना':'15 min walk'},
+    {week:2, label:hi?'सप्ताह 2':'Week 2', mins:22, color:'#1D9E75', desc:hi?'22 मिनट':'22 min'},
+    {week:3, label:hi?'सप्ताह 3':'Week 3', mins:30, color:'#EF9F27', desc:hi?'30 मिनट':'30 min'},
+    {week:4, label:hi?'सप्ताह 4':'Week 4', mins:40, color:'#378ADD', desc:hi?'40 मिनट + योग':'40 min + yoga'},
+  ];
+
+  const activitySchematic = `
+  <div style="padding:1rem 1rem .5rem">
+    <div style="font-size:11px;font-weight:700;color:#378ADD;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.75rem">📈 ${hi?'गतिविधि प्रगति — सप्ताह दर सप्ताह':'Activity Progression — Week by Week'}</div>
+    <div style="display:flex;align-items:flex-end;gap:8px;height:80px;margin-bottom:6px">
+      ${weeklyActivity.map(w=>{
+        const pct = Math.round((w.mins/40)*100);
+        return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+          <div style="font-size:10px;color:${w.color};font-weight:700">${w.mins}m</div>
+          <div style="width:100%;background:${w.color};border-radius:6px 6px 0 0;height:${pct*0.6}px;min-height:12px;transition:height .3s"></div>
+        </div>`;
+      }).join('')}
+    </div>
+    <div style="display:flex;gap:8px">
+      ${weeklyActivity.map(w=>`<div style="flex:1;text-align:center;font-size:10px;color:rgba(255,255,255,0.55)">${w.label}</div>`).join('')}
+    </div>
+  </div>`;
+
+  // ── Daily habit tracker schematic ───────────────────────────────
+  const habits = [
+    {icon:'🚶', label:hi?'टहलना':'Walk', w1:'15m', w2:'22m', w3:'30m', w4:'40m'},
+    {icon:'💧', label:hi?'पानी':'Water', w1:'6 गिलास', w2:'7 गिलास', w3:'8 गिलास', w4:'8+ गिलास'},
+    {icon:'🥗', label:hi?'सब्जी':'Veggies', w1:'1 कटोरी', w2:'2 कटोरी', w3:'3 कटोरी', w4:'हर भोजन'},
+    {icon:'🍬', label:hi?'चीनी':'Sugar', w1:'↓ 25%', w2:'↓ 50%', w3:'↓ 75%', w4:'न्यूनतम'},
+    {icon:'😴', label:hi?'नींद':'Sleep', w1:'7h+', w2:'7h+', w3:'7-8h', w4:'7-8h'},
+  ];
+
+  const habitTable = `
+  <div style="padding:.75rem 1rem">
+    <div style="font-size:11px;font-weight:700;color:${accent};text-transform:uppercase;letter-spacing:.08em;margin-bottom:.6rem">✅ ${hi?'साप्ताहिक आदत ट्रैकर':'Weekly Habit Tracker'}</div>
+    <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:11px">
+        <thead>
+          <tr>
+            <th style="text-align:left;color:rgba(255,255,255,0.5);padding:4px 6px;font-weight:600;border-bottom:1px solid rgba(255,255,255,0.1)">${hi?'आदत':'Habit'}</th>
+            ${[1,2,3,4].map(w=>`<th style="text-align:center;color:rgba(255,255,255,0.5);padding:4px 6px;font-weight:600;border-bottom:1px solid rgba(255,255,255,0.1)">${hi?'सप्ताह':'Wk'} ${w}</th>`).join('')}
+          </tr>
+        </thead>
+        <tbody>
+          ${habits.map((h,i)=>`
+          <tr style="background:${i%2===0?'rgba(255,255,255,0.02)':'transparent'}">
+            <td style="padding:6px;color:rgba(255,255,255,0.85);white-space:nowrap">${h.icon} ${h.label}</td>
+            <td style="padding:6px;text-align:center;color:#1D9E75;font-weight:600">${h.w1}</td>
+            <td style="padding:6px;text-align:center;color:#1D9E75;font-weight:600">${h.w2}</td>
+            <td style="padding:6px;text-align:center;color:#EF9F27;font-weight:600">${h.w3}</td>
+            <td style="padding:6px;text-align:center;color:#378ADD;font-weight:600">${h.w4}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>`;
 
   section.innerHTML = `
   <div id="diet-plan-canvas" style="background:linear-gradient(160deg,#1a2744 0%,#0a2018 100%);border-radius:18px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.25);margin-bottom:.75rem">
 
-    <div style="padding:1.25rem 1.5rem .9rem;border-bottom:1px solid rgba(255,255,255,0.1)">
-      <div style="font-size:11px;font-weight:700;color:${accentColor};letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">DiabFit ${hi?'व्यक्तिगत योजना':'Personalised Plan'}</div>
-      <div style="font-size:1.2rem;font-weight:800;color:#fff;margin-bottom:8px">${planTitle}</div>
-      <div style="display:inline-flex;align-items:center;gap:6px;background:${accentColor}20;border:1px solid ${accentColor}50;border-radius:99px;padding:4px 12px">
-        <span style="width:6px;height:6px;border-radius:50%;background:${accentColor};flex-shrink:0"></span>
-        <span style="font-size:11px;color:${accentColor};font-weight:600">${isHigh?(hi?'उच्च जोखिम':'High risk'):(hi?'मध्यम जोखिम':'Moderate risk')} · ${hi?'भारतीय आहार':'Indian food based'}</span>
+    <!-- ── HEADER ── -->
+    <div style="padding:1.1rem 1.25rem .85rem;border-bottom:1px solid rgba(255,255,255,0.1)">
+      <div style="font-size:10px;font-weight:700;color:${accent};text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px">DiabFit · ${hi?'30-दिन योजना':'30-Day Plan'}</div>
+      <div style="font-size:1.15rem;font-weight:800;color:#fff;margin-bottom:6px">${planTitle}</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <span style="font-size:11px;background:rgba(29,158,117,0.2);color:#5DCAA5;border-radius:99px;padding:2px 10px;font-weight:600">🥗 ${hi?'आहार':'Diet'}</span>
+        <span style="font-size:11px;background:rgba(55,138,221,0.2);color:#7BB8F0;border-radius:99px;padding:2px 10px;font-weight:600">🏃 ${hi?'गतिविधि':'Activity'}</span>
+        <span style="font-size:11px;background:${accentBg};color:${accent};border-radius:99px;padding:2px 10px;font-weight:600">${isHigh?(hi?'उच्च जोखिम':'High risk'):(hi?'मध्यम जोखिम':'Moderate risk')}</span>
       </div>
     </div>
 
-    <div style="padding:1rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.07)">
-      <p style="font-size:13px;color:rgba(255,255,255,0.85);line-height:1.8">${intro}</p>
+    <!-- ── INTRO ── -->
+    <div style="padding:.85rem 1.25rem;border-bottom:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.02)">
+      <p style="font-size:13px;color:rgba(255,255,255,0.83);line-height:1.75;margin:0">${intro}</p>
     </div>
 
-    <div style="padding:1rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.07);background:rgba(29,158,117,0.07)">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:.6rem">
-        <span style="font-size:1.25rem">🌱</span>
-        <div>
-          <div style="font-size:10px;font-weight:700;color:#1D9E75;text-transform:uppercase;letter-spacing:.07em">${hi?'सप्ताह 1–2':'Week 1–2'}</div>
-          <div style="font-size:13px;font-weight:700;color:#fff">${hi?'छोटे टिकाऊ बदलाव':'Small sustainable changes'}</div>
-        </div>
-      </div>
-      <p style="font-size:13px;color:rgba(255,255,255,0.82);line-height:1.8">${week12}</p>
+    <!-- ── ACTIVITY SCHEMATIC ── -->
+    <div style="border-bottom:1px solid rgba(255,255,255,0.07);background:rgba(55,138,221,0.05)">
+      ${activitySchematic}
     </div>
 
-    <div style="padding:1rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.07);background:rgba(55,138,221,0.07)">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:.6rem">
-        <span style="font-size:1.25rem">💪</span>
-        <div>
-          <div style="font-size:10px;font-weight:700;color:#378ADD;text-transform:uppercase;letter-spacing:.07em">${hi?'सप्ताह 3–4':'Week 3–4'}</div>
-          <div style="font-size:13px;font-weight:700;color:#fff">${hi?'नियमितता बनाना':'Building consistency'}</div>
-        </div>
-      </div>
-      <p style="font-size:13px;color:rgba(255,255,255,0.82);line-height:1.8">${week34}</p>
+    <!-- ── WEEK 1 ── -->
+    <div style="padding:.75rem 1rem .25rem;background:rgba(29,158,117,0.04)">
+      ${weekCard('🌱','#1D9E75',
+        hi?'सप्ताह 1 — शुरुआत':'Week 1 — Getting Started',
+        hi?'छोटे बदलाव, बड़ा असर':'Small changes, big impact',
+        w1Diet||hi?'सुबह दलिया या मूंग दाल चीला। दोपहर दाल-रोटी-सब्जी। रात हल्का खाना।':'Morning: oats/moong cheela. Lunch: dal-roti-sabzi. Dinner: light khichdi.',
+        hi?'रोज़ 15 मिनट सुबह टहलना। लिफ्ट की जगह सीढ़ियाँ।':'15 min morning walk daily. Take stairs instead of lift.'
+      )}
     </div>
 
-    <div style="padding:1rem 1.5rem;background:rgba(239,159,39,0.07)">
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:.5rem">
-        <span style="font-size:1.1rem">💡</span>
-        <span style="font-size:11px;font-weight:700;color:${accentColor};text-transform:uppercase;letter-spacing:.07em">${hi?'भारतीय आहार टिप्स':'Indian Diet Tips'}</span>
-      </div>
-      <p style="font-size:13px;color:rgba(255,255,255,0.82);line-height:1.8">${tips}</p>
+    <!-- ── WEEK 2 ── -->
+    <div style="padding:.25rem 1rem .25rem;background:rgba(29,158,117,0.04)">
+      ${weekCard('🌿','#4CAF50',
+        hi?'सप्ताह 2 — नियमितता':'Week 2 — Building Rhythm',
+        hi?'आदत पक्की करें':'Lock in the habit',
+        w2Diet||hi?'मैदा और सफेद चावल कम करें। दोपहर में सलाद जोड़ें। मीठे पेय बंद।':'Cut maida and white rice. Add salad at lunch. Stop sugary drinks.',
+        hi?'22 मिनट टहलना। हल्की स्ट्रेचिंग शाम को।':'22 min walk. Light evening stretching.'
+      )}
     </div>
 
-    <div style="padding:.75rem 1.5rem;background:rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:space-between">
-      <span style="font-size:11px;color:rgba(255,255,255,0.38)">${hi?'सामान्य मार्गदर्शन — चिकित्सा सलाह नहीं':'General wellness guidance — not medical advice'}</span>
+    <!-- ── WEEK 3 ── -->
+    <div style="padding:.25rem 1rem .25rem;background:rgba(239,159,39,0.04)">
+      ${weekCard('🔥','#EF9F27',
+        hi?'सप्ताह 3 — गति बढ़ाएं':'Week 3 — Building Momentum',
+        hi?'शरीर बदलाव महसूस करेगा':'Your body will feel the shift',
+        w3Diet||hi?'हर भोजन में हरी सब्जी। अंकुरित अनाज नाश्ते में। चाय में चीनी आधी करें।':'Green veggies in every meal. Sprouts at breakfast. Halve sugar in chai.',
+        hi?'30 मिनट तेज़ चाल। सोमवार-बुधवार-शुक्रवार योग 15 मिनट।':'30 min brisk walk. Mon-Wed-Fri: 15 min yoga.'
+      )}
+    </div>
+
+    <!-- ── WEEK 4 ── -->
+    <div style="padding:.25rem 1rem .75rem;background:rgba(55,138,221,0.04)">
+      ${weekCard('🏆','#378ADD',
+        hi?'सप्ताह 4 — परिणाम देखें':'Week 4 — See the Results',
+        hi?'HbA1c टेस्ट के लिए तैयार':'Ready for your HbA1c test',
+        w4Diet||hi?'भूमध्यसागरीय-भारतीय मिश्रण। मोटे अनाज जैसे ज्वार, बाजरा। रात 7 बजे के बाद कम खाना।':'Med-Indian mix. Millets like jowar, bajra. Eat light after 7 PM.',
+        hi?'40 मिनट चलना या साइकिल। 5 मिनट प्राणायाम रोज़।':'40 min walk or cycling. 5 min pranayama daily.'
+      )}
+    </div>
+
+    <!-- ── HABIT TRACKER ── -->
+    <div style="border-top:1px solid rgba(255,255,255,0.07)">
+      ${habitTable}
+    </div>
+
+    <!-- ── TIPS ── -->
+    <div style="padding:.85rem 1.25rem;border-top:1px solid rgba(255,255,255,0.07);background:rgba(239,159,39,0.05)">
+      <div style="font-size:11px;font-weight:700;color:${accent};text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem">💡 ${hi?'भारतीय आहार टिप्स':'Indian Diet Tips'}</div>
+      <p style="font-size:12px;color:rgba(255,255,255,0.8);line-height:1.75;margin:0">${tips||hi?'दाल रोज़ खाएं — प्रोटीन और फाइबर दोनों। तले हुए नाश्ते की जगह उबले चने या मखाने। खाने के बाद 10 मिनट टहलें। रात का खाना सोने से 2 घंटे पहले।':'Eat dal daily — protein + fibre. Replace fried snacks with boiled chana or makhana. Walk 10 min after meals. Eat dinner 2 hours before sleeping.'}</p>
+    </div>
+
+    <!-- ── FOOTER ── -->
+    <div style="padding:.65rem 1.25rem;background:rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:space-between">
+      <span style="font-size:11px;color:rgba(255,255,255,0.35)">${hi?'सामान्य मार्गदर्शन — चिकित्सा सलाह नहीं':'General wellness guidance — not medical advice'}</span>
       <span style="font-size:11px;color:rgba(255,255,255,0.3);font-weight:600">DiabFit 🇮🇳</span>
     </div>
   </div>
 
   <button onclick="downloadDietCard()" style="width:100%;padding:12px;background:var(--navy);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:.5rem">
-    ⬇ ${hi?'योजना डाउनलोड करें':'Download your plan as PNG'}
+    ⬇ ${hi?'योजना PNG डाउनलोड करें':'Download Plan as PNG'}
   </button>`;
 }
 
 function downloadDietCard(){
-  const hi = qLang==='hi';
-  const planText = window._lastPlanText || '';
-  const level    = window._lastPlanLevel || lastResult?.level || 'moderate';
-  const isHigh   = level==='high';
-  const accent   = isHigh ? '#E24B4A' : '#EF9F27';
+  const hi   = qLang==='hi';
+  const plan = window._lastPlanText||'';
+  const level= window._lastPlanLevel||lastResult?.level||'moderate';
+  const isHigh=level==='high';
+  const accent=isHigh?'#E24B4A':'#EF9F27';
+  const name = capturedName||(hi?'आप':'You');
 
-  const W=1080, H=1920;
-  const cv = document.createElement('canvas');
+  const W=1080, H=2200;
+  const cv=document.createElement('canvas');
   cv.width=W; cv.height=H;
-  const ctx = cv.getContext('2d');
+  const ctx=cv.getContext('2d');
 
   // Background
-  const bg = ctx.createLinearGradient(0,0,0,H);
+  const bg=ctx.createLinearGradient(0,0,0,H);
   bg.addColorStop(0,'#1a2744');
-  bg.addColorStop(0.5,'#0d2a1e');
-  bg.addColorStop(1,'#0a1a0f');
+  bg.addColorStop(0.45,'#0d2a1e');
+  bg.addColorStop(1,'#091409');
   ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
 
-  // Subtle lines
-  ctx.globalAlpha=0.025;
-  for(let y=0;y<H;y+=48){ctx.fillStyle='#fff';ctx.fillRect(0,y,W,1);}
+  // Grid pattern
+  ctx.globalAlpha=0.03;
+  for(let y=0;y<H;y+=50){ctx.fillStyle='#fff';ctx.fillRect(0,y,W,1);}
+  for(let x=0;x<W;x+=80){ctx.fillStyle='#fff';ctx.fillRect(x,0,1,H);}
   ctx.globalAlpha=1;
 
-  // Header bg
-  ctx.fillStyle='rgba(255,255,255,0.04)'; ctx.fillRect(0,0,W,190);
+  const pad=60, iW=W-pad*2;
 
-  ctx.textAlign='left';
-  ctx.font='700 30px Arial, sans-serif';
-  ctx.fillStyle=accent;
-  ctx.fillText('DiabFit '+(hi?'30-दिन व्यक्तिगत योजना':'30-Day Personalised Plan'), 60, 72);
-
-  ctx.font='800 56px Arial, sans-serif';
-  ctx.fillStyle='#ffffff';
-  const title = capturedName
-    ? (hi ? capturedName+' की 30-दिन योजना' : capturedName+"'s 30-Day Plan")
-    : (hi?'30-दिन योजना':'30-Day Wellness Plan');
-  ctx.fillText(title, 60, 152);
-
-  ctx.fillStyle='rgba(255,255,255,0.1)'; ctx.fillRect(0,195,W,1);
-
-  // Parse text
-  const all = planText.split(/\n+/).map(s=>s.trim()).filter(s=>s.length>20);
-  const intro  = all[0]||'';
-  const mid    = Math.ceil(all.length/2);
-  const week12 = all.slice(1,mid).join(' ');
-  const week34 = all.slice(mid,all.length-2).join(' ');
-  const tips   = all.slice(-2).join(' ');
-
-  function wrapText(ctx,text,x,y,maxW,lh,maxLines){
+  function wrapText(text,x,y,maxW,lh,maxLines=99){
     const words=text.split(' ');
-    let line='',drawn=0;
+    let line='',count=0;
     for(let n=0;n<words.length;n++){
-      const test=line+words[n]+' ';
-      if(ctx.measureText(test).width>maxW&&n>0){
-        ctx.fillText(line.trim(),x,y); line=words[n]+' '; y+=lh; drawn++;
-        if(drawn>=maxLines){ctx.fillText('…',x,y);return y+lh;}
-      } else line=test;
+      const t=line+words[n]+' ';
+      if(ctx.measureText(t).width>maxW&&n>0){
+        ctx.fillText(line.trim(),x,y); line=words[n]+' '; y+=lh; count++;
+        if(count>=maxLines){ctx.fillText('…',x,y); return y+lh;}
+      } else line=t;
     }
-    if(drawn<maxLines)ctx.fillText(line.trim(),x,y);
+    ctx.fillText(line.trim(),x,y);
     return y+lh;
   }
 
-  const pad=60, iW=W-pad*2;
-  let y=220;
+  function roundRect(x,y,w,h,r,fill){
+    ctx.fillStyle=fill;
+    ctx.beginPath();
+    ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r);
+    ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r);
+    ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); ctx.fill();
+  }
+
+  let y=0;
+
+  // ── HEADER ─────────────────────────────────────────────
+  roundRect(0,0,W,200,0,'rgba(255,255,255,0.04)');
+  ctx.textAlign='left';
+  ctx.font='700 28px Arial, sans-serif'; ctx.fillStyle=accent;
+  ctx.fillText('DiabFit · '+(hi?'30-दिन गतिविधि और आहार योजना':'30-Day Activity & Diet Plan'),pad,68);
+  ctx.font='800 54px Arial, sans-serif'; ctx.fillStyle='#fff';
+  const title=capturedName
+    ?(hi?name+' की योजना':name+"'s Plan")
+    :(hi?'आपकी व्यक्तिगत योजना':'Your Personalised Plan');
+  ctx.fillText(title,pad,148);
+  y=210;
+
+  // ── DIVIDER ─────────────────────────────────────────────
+  ctx.fillStyle='rgba(255,255,255,0.1)'; ctx.fillRect(0,y,W,1); y+=24;
+
+  // ── ACTIVITY PROGRESSION BAR CHART ──────────────────────
+  ctx.font='700 26px Arial, sans-serif'; ctx.fillStyle='#378ADD';
+  ctx.fillText('📈 '+(hi?'गतिविधि प्रगति':'Activity Progression'),pad,y+28); y+=50;
+
+  const barData=[
+    {lbl:hi?'सप्ताह 1':'Week 1',mins:15,col:'#1D9E75'},
+    {lbl:hi?'सप्ताह 2':'Week 2',mins:22,col:'#1D9E75'},
+    {lbl:hi?'सप्ताह 3':'Week 3',mins:30,col:'#EF9F27'},
+    {lbl:hi?'सप्ताह 4':'Week 4',mins:40,col:'#378ADD'},
+  ];
+  const bMaxH=160, bW=(iW-60)/4;
+  barData.forEach((b,i)=>{
+    const bx=pad+i*(bW+20);
+    const bh=Math.round((b.mins/40)*bMaxH);
+    const by=y+bMaxH-bh;
+    roundRect(bx,by,bW,bh,8,b.col);
+    // Label on bar
+    ctx.font='700 22px Arial, sans-serif'; ctx.fillStyle='#fff'; ctx.textAlign='center';
+    ctx.fillText(b.mins+'m',bx+bW/2,by-10);
+    ctx.font='400 20px Arial, sans-serif'; ctx.fillStyle='rgba(255,255,255,0.55)';
+    ctx.fillText(b.lbl,bx+bW/2,y+bMaxH+32);
+  });
+  ctx.textAlign='left';
+  y+=bMaxH+70;
+
+  ctx.fillStyle='rgba(255,255,255,0.08)'; ctx.fillRect(pad,y,iW,1); y+=28;
+
+  // ── PARSE TEXT ───────────────────────────────────────────
+  const all=plan.split(/\n+/).map(s=>s.trim()).filter(s=>s.length>15);
+  const chunk=Math.max(1,Math.floor(all.length/6));
+  const intro  =all.slice(0,1).join(' ');
+  const w1     =all.slice(1,1+chunk).join(' ');
+  const w2     =all.slice(1+chunk,1+chunk*2).join(' ');
+  const w3     =all.slice(1+chunk*2,1+chunk*3).join(' ');
+  const w4     =all.slice(1+chunk*3,1+chunk*4).join(' ');
+  const tips   =all.slice(-2).join(' ');
 
   // Intro
-  ctx.font='400 28px Arial, sans-serif'; ctx.fillStyle='rgba(255,255,255,0.83)';
-  y=wrapText(ctx,intro,pad,y,iW,42,4)+20;
-
-  // Week 1-2 box
-  ctx.fillStyle='rgba(29,158,117,0.13)'; roundRectFill(ctx,pad,y,iW,420,18);
-  ctx.fillStyle='rgba(29,158,117,0.5)';  roundRectFill(ctx,pad,y,10,420,10);
-  ctx.font='700 26px Arial, sans-serif'; ctx.fillStyle='#1D9E75';
-  ctx.fillText((hi?'सप्ताह 1–2  ·  छोटे बदलाव':'Week 1–2  ·  Small changes'), pad+28, y+48);
   ctx.font='400 26px Arial, sans-serif'; ctx.fillStyle='rgba(255,255,255,0.82)';
-  wrapText(ctx,week12,pad+28,y+94,iW-56,40,7);
-  y+=440;
+  y=wrapText(intro,pad,y,iW,40,3)+20;
 
-  // Week 3-4 box
-  ctx.fillStyle='rgba(55,138,221,0.13)'; roundRectFill(ctx,pad,y,iW,420,18);
-  ctx.fillStyle='rgba(55,138,221,0.5)';  roundRectFill(ctx,pad,y,10,420,10);
-  ctx.font='700 26px Arial, sans-serif'; ctx.fillStyle='#378ADD';
-  ctx.fillText((hi?'सप्ताह 3–4  ·  नियमितता':'Week 3–4  ·  Building consistency'), pad+28, y+48);
-  ctx.font='400 26px Arial, sans-serif'; ctx.fillStyle='rgba(255,255,255,0.82)';
-  wrapText(ctx,week34,pad+28,y+94,iW-56,40,7);
-  y+=440;
+  // ── WEEK CARDS ───────────────────────────────────────────
+  const weekDefs=[
+    {icon:'🌱',color:'#1D9E75',bg:'rgba(29,158,117,0.1)',lbl:hi?'सप्ताह 1':'Week 1',theme:hi?'शुरुआत':'Starting Out',text:w1},
+    {icon:'🌿',color:'#4CAF50',bg:'rgba(76,175,80,0.1)', lbl:hi?'सप्ताह 2':'Week 2',theme:hi?'नियमितता':'Building Rhythm',text:w2},
+    {icon:'🔥',color:'#EF9F27',bg:'rgba(239,159,39,0.1)',lbl:hi?'सप्ताह 3':'Week 3',theme:hi?'गति':'Momentum',text:w3},
+    {icon:'🏆',color:'#378ADD',bg:'rgba(55,138,221,0.1)', lbl:hi?'सप्ताह 4':'Week 4',theme:hi?'परिणाम':'Results',text:w4},
+  ];
 
-  // Tips
-  ctx.fillStyle='rgba(255,255,255,0.08)'; ctx.fillRect(0,y,W,1); y+=30;
-  ctx.font='700 28px Arial, sans-serif'; ctx.fillStyle=accent;
-  ctx.fillText((hi?'💡 भारतीय आहार टिप्स':'💡 Indian Diet Tips'), pad, y+10); y+=54;
-  ctx.font='400 26px Arial, sans-serif'; ctx.fillStyle='rgba(255,255,255,0.82)';
-  wrapText(ctx,tips,pad,y,iW,40,8);
+  weekDefs.forEach(w=>{
+    const cardH=260;
+    roundRect(pad,y,iW,cardH,14,w.bg);
+    // Left accent strip
+    roundRect(pad,y,8,cardH,8,w.color);
+    // Icon + label
+    ctx.font='700 24px Arial, sans-serif'; ctx.fillStyle=w.color;
+    ctx.fillText(w.icon+' '+w.lbl+' · '+w.theme,pad+24,y+44);
+    // Content
+    ctx.font='400 24px Arial, sans-serif'; ctx.fillStyle='rgba(255,255,255,0.82)';
+    wrapText(w.text||'...',pad+24,y+82,iW-56,36,4);
+    y+=cardH+14;
+  });
 
-  // Footer
-  ctx.fillStyle='rgba(0,0,0,0.35)'; ctx.fillRect(0,H-80,W,80);
+  // ── HABIT TRACKER TABLE ──────────────────────────────────
+  ctx.fillStyle='rgba(255,255,255,0.08)'; ctx.fillRect(pad,y,iW,1); y+=28;
+  ctx.font='700 26px Arial, sans-serif'; ctx.fillStyle=accent;
+  ctx.fillText('✅ '+(hi?'साप्ताहिक आदत ट्रैकर':'Weekly Habit Tracker'),pad,y+10); y+=50;
+
+  const habits=[
+    {icon:'🚶',lbl:hi?'टहलना':'Walk',     vals:['15m','22m','30m','40m']},
+    {icon:'💧',lbl:hi?'पानी':'Water',      vals:['6','7','8','8+']},
+    {icon:'🥗',lbl:hi?'सब्जी':'Veggies',   vals:['1×','2×','3×','हर बार']},
+    {icon:'🍬',lbl:hi?'चीनी↓':'Sugar↓',   vals:['25%','50%','75%','Min']},
+    {icon:'😴',lbl:hi?'नींद':'Sleep',      vals:['7h','7h','8h','8h']},
+  ];
+  const cols=['#1D9E75','#1D9E75','#EF9F27','#378ADD'];
+  const hRowH=52, hColW=iW/5;
+  // Header
+  ['',hi?'सप्ताह 1':'Wk1',hi?'सप्ताह 2':'Wk2',hi?'सप्ताह 3':'Wk3',hi?'सप्ताह 4':'Wk4'].forEach((h,i)=>{
+    ctx.font='600 20px Arial, sans-serif'; ctx.fillStyle='rgba(255,255,255,0.45)'; ctx.textAlign='center';
+    ctx.fillText(h,pad+i*hColW+hColW/2,y+24);
+  });
+  y+=36;
+  habits.forEach((h,ri)=>{
+    if(ri%2===0){roundRect(pad,y,iW,hRowH,4,'rgba(255,255,255,0.03)');}
+    ctx.font='400 22px Arial, sans-serif'; ctx.fillStyle='rgba(255,255,255,0.8)'; ctx.textAlign='left';
+    ctx.fillText(h.icon+' '+h.lbl,pad+10,y+hRowH/2+8);
+    h.vals.forEach((v,ci)=>{
+      ctx.font='700 22px Arial, sans-serif'; ctx.fillStyle=cols[ci]; ctx.textAlign='center';
+      ctx.fillText(v,pad+(ci+1)*hColW+hColW/2,y+hRowH/2+8);
+    });
+    y+=hRowH;
+  });
+  ctx.textAlign='left'; y+=24;
+
+  // ── TIPS ─────────────────────────────────────────────────
+  ctx.fillStyle='rgba(255,255,255,0.08)'; ctx.fillRect(pad,y,iW,1); y+=28;
+  ctx.font='700 26px Arial, sans-serif'; ctx.fillStyle=accent;
+  ctx.fillText('💡 '+(hi?'भारतीय आहार टिप्स':'Indian Diet Tips'),pad,y+10); y+=50;
+  ctx.font='400 24px Arial, sans-serif'; ctx.fillStyle='rgba(255,255,255,0.8)';
+  wrapText(tips,pad,y,iW,38,6); y+=280;
+
+  // ── FOOTER ───────────────────────────────────────────────
+  roundRect(0,H-70,W,70,0,'rgba(0,0,0,0.4)');
   ctx.font='400 22px Arial, sans-serif'; ctx.fillStyle='rgba(255,255,255,0.35)';
-  ctx.fillText(hi?'सामान्य स्वास्थ्य मार्गदर्शन — चिकित्सा सलाह नहीं':'General wellness guidance — not medical advice · diabfit.in',pad,H-28);
+  ctx.fillText(hi?'सामान्य स्वास्थ्य मार्गदर्शन — चिकित्सा सलाह नहीं':'General wellness guidance — not medical advice · diabfit.in',pad,H-22);
+  ctx.textAlign='right'; ctx.fillStyle='rgba(255,255,255,0.4)'; ctx.font='700 24px Arial, sans-serif';
+  ctx.fillText('DiabFit 🇮🇳',W-pad,H-22); ctx.textAlign='left';
 
   const link=document.createElement('a');
   link.download=`diabfit-plan-${capturedName||'wellness'}.png`;
@@ -1697,6 +1895,7 @@ function downloadDietCard(){
   link.click();
   showToast(hi?'योजना डाउनलोड हो रही है!':'Plan downloading!');
 }
+
 
 function roundRectFill(ctx,x,y,w,h,r){
   ctx.beginPath();
