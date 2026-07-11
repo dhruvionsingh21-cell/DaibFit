@@ -25,8 +25,6 @@
   nav { background: var(--navy); padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; height: 56px; position: sticky; top: 0; z-index: 100; }
   .logo { color: #fff; font-size: 20px; font-weight: 700; letter-spacing: -0.5px; }
   .logo span { color: var(--green); }
-  .mini-flag { width: 16px; height: 11px; border-radius: 1px; overflow: hidden; display: inline-block; flex-shrink: 0; }
-  .mini-flag div { height: 33.33%; }
   nav .nav-right { display: flex; align-items: center; }
   nav a { color: rgba(255,255,255,0.75); font-size: 13px; text-decoration: none; margin-left: 1.5rem; }
   nav a:hover { color: #fff; }
@@ -224,7 +222,9 @@
   @media (max-width: 480px) {
     .hero { padding: 2.25rem 1rem 2.75rem; }
     .hero-stats { gap: 1.4rem; }
-    nav a:not(.nav-cta) { display: none; }
+    nav a:not(.nav-cta) { font-size: 10px; margin-left: 4px; }
+    .nav-cta { padding: 5px 8px; font-size: 11px; font-weight: 600; }
+    .logo { font-size: 16px; }
     .lang-switch { margin-left: .5rem; }
     .question-body { padding: 1.25rem; }
     .quiz-header { padding: 1rem 1.25rem 0; }
@@ -250,19 +250,43 @@
 </nav>
 
 <section class="hero">
-  <div class="hero-badge" id="hero-badge">🩺 More accurate than BMI · 17 risk factors · ₹6 report</div>
-  <h1 id="hero-h1">Your BMI doesn't tell<br>the <em>full story.</em></h1>
+  <div class="hero-badge" id="hero-badge">🩺 Prediabetes Risk Assessment Tool for India</div>
+
+  <!-- Symptom hook headlines -->
+  <div style="margin-bottom:.75rem">
+    <div style="font-size:clamp(1.1rem,3.5vw,1.5rem);font-weight:700;color:rgba(255,255,255,0.65);line-height:1.5;letter-spacing:-.3px">
+      Low Energy? &nbsp;·&nbsp; Weight Gain? &nbsp;·&nbsp; Constant Fatigue?
+    </div>
+  </div>
+  <h1 id="hero-h1">Discover your <em>DiabFit</em><br>Health Assessment<br><span style="font-size:clamp(1.1rem,3vw,1.6rem);font-weight:600;color:rgba(255,255,255,0.75)">in just 3 minutes.</span></h1>
+
+  <!-- 4 assessment includes -->
+  <div style="display:flex;flex-direction:column;align-items:center;gap:8px;margin:1.25rem auto;max-width:340px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%">
+      <div style="background:rgba(29,158,117,0.18);border:1px solid rgba(29,158,117,0.4);border-radius:10px;padding:9px 12px;font-size:13px;font-weight:600;color:#fff;display:flex;align-items:center;gap:7px">
+        <span style="color:#5DCAA5">✓</span> Prediabetes Risk
+      </div>
+      <div style="background:rgba(239,159,39,0.18);border:1px solid rgba(239,159,39,0.4);border-radius:10px;padding:9px 12px;font-size:13px;font-weight:600;color:#fff;display:flex;align-items:center;gap:7px">
+        <span style="color:#FAC775">✓</span> Productivity Score
+      </div>
+      <div style="background:rgba(226,75,74,0.18);border:1px solid rgba(226,75,74,0.4);border-radius:10px;padding:9px 12px;font-size:13px;font-weight:600;color:#fff;display:flex;align-items:center;gap:7px">
+        <span style="color:#F09595">✓</span> Body Age Estimate
+      </div>
+    </div>
+  </div>
+
   <div class="shlok">स्वास्थ्यं सर्वार्थसाधनम्</div>
   <div class="shlok-translation" id="shlok-trans">"Health is the means to achieve all goals"</div>
-  <p id="hero-p">BMI misses family history, blood pressure, sleep, stress — the real diabetes triggers. DiabFit checks all 17 factors in 3 minutes and tells you exactly where you stand.</p>
+  <p id="hero-p" style="max-width:560px;margin:0 auto 1.5rem">136 million Indians have diabetes. Crores more are prediabetic and don't know it. DiabFit screens your prediabetes risk in 3 minutes — free. Our mission: a diabetes-free India with 10 crore people detecting and reversing prediabetes before it becomes irreversible.</p>
+
   <div class="hero-stats">
-    <div class="stat"><span class="stat-num">₹6</span><span class="stat-label" id="stat1">Full report</span></div>
+    <div class="stat"><span class="stat-num" style="color:#5DCAA5">Free</span><span class="stat-label" id="stat1">Screening</span></div>
     <div class="stat"><span class="stat-num">3 min</span><span class="stat-label" id="stat2">To complete</span></div>
-    <div class="stat"><span class="stat-num">17</span><span class="stat-label" id="stat3">Risk factors</span></div>
-    <div class="stat"><span class="stat-num">90 days</span><span class="stat-label" id="stat4">Certificate valid</span></div>
+    <div class="stat"><span class="stat-num">4-in-1</span><span class="stat-label" id="stat3">Health profiles</span></div>
+    <div class="stat"><span class="stat-num">10Cr</span><span class="stat-label" id="stat4">Goal: diabetes-free</span></div>
   </div>
-  <button class="hero-btn" id="hero-btn" onclick="scrollToQuiz()">Check my real risk →</button>
-  <div class="hero-note" id="hero-note">More accurate than BMI alone. Validated by ADA &amp; WHO.</div>
+  <button class="hero-btn" id="hero-btn" onclick="scrollToQuiz()">Discover My Health →</button>
+  <div class="hero-note" id="hero-note">Validated by <a href="https://www.who.int/publications/i/item/9789240082328" target="_blank" rel="noopener" style="color:rgba(255,255,255,0.8);text-decoration:underline">WHO FINDRISC</a> · Adapted for India · ICMR guidelines-aligned</div>
 </section>
 
 <!-- ── LIVE STATS TICKER ───────────────────────────────────────── -->
@@ -294,10 +318,10 @@
 </div>
 
 <div class="badges-row">
-  <div class="badge-chip"><span>✅</span><span id="b1">Green tick certificate</span></div>
-  <div class="badge-chip"><span>⚡</span><span id="b2">30-day personalised diet plan</span></div>
-  <div class="badge-chip"><span>🏆</span><span id="b3">Challenge winner trophy</span></div>
-  <div class="badge-chip"><span>📤</span><span id="b4">One-tap Instagram share</span></div>
+  <div class="badge-chip"><span>🩺</span><span id="b1">Prediabetes Risk</span></div>
+  <div class="badge-chip"><span>📅</span><span id="b2">Body Age Estimate</span></div>
+  <div class="badge-chip"><span>🧠</span><span id="b3">Productivity Score</span></div>
+  <div class="badge-chip"><span>📋</span><span id="b4">Activity Plan</span></div>
 </div>
 
 <section class="how" id="how">
@@ -395,7 +419,7 @@
         <span>⚡ <span id="pay-trust2">Instant access</span></span>
         <span>💯 <span id="pay-trust3">No recurring charges</span></span>
       </div>
-      <span class="payment-skip-link" id="pay-skip-link" onclick="skipPayment()">Continue without paying (basic result only)</span>
+      <span class="payment-skip-link" id="pay-skip-link" onclick="skipPayment()">Skip to free result →</span>
     </div>
   </div>
 
@@ -423,6 +447,7 @@
         <div id="r-bmi-section"></div>
         <div class="section-card" id="r-breakdown"></div>
         <div id="r-actions"></div>
+        <div id="extra-profiles"></div>
         <div id="diet-plan-section"></div>
       </div>
       <div class="share-section">
@@ -439,17 +464,14 @@
 
 <footer>
   <div><strong style="color:#fff">DiabFit</strong> — <span id="footer-tag">Free prediabetes risk screening for India</span></div>
-  <div style="margin-top:.4rem"><span id="footer-based">Based on the validated ADA/WHO FINDRISC questionnaire, adapted for India</span> &nbsp;·&nbsp; <a href="#">Privacy</a> &nbsp;·&nbsp; <a href="#">Disclaimer</a></div>
+  <div style="margin-top:.4rem"><span id="footer-based">Based on the WHO FINDRISC questionnaire · Aligned with ICMR &amp; IDF guidelines for India</span> &nbsp;·&nbsp; <a href="/privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="/disclaimer.html">Disclaimer</a> &nbsp;·&nbsp; <a href="mailto:daibfit@gmail.com">Contact us</a></div>
   <div class="footer-credit">
     <div style="font-size:13px;color:rgba(255,255,255,0.75);font-style:italic;margin-bottom:.5rem;line-height:1.6">
       "DiabFit exists to help 100 million people detect and prevent diabetes before it becomes irreversible."
     </div>
     <span style="color:rgba(255,255,255,0.45)" id="footer-made-by">Made by Preventive Health Care Initiator</span>
   </div>
-  <div class="footer-flag-row">
-    <span class="mini-flag"><div style="background:#FF9933"></div><div style="background:#FFFFFF"></div><div style="background:#138808"></div></span>
-    <span id="footer-mii">Made in India 🇮🇳</span>
-  </div>
+  <div class="footer-flag-row"><span id="footer-mii">Made in India 🇮🇳</span></div>
 </footer>
 
 <div class="toast" id="toast">Copied!</div>
@@ -466,7 +488,7 @@ const API_BASE = '/.netlify/functions';
 // STATE
 // ════════════════════════════════════════════════════════════════
 const S = {
-  country:'india', ethnicity:0, gender:null, age:null,
+  country:'india', ethnicity:0, gender:null, ageYears:null,
   weightKg:null, heightCm:null, waistCm:null, waistKnown:null,
   activity:null, diet:null, sleep:null, stress:null,
   smoking:null, alcohol:null, bp:null, familyHx:null, prevSugar:null,
@@ -511,62 +533,60 @@ const vs = ()=> STEPS.filter(s=>!s.skip||!s.skip());
 // ════════════════════════════════════════════════════════════════
 const UI_TEXT = {
   en: {
-    how:'How it works', cta:'Take the test',
-    heroBadge:'🩺 Free · 3 minutes · Certified result',
-    heroH1:'Do you have <em>prediabetes</em> risk?<br>Find out. Share it.',
+    how:'About us', cta:'Discover My Health →',
+    heroBadge:'🩺 Prediabetes Risk Assessment Tool · + Body Age &amp; Productivity',
+    heroH1:'Discover your <em>DiabFit</em> Health Assessment<br><span style="font-size:clamp(1rem,2.5vw,1.4rem);font-weight:600;color:rgba(255,255,255,0.75)">in just 3 minutes.</span>',
     shlokTrans:'"Health is the means to achieve all goals"',
-    heroP:"136 million Indians have diabetes. Crores more don't know they're at risk. Take the screening, earn your certificate, and start a movement.",
-    stat1:'Cost', stat2:'To complete', stat3:'Risk factors checked', stat4:'Certificate valid',
-    heroBtn:'Start free screening →', heroNote:'Takes 3 minutes. Your data helps map prediabetes risk across India.',
-    b1:'Green tick certificate', b2:'30-day personalised diet plan', b3:'Challenge winner trophy', b4:'One-tap Instagram share',
-    howTitle:'How DiabFit works',
+    heroP:"136 million Indians have diabetes. Crores more are prediabetic and don't know it. DiabFit screens your prediabetes risk in 3 minutes — free. Our mission: a diabetes-free India with 10 crore people detecting and reversing prediabetes before it becomes irreversible.",
+    stat1:'Free screening', stat2:'To complete', stat3:'Risk factors checked', stat4:'Goal: diabetes-free India',
+    heroBtn:'Discover My Health →', heroNote:'Validated by WHO FINDRISC · Adapted for India · ICMR guidelines-aligned',
+    b1:'Prediabetes Risk', b2:'Body Age Estimate', b3:'Productivity Score', b4:'Activity Plan',
+    howTitle:'What DiabFit assesses',
     steps:[
-      ['1','Answer 17 quick questions','Age, weight, waist, lifestyle, family history'],
-      ['2','Get your result','Instant risk score with full breakdown'],
-      ['3','Share your card','Name + city — helps map risk across India'],
-      ['4','Get your diet plan','If at risk, a personalised 30-day Indian plan'],
-      ['5','Retest in 90 days','Certificate expires after 3 months — track progress'],
+      ['🩺','Prediabetes Risk','17-factor validated screening using Indian clinical thresholds'],
+      ['🧠','Productivity Score','Focus, mental clarity, and cognitive energy rating'],
+      ['📅','Body Age Estimate','How old your body is metabolically vs your actual age'],
+      ['📋','Integrated Plan','Expert-verified 30-day plan sent to you via WhatsApp/email'],
     ],
-    capTitle:'Almost there', capSub:'Tell us your name and city so we can personalise your card and track prediabetes risk across India.',
+    capTitle:'Almost there', capSub:'Tell us your name and city so we can personalise your card and track health risk across India.',
     capName:'Your name', capCity:'Your city', capState:'Your state',
     capConsent:'I agree to share this anonymised data (city and risk level only, no contact details) for public health awareness mapping across India.',
-    capSubmit:'Generate my card', capSkip:'Skip and view result without saving',
-    shareTitle:'Share your card', ig:'Copy Instagram caption', wa:'Copy WhatsApp message', x:'Copy X (Twitter) post',
+    capSubmit:'Generate my report', capSkip:'Skip name/city and go to payment',
+    shareTitle:'Share your result', ig:'Copy Instagram caption', wa:'Copy WhatsApp message', x:'Copy X (Twitter) post',
     restart:'Start over', download:'Download your card',
-    dietBtn:'Generate my 30-day personalised diet plan', dietLoading:'Creating your plan...', dietTitle:'Your 30-day plan',
+    dietBtn:'Get my integrated activity & diet plan', dietLoading:'Creating your plan...', dietTitle:'Your 30-day plan',
     footerTag:'Free prediabetes risk screening for India',
-    footerBased:'Based on the validated ADA/WHO FINDRISC questionnaire, adapted for India',
-    footerMadeBy:'Made with care by', footerMii:'Made in India 🇮🇳',
-    disclaimer:'<strong>Medical disclaimer:</strong> DiabFit uses the validated ADA/WHO FINDRISC questionnaire adapted for India. This is a risk <em>screening tool only</em> — not a medical diagnosis. Only a doctor and blood test (HbA1c or fasting glucose) can diagnose prediabetes. The diet plan is general wellness guidance, not medical advice. Always consult your doctor.',
+    footerBased:'Based on the WHO FINDRISC questionnaire · Aligned with ICMR &amp; IDF guidelines for India',
+    footerMadeBy:'Made by', footerMii:'Made in India 🇮🇳',
+    disclaimer:'<strong>Medical disclaimer:</strong> DiabFit uses the WHO FINDRISC questionnaire, aligned with ICMR and IDF guidelines for South Asian populations. This is a risk <em>screening tool only</em> — not a medical diagnosis. Only a doctor and blood test (HbA1c or fasting glucose) can diagnose prediabetes. Always consult your doctor.',
   },
   hi: {
-    how:'यह कैसे काम करता है', cta:'टेस्ट लें',
-    heroBadge:'🩺 मुफ़्त · 3 मिनट · प्रमाणित परिणाम',
-    heroH1:'क्या आपको <em>प्रीडायबिटीज़</em> का खतरा है?<br>पता करें। शेयर करें।',
+    how:'हमारे बारे में', cta:'मेरा स्वास्थ्य जानें →',
+    heroBadge:'🩺 प्रीडायबिटीज़ जोखिम आकलन उपकरण · + शारीरिक आयु और उत्पादकता',
+    heroH1:'अपना <em>DiabFit</em> स्वास्थ्य आकलन जानें<br><span style="font-size:clamp(1rem,2.5vw,1.4rem);font-weight:600;color:rgba(255,255,255,0.75)">सिर्फ 3 मिनट में।</span>',
     shlokTrans:'"स्वास्थ्य सभी लक्ष्यों को प्राप्त करने का साधन है"',
-    heroP:'13.6 करोड़ भारतीयों को मधुमेह है। करोड़ों और लोगों को पता ही नहीं कि वे जोखिम में हैं। जांच लें, सर्टिफिकेट पाएं, और एक आंदोलन शुरू करें।',
-    stat1:'लागत', stat2:'पूरा करने में समय', stat3:'जोखिम कारक जांचे गए', stat4:'सर्टिफिकेट वैधता',
-    heroBtn:'मुफ़्त जांच शुरू करें →', heroNote:'3 मिनट लगते हैं। आपका डेटा भारत भर में जोखिम मैपिंग में मदद करता है।',
-    b1:'हरा टिक सर्टिफिकेट', b2:'30-दिन व्यक्तिगत आहार योजना', b3:'चैलेंज विजेता ट्रॉफी', b4:'इंस्टाग्राम पर एक-टैप शेयर',
-    howTitle:'DiabFit कैसे काम करता है',
+    heroP:'13.6 करोड़ भारतीयों को मधुमेह है। करोड़ों और प्रीडायबिटिक हैं और जानते नहीं। DiabFit 3 मिनट में आपके प्रीडायबिटीज़ जोखिम की मुफ़्त जांच करता है। हमारा लक्ष्य: 10 करोड़ लोगों को प्रीडायबिटीज़ का पता लगाकर मधुमेह-मुक्त भारत बनाना।',
+    stat1:'मुफ़्त जांच', stat2:'पूरा करने में समय', stat3:'जोखिम कारक जांचे', stat4:'लक्ष्य: मधुमेह-मुक्त भारत',
+    heroBtn:'मेरा स्वास्थ्य जानें →', heroNote:'WHO FINDRISC द्वारा मान्य · भारत के लिए अनुकूलित · ICMR दिशानिर्देशों के अनुसार',
+    b1:'प्रीडायबिटीज़ जोखिम', b2:'शारीरिक आयु अनुमान', b3:'उत्पादकता स्कोर', b4:'गतिविधि योजना',
+    howTitle:'DiabFit क्या आकलन करता है',
     steps:[
-      ['1','17 त्वरित प्रश्नों के उत्तर दें','उम्र, वजन, कमर, जीवनशैली, पारिवारिक इतिहास'],
-      ['2','अपना परिणाम पाएं','तुरंत जोखिम स्कोर और पूरा विवरण'],
-      ['3','अपना कार्ड शेयर करें','नाम + शहर — भारत भर में जोखिम मैप करने में मदद करता है'],
-      ['4','अपनी आहार योजना पाएं','जोखिम होने पर व्यक्तिगत 30-दिन भारतीय योजना'],
-      ['5','90 दिनों में दोबारा जांच करें','सर्टिफिकेट 3 महीने बाद समाप्त — प्रगति ट्रैक करें'],
+      ['🩺','प्रीडायबिटीज़ जोखिम','भारतीय मानकों पर 17-कारक मान्य जांच'],
+      ['🧠','उत्पादकता स्कोर','फोकस, मानसिक स्पष्टता और संज्ञानात्मक ऊर्जा रेटिंग'],
+      ['📅','शारीरिक आयु अनुमान','आपकी मेटाबोलिक आयु बनाम वास्तविक आयु'],
+      ['📋','एकीकृत योजना','विशेषज्ञ-सत्यापित 30-दिन की योजना WhatsApp/ईमेल पर'],
     ],
-    capTitle:'लगभग हो गया', capSub:'अपना नाम और शहर बताएं ताकि हम आपका कार्ड व्यक्तिगत बना सकें और भारत भर में प्रीडायबिटीज़ जोखिम ट्रैक कर सकें।',
+    capTitle:'लगभग हो गया', capSub:'अपना नाम और शहर बताएं ताकि हम आपकी रिपोर्ट व्यक्तिगत बना सकें।',
     capName:'आपका नाम', capCity:'आपका शहर', capState:'आपका राज्य',
-    capConsent:'मैं इस गुमनाम डेटा (केवल शहर और जोखिम स्तर, कोई संपर्क विवरण नहीं) को भारत भर में सार्वजनिक स्वास्थ्य जागरूकता मैपिंग के लिए साझा करने के लिए सहमत हूं।',
-    capSubmit:'मेरा कार्ड बनाएं', capSkip:'सहेजे बिना परिणाम देखें',
-    shareTitle:'अपना कार्ड शेयर करें', ig:'इंस्टाग्राम कैप्शन कॉपी करें', wa:'व्हाट्सएप मैसेज कॉपी करें', x:'X (ट्विटर) पोस्ट कॉपी करें',
+    capConsent:'मैं इस गुमनाम डेटा को सार्वजनिक स्वास्थ्य जागरूकता मैपिंग के लिए साझा करने के लिए सहमत हूं।',
+    capSubmit:'मेरी रिपोर्ट बनाएं', capSkip:'नाम/शहर छोड़ें और भुगतान पर जाएं',
+    shareTitle:'अपना परिणाम शेयर करें', ig:'इंस्टाग्राम कैप्शन कॉपी करें', wa:'व्हाट्सएप मैसेज कॉपी करें', x:'X (ट्विटर) पोस्ट कॉपी करें',
     restart:'फिर से शुरू करें', download:'अपना कार्ड डाउनलोड करें',
-    dietBtn:'मेरी 30-दिन व्यक्तिगत आहार योजना बनाएं', dietLoading:'आपकी योजना बन रही है...', dietTitle:'आपकी 30-दिन योजना',
+    dietBtn:'मेरी एकीकृत गतिविधि और आहार योजना पाएं', dietLoading:'आपकी योजना तैयार हो रही है...', dietTitle:'आपकी 30-दिन योजना',
     footerTag:'भारत के लिए मुफ़्त प्रीडायबिटीज़ जोखिम जांच',
-    footerBased:'मान्य ADA/WHO FINDRISC प्रश्नावली पर आधारित, भारत के लिए अनुकूलित',
-    footerMadeBy:'द्वारा सावधानी से बनाया गया', footerMii:'भारत में निर्मित 🇮🇳',
-    disclaimer:'<strong>चिकित्सा अस्वीकरण:</strong> DiabFit भारत के लिए अनुकूलित मान्य ADA/WHO FINDRISC प्रश्नावली का उपयोग करता है। यह केवल एक जोखिम <em>स्क्रीनिंग टूल</em> है — चिकित्सा निदान नहीं। आहार योजना सामान्य कल्याण मार्गदर्शन है, चिकित्सा सलाह नहीं। हमेशा अपने डॉक्टर से सलाह लें।',
+    footerBased:'WHO FINDRISC पर आधारित · ICMR और IDF भारत दिशानिर्देशों के अनुसार',
+    footerMadeBy:'द्वारा निर्मित', footerMii:'भारत में निर्मित 🇮🇳',
+    disclaimer:'<strong>चिकित्सा अस्वीकरण:</strong> DiabFit WHO FINDRISC प्रश्नावली का उपयोग करता है, जो ICMR और IDF दिशानिर्देशों के अनुसार है। यह केवल जोखिम स्क्रीनिंग टूल है — चिकित्सा निदान नहीं। हमेशा अपने डॉक्टर से सलाह लें।',
   }
 };
 
@@ -593,7 +613,7 @@ function setUiLang(l){
   document.getElementById('b4').textContent=t.b4;
   document.getElementById('how-title').textContent=t.howTitle;
   document.getElementById('steps-row').innerHTML=t.steps.map(s=>`
-    <div class="step-item"><div class="step-num">${s[0]}</div><h3>${s[1]}</h3><p>${s[2]}</p></div>
+    <div class="step-item"><div class="step-num" style="font-size:1.2rem;background:var(--navy-light)">${s[0]}</div><h3>${s[1]}</h3><p>${s[2]}</p></div>
   `).join('');
   document.getElementById('cap-title').textContent=t.capTitle;
   document.getElementById('cap-sub').textContent=t.capSub;
@@ -653,11 +673,12 @@ function goNext(){
 function goBack(){ if(cur>0){cur--;render();} }
 
 function restart(){
-  S.gender=null;S.age=null;S.weightKg=null;S.heightCm=null;S.waistCm=null;S.waistKnown=null;
+  S.gender=null;S.ageYears=null;S.weightKg=null;S.heightCm=null;S.waistCm=null;S.waistKnown=null;
   S.activity=null;S.diet=null;S.sleep=null;S.stress=null;S.smoking=null;S.alcohol=null;
   S.bp=null;S.familyHx=null;S.prevSugar=null;S.sc={ethnicity:2};
   cur=0; lastResult=null; capturedName=''; capturedCity='';
   document.getElementById('quiz-wrap').style.display='block';
+  document.getElementById('capture-wrap').style.display='none';
   document.getElementById('capture-wrap').style.display='none';
   document.getElementById('payment-wrap').style.display='none';
   document.getElementById('result-wrap').style.display='none';
@@ -727,17 +748,24 @@ const BUILDERS = {
     if(S.gender!==null) setOK(true);
   },
   age(){
-    const en=[{text:'Under 35',score:0},{text:'35–44',score:1},{text:'45–54',score:2},{text:'55–64',score:3},{text:'65 or older',score:4}];
-    const hi=[{text:'35 से कम',score:0},{text:'35–44',score:1},{text:'45–54',score:2},{text:'55–64',score:3},{text:'65 या अधिक',score:4}];
     const hook = qLang==='hi'?'40 के बाद जोखिम दोगुना हो जाता है':'Risk doubles after 40 — even for fit people';
+    const val = S.ageYears || '';
     setBody(`
       <div class="q-hook">⏱️ ${hook}</div>
       <div class="q-num">${qLang==='hi'?'आपके बारे में':'About you'}</div>
       <div class="q-title">${qLang==='hi'?'आपकी उम्र कितनी है?':'How old are you?'}</div>
-      <div class="q-sub">${qLang==='hi'?'40 के बाद जोखिम काफी बढ़ जाता है, और 55 के बाद फिर से।':'Risk increases significantly after 40, and again after 55 — regardless of weight.'}</div>
-      ${makeOpts(qLang==='hi'?hi:en,'age')}
+      <div class="q-sub">${qLang==='hi'?'आपकी सटीक उम्र से हम आपकी शारीरिक आयु (Body Age) की सही तुलना कर सकते हैं।':'Your exact age lets us accurately calculate your Body Age comparison later.'}</div>
+      <div class="input-section">
+        <div class="field-row">
+          <div class="field">
+            <label>${qLang==='hi'?'उम्र (वर्ष में)':'Age (in years)'}</label>
+            <input type="number" id="age-input" min="16" max="100" placeholder="32" value="${val}" oninput="calcAge()">
+          </div>
+        </div>
+      </div>
+      ${hintBox(qLang==='hi'?'40 के बाद जोखिम काफी बढ़ जाता है, और 55 के बाद फिर से — वजन चाहे कुछ भी हो।':'Risk increases significantly after 40, and again after 55 — regardless of weight.')}
     `);
-    if(S.age!==null) setOK(true);
+    if(S.ageYears) setOK(true);
   },
   height(){
     const ht=S.heightCm||'';
@@ -1013,6 +1041,15 @@ function pickWaistKnown(v){
 }
 function setHUnit(u){ S._hUnit=u; document.getElementById('h-cm').style.display=u==='cm'?'block':'none'; document.getElementById('h-ft').style.display=u==='ft'?'block':'none'; document.querySelectorAll('.unit-tabs .ut').forEach((b,i)=>b.classList.toggle('on',['cm','ft'][i]===u)); }
 function calcHcm(){ const v=parseFloat(document.getElementById('hcm').value); S.heightCm=v||null; document.getElementById('h-conv').textContent=v?fmtHt(v):''; setOK(v>100&&v<250); }
+function calcAge(){
+  const v = parseInt(document.getElementById('age-input').value);
+  S.ageYears = v || null;
+  // Map exact age to FINDRISC-style score bucket
+  let sc = 0;
+  if(v>=65) sc=4; else if(v>=55) sc=3; else if(v>=45) sc=2; else if(v>=35) sc=1; else sc=0;
+  S.sc.age = sc;
+  setOK(v>=16 && v<=100);
+}
 function calcHft(){ const ft=parseFloat(document.getElementById('hft').value)||0, inc=parseFloat(document.getElementById('hin').value)||0; S.heightCm=ft||inc?Math.round(ft*30.48+inc*2.54):null; document.getElementById('h-conv').textContent=S.heightCm?fmtHt(S.heightCm):''; setOK(S.heightCm>100); }
 function setWUnit(u){ S._wUnit=u; document.getElementById('w-kg').style.display=u==='kg'?'block':'none'; document.getElementById('w-lbs').style.display=u==='lbs'?'block':'none'; document.querySelectorAll('.unit-tabs .ut').forEach((b,i)=>b.classList.toggle('on',['kg','lbs'][i]===u)); }
 function calcWkg(){ const v=parseFloat(document.getElementById('wkg').value); S.weightKg=v||null; document.getElementById('w-conv').textContent=v?fmtWt(v):''; setOK(v>30&&v<300); }
@@ -1050,22 +1087,19 @@ let _pendingState = null;
 async function submitCapture(){
   capturedName = document.getElementById('cap-name').value.trim();
   capturedCity = document.getElementById('cap-city').value.trim();
-  _pendingState = {
-    name: capturedName,
-    city: capturedCity,
-    state: document.getElementById('cap-state').value,
-    consent: document.getElementById('cap-consent').checked
-  };
+  const state   = document.getElementById('cap-state').value;
+  const consent = document.getElementById('cap-consent').checked;
   document.getElementById('capture-wrap').style.display='none';
-  showPayment();
+  // Screening is FREE — save data and show result immediately
+  saveScreeningToBackend(capturedName, capturedCity, state, consent);
+  showResult(true, false);
 }
 function skipCapture(){
   capturedName = qLang==='hi'?'दोस्त':'Friend';
   capturedCity = '';
-  _pendingState = null;
   document.getElementById('capture-wrap').style.display='none';
-  // Skip goes straight to payment - no free result
-  showPayment();
+  // Screening is free — show result directly
+  showResult(true, false);
 }
 
 // ════════════════════════════════════════════════════════════════
@@ -1103,7 +1137,7 @@ function showPayment(){
   document.getElementById('pay-trust1').textContent = hi?'सुरक्षित भुगतान':'Secure payment';
   document.getElementById('pay-trust2').textContent = hi?'तत्काल पहुंच':'Instant access';
   document.getElementById('pay-trust3').textContent = hi?'कोई आवर्ती शुल्क नहीं':'No recurring charges';
-  document.getElementById('pay-skip-link').textContent = hi?'बिना भुगतान के जारी रखें (केवल बेसिक परिणाम)':'Continue without paying (basic result only)';
+  document.getElementById('pay-skip-link').textContent = hi?'बिना भुगतान के जारी रखें (केवल बेसिक परिणाम)':'Skip to free result →';
 }
 
 function loadRazorpay(callback){
@@ -1184,31 +1218,9 @@ function initiatePayment(){
 }
 
 function skipPayment(){
-  // No free result — show a locked screen instead
+  // Screening is free — skip payment, show result directly
   document.getElementById('payment-wrap').style.display='none';
-  document.getElementById('result-wrap').style.display='block';
-  document.getElementById('result-wrap').scrollIntoView({behavior:'smooth',block:'start'});
-  const hi = qLang==='hi';
-  document.getElementById('result-wrap').innerHTML = `
-    <div class="result-card" style="text-align:center;padding:3rem 1.5rem">
-      <div style="font-size:3.5rem;margin-bottom:1rem">🔒</div>
-      <div style="font-size:1.3rem;font-weight:800;color:var(--text);margin-bottom:.75rem">
-        ${hi?'रिपोर्ट देखने के लिए ₹6 का भुगतान करें':'Pay ₹6 to see your report'}
-      </div>
-      <p style="font-size:14px;color:var(--text2);line-height:1.7;max-width:400px;margin:0 auto 1.5rem">
-        ${hi?'आपने सभी सवालों के जवाब दे दिए हैं। अपना पूरा जोखिम विश्लेषण, सर्टिफिकेट कार्ड और व्यक्तिगत सुझाव देखने के लिए ₹6 का भुगतान करें।':'You\'ve completed all the questions. Pay ₹6 to unlock your full risk analysis, shareable certificate card, and personalised recommendations.'}
-      </p>
-      <div style="background:var(--green-light);border:1.5px solid var(--green);border-radius:12px;padding:1rem;max-width:320px;margin:0 auto 1.5rem">
-        <div style="font-size:2rem;font-weight:800;color:var(--green-dark)">₹6</div>
-        <div style="font-size:12px;color:var(--green-dark);margin-top:2px">${hi?'एकमुश्त भुगतान — कोई सदस्यता नहीं':'One-time · No subscription'}</div>
-      </div>
-      <button onclick="showPayment()" style="width:100%;max-width:320px;padding:14px;border:none;border-radius:10px;background:var(--green);color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:10px">
-        ${hi?'₹6 भुगतान करें और रिपोर्ट देखें →':'Pay ₹6 and see my report →'}
-      </button>
-      <button onclick="restart()" style="width:100%;max-width:320px;padding:11px;border:1.5px solid var(--border);border-radius:10px;background:#fff;color:var(--text2);font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">
-        ${hi?'फिर से शुरू करें':'Start over'}
-      </button>
-    </div>`;
+  showResult(true, false);
 }
 
 // ════════════════════════════════════════════════════════════════
@@ -1281,12 +1293,67 @@ async function saveScreeningToBackend(name, city, state, consent){
 
 // ════════════════════════════════════════════════════════════════
 // RESULT + SOCIAL CARD + DIET PLAN
-// isPaid = true means ₹6 report paid (or promo). promoFree = both ₹6 and ₹49 free.
+// ── BODY AGE ESTIMATE ─────────────────────────────────────────────────────
+// Based on: actual age + risk score penalties + BMI penalty + lifestyle bonuses
+function calcBodyAge(){
+  const actualAge = S.ageYears || 40;
+  const bmi = calcBMI();
+  let delta = 0;
+
+  // BMI adds years (Indian thresholds)
+  if(bmi){ if(bmi>=27.5) delta+=6; else if(bmi>=25) delta+=4; else if(bmi>=23) delta+=2; }
+  // Waist adds years
+  const ws = waistScore(); if(ws>=4) delta+=5; else if(ws>=3) delta+=3;
+  // Activity
+  const act = S.sc.activity||0; if(act>=3) delta+=4; else if(act>=2) delta+=2; else if(act===0) delta-=3;
+  // Diet
+  const diet = S.sc.diet||0; if(diet>=3) delta+=3; else if(diet>=2) delta+=1; else if(diet===0) delta-=2;
+  // Sleep
+  const slp = S.sc.sleep||0; if(slp>=2) delta+=3; else if(slp===0) delta-=2;
+  // Stress
+  const str = S.sc.stress||0; if(str>=2) delta+=3; else if(str===0) delta-=2;
+  // Smoking
+  const smk = S.sc.smoking||0; if(smk>=3) delta+=5; else if(smk>=2) delta+=3;
+  // Alcohol
+  const alc = S.sc.alcohol||0; if(alc>=2) delta+=2;
+  // Blood pressure
+  const bp = S.sc.bp||0; if(bp>=2) delta+=3; else if(bp===0) delta-=1;
+  // Family history (genetic, no delta — just risk)
+  // Previous blood sugar
+  const ps = S.sc.prevSugar||0; if(ps>=4) delta+=4; else if(ps>=1) delta+=1;
+
+  const bodyAge = Math.max(actualAge-10, Math.min(actualAge+20, actualAge+delta));
+  const gap = bodyAge - actualAge;
+  return { actualAge, bodyAge: Math.round(bodyAge), gap: Math.round(gap) };
+}
+
+// ── PRODUCTIVITY SCORE ─────────────────────────────────────────────────────
+function calcProductivityScore(){
+  const hi = qLang==='hi';
+  const sleep = S.sc.sleep||0;
+  const stress = S.sc.stress||0;
+  const act = S.sc.activity||0;
+  const diet = S.sc.diet||0;
+
+  // Score out of 100 — higher is better
+  let pts = 100;
+  pts -= sleep*15;   // poor sleep kills focus
+  pts -= stress*12;  // chronic stress impairs cognition
+  pts -= act*8;      // inactivity reduces BDNF
+  pts -= diet*6;     // poor diet causes brain fog
+  const bmi=calcBMI(); if(bmi&&bmi>=25) pts-=8;
+  pts = Math.max(20, Math.min(100, pts));
+
+  let label, color, bg;
+  if(pts>=75){ label=hi?'उच्च उत्पादकता':'High productivity'; color='#085041'; bg='#E1F5EE'; }
+  else if(pts>=50){ label=hi?'मध्यम — सुधार की गुंजाइश':'Moderate — room to improve'; color='#633806'; bg='#FAEEDA'; }
+  else{ label=hi?'निम्न — मेटाबोलिक कारण':'Low — metabolic root cause'; color='#501313'; bg='#FCEBEB'; }
+
+  return { pts:Math.round(pts), label, color, bg };
+}
+
+// ── SCREENING IS FREE — showResult now always shows full report ────────────
 function showResult(isPaid = true, promoFree = false){
-  if(!isPaid){
-    skipPayment();
-    return;
-  }
   document.getElementById('result-wrap').style.display='block';
   document.getElementById('result-wrap').scrollIntoView({behavior:'smooth',block:'start'});
 
@@ -1385,26 +1452,91 @@ function showResult(isPaid = true, promoFree = false){
     <div class="sc-title">${qLang==='hi'?'स्कोर विवरण':"Score breakdown"}</div>
     ${brk.map(([label,score])=>`<div class="sc-row"><span class="sc-label">${label}</span><span class="sc-val" style="color:${score===0?'#1D9E75':score<=2?'#EF9F27':'#E24B4A'}">${score===0?(qLang==='hi'?'कम जोखिम':'Low risk'):'+'+score+(qLang==='hi'?' अंक':' pts')}</span></div>`).join('')}
   `;
-  document.getElementById('r-actions').innerHTML=actHtml;
+  // ── BODY AGE ─────────────────────────────────────────────
+  const ba = calcBodyAge();
+  const baColor = ba.gap>5?'#E24B4A':ba.gap>0?'#EF9F27':'#1D9E75';
+  const baMsg = ba.gap>8
+    ? (qLang==='hi'?'आपका शरीर आपकी उम्र से काफी बड़ा व्यवहार कर रहा है':'Your body is behaving significantly older than your actual age')
+    : ba.gap>3
+    ? (qLang==='hi'?'आपका शरीर थोड़ा अधिक उम्र का व्यवहार कर रहा है':'Your body is slightly older metabolically than your calendar age')
+    : ba.gap>0
+    ? (qLang==='hi'?'आपकी शारीरिक और वास्तविक उम्र लगभग समान है':'Your body age is close to your actual age — good')
+    : (qLang==='hi'?'आपकी शारीरिक उम्र वास्तविक उम्र से कम है — उत्कृष्ट!':'Your body is younger than your calendar age — excellent!');
+
+  const bodyAgeCurio = qLang==='hi'
+    ? 'क्या आपका शरीर आपके जन्मदिन से बड़ा है?'
+    : 'What if your body is older than your birthday?';
+
+  const bodyAgeHTML = `
+  <div style="text-align:center;padding:.5rem 0 .75rem">
+    <div style="font-size:15px;font-weight:800;color:var(--navy);line-height:1.4">${bodyAgeCurio}</div>
+  </div>
+  <div class="section-card" style="margin-bottom:.75rem;background:linear-gradient(135deg,${baColor}12,${baColor}06);border-color:${baColor}30">
+    <div class="sc-title" style="color:${baColor}">📅 ${qLang==='hi'?'शारीरिक आयु अनुमान':'Body Age Estimate'}</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem;flex-wrap:wrap;gap:.5rem">
+      <div style="text-align:center;flex:1;min-width:80px">
+        <div style="font-size:11px;color:var(--text3);margin-bottom:2px">${qLang==='hi'?'वास्तविक उम्र':'Actual age'}</div>
+        <div style="font-size:1.8rem;font-weight:800;color:var(--navy)">${ba.actualAge}<span style="font-size:12px;font-weight:400;color:var(--text3)"> yrs</span></div>
+      </div>
+      <div style="font-size:1.5rem">→</div>
+      <div style="text-align:center;flex:1;min-width:80px">
+        <div style="font-size:11px;color:var(--text3);margin-bottom:2px">${qLang==='hi'?'शारीरिक उम्र':'Body age'}</div>
+        <div style="font-size:1.8rem;font-weight:800;color:${baColor}">${ba.bodyAge}<span style="font-size:12px;font-weight:400;color:var(--text3)"> yrs</span></div>
+      </div>
+      <div style="text-align:center;flex:1;min-width:80px">
+        <div style="font-size:11px;color:var(--text3);margin-bottom:2px">${qLang==='hi'?'अंतर':'Gap'}</div>
+        <div style="font-size:1.8rem;font-weight:800;color:${baColor}">${ba.gap>0?'+':''}${ba.gap}<span style="font-size:12px;font-weight:400;color:var(--text3)"> yrs</span></div>
+      </div>
+    </div>
+    <p style="font-size:12px;color:${baColor};font-weight:600;margin-bottom:4px">${baMsg}</p>
+    <p style="font-size:12px;color:var(--text2);line-height:1.6">${qLang==='hi'?'शारीरिक उम्र आपकी जीवनशैली, BMI, नींद, तनाव और मेटाबोलिक स्वास्थ्य पर आधारित अनुमान है। इसे कम करना संभव है।':'Body age is an estimate based on your lifestyle, BMI, sleep, stress and metabolic health factors. It can be reduced with consistent changes.'}</p>
+  </div>`;
+
+  // ── PRODUCTIVITY SCORE ────────────────────────────────────
+  const ps = calcProductivityScore();
+  const prodHTML = `<div class="section-card" style="margin-bottom:.75rem">
+    <div class="sc-title">🧠 ${qLang==='hi'?'उत्पादकता स्कोर':'Productivity Score'}</div>
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:.5rem">
+      <div style="position:relative;width:70px;height:70px;flex-shrink:0">
+        <svg viewBox="0 0 70 70" style="transform:rotate(-90deg);width:70px;height:70px">
+          <circle cx="35" cy="35" r="28" fill="none" stroke="#eee" stroke-width="7"/>
+          <circle cx="35" cy="35" r="28" fill="none" stroke="${ps.color}" stroke-width="7"
+            stroke-dasharray="176" stroke-dashoffset="${Math.round(176*(1-ps.pts/100))}" stroke-linecap="round"/>
+        </svg>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:${ps.color}">${ps.pts}</div>
+      </div>
+      <div>
+        <div style="font-size:14px;font-weight:700;color:${ps.color};margin-bottom:3px">${ps.label}</div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.6">${qLang==='hi'?'नींद, तनाव, गतिविधि और आहार के आधार पर फोकस, स्पष्टता और संज्ञानात्मक ऊर्जा का अनुमान।':'Estimated focus, mental clarity and cognitive energy based on sleep, stress, activity and diet patterns.'}</div>
+      </div>
+    </div>
+  </div>`;
+
+  // Insert body age + productivity (energy profile removed per product decision)
+  document.getElementById('r-actions').innerHTML = actHtml;
+  const extraProfiles = document.getElementById('extra-profiles');
+  if(extraProfiles){
+    extraProfiles.innerHTML = bodyAgeHTML + prodHTML;
+  }
 
   const dietSection = document.getElementById('diet-plan-section');
   if(level==='moderate' || level==='high'){
     const hi = qLang==='hi';
     if(promoFree){
-      // Promo covers everything — auto-generate diet plan immediately
+      // Promo covers everything — auto-generate plan immediately
       dietSection.innerHTML = `<div style="text-align:center;padding:1rem;background:#FAEEDA;border-radius:12px;border:1px solid #FAC775">
-        <p style="font-size:13px;color:#633806;font-weight:500">🎁 ${hi?'प्रोमो कोड — आहार योजना मुफ़्त में तैयार हो रही है...':'Promo code — building your diet plan for free...'}</p>
+        <p style="font-size:13px;color:#633806;font-weight:500">🎁 ${hi?'प्रोमो कोड — योजना मुफ़्त में तैयार हो रही है...':'Promo code — building your plan for free...'}</p>
       </div>`;
       setTimeout(()=>generateDietPlan(level), 600);
     } else {
-      // Paid ₹6 report — show ₹49 locked card for diet plan
+      // Paid — show ₹49 locked card
       dietSection.innerHTML = `
         <div style="background:linear-gradient(135deg,#1a2744,#0d3d2e);border-radius:14px;overflow:hidden;margin-bottom:.75rem">
           <div style="padding:1.1rem 1.25rem">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem">
               <div>
                 <div style="font-size:11px;font-weight:700;color:#EF9F27;text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px">${hi?'व्यक्तिगत 30-दिन योजना':'Personalised 30-day plan'}</div>
-                <div style="font-size:15px;font-weight:700;color:#fff">${hi?'आहार और गतिविधि योजना':'Diet & activity plan'}</div>
+                <div style="font-size:15px;font-weight:700;color:#fff">${hi?'गतिविधि योजना और बॉडी गैप रिडक्शन योजना':'Activity Plan & Body Gap Reduction Plan'}</div>
               </div>
               <div style="text-align:right">
                 <div style="font-size:1.5rem;font-weight:800;color:#EF9F27">₹49</div>
@@ -1413,10 +1545,10 @@ function showResult(isPaid = true, promoFree = false){
             </div>
             <ul style="list-style:none;padding:0;margin:0 0 .85rem">
               ${[
-                hi?'भारतीय खाने पर आधारित 4-सप्ताह का भोजन प्लान':'4-week meal plan using Indian foods',
-                hi?'दैनिक गतिविधि और व्यायाम सुझाव':'Daily activity and exercise recommendations',
-                hi?'जोखिम कम करने के 5 व्यावहारिक सुझाव':'5 practical tips to lower your specific risk factors',
-                hi?'डाउनलोड करने योग्य PNG कार्ड':'Downloadable plan card to save and share',
+                hi?'आपकी बॉडी एज गैप को कम करने की 4-सप्ताह योजना':'4-week plan to reduce your Body Age Gap',
+                hi?'दैनिक गतिविधि लक्ष्य — सप्ताह दर सप्ताह बढ़ते हुए':'Daily activity targets — progressing week by week',
+                hi?'भारतीय खाने पर आधारित आहार सुझाव':'Diet suggestions using Indian foods',
+                hi?'डाउनलोड करने योग्य डायग्रामेटिक PNG कार्ड':'Downloadable diagrammatic plan card',
               ].map(t=>`<li style="font-size:12px;color:rgba(255,255,255,0.75);padding:2px 0">✓ ${t}</li>`).join('')}
             </ul>
             <button onclick="payForDietPlan()" id="diet-pay-btn"
@@ -1538,8 +1670,8 @@ function drawDietPlanCard(planText, level){
 
   const name = capturedName || (hi?'आप':'You');
   const planTitle = capturedName
-    ? (hi ? name+' की 30-दिन योजना' : name+"'s 30-Day Activity & Diet Plan")
-    : (hi ? '30-दिन गतिविधि और आहार योजना' : '30-Day Activity & Diet Plan');
+    ? (hi ? name+' की एक्टिविटी और बॉडी गैप रिडक्शन योजना' : name+"'s Activity & Body Gap Reduction Plan")
+    : (hi ? 'एक्टिविटी और बॉडी गैप रिडक्शन योजना' : 'Activity & Body Gap Reduction Plan');
 
   // ── Week card builder ────────────────────────────────────────────
   function weekCard(icon, color, weekLabel, theme, dietText, actText){
@@ -1634,8 +1766,8 @@ function drawDietPlanCard(planText, level){
       <div style="font-size:10px;font-weight:700;color:${accent};text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px">DiabFit · ${hi?'30-दिन योजना':'30-Day Plan'}</div>
       <div style="font-size:1.15rem;font-weight:800;color:#fff;margin-bottom:6px">${planTitle}</div>
       <div style="display:flex;gap:6px;flex-wrap:wrap">
-        <span style="font-size:11px;background:rgba(29,158,117,0.2);color:#5DCAA5;border-radius:99px;padding:2px 10px;font-weight:600">🥗 ${hi?'आहार':'Diet'}</span>
-        <span style="font-size:11px;background:rgba(55,138,221,0.2);color:#7BB8F0;border-radius:99px;padding:2px 10px;font-weight:600">🏃 ${hi?'गतिविधि':'Activity'}</span>
+        <span style="font-size:11px;background:rgba(55,138,221,0.2);color:#7BB8F0;border-radius:99px;padding:2px 10px;font-weight:600">🏃 ${hi?'गतिविधि योजना':'Activity Plan'}</span>
+        <span style="font-size:11px;background:rgba(226,75,74,0.2);color:#F09595;border-radius:99px;padding:2px 10px;font-weight:600">📉 ${hi?'बॉडी गैप रिडक्शन':'Body Gap Reduction'}</span>
         <span style="font-size:11px;background:${accentBg};color:${accent};border-radius:99px;padding:2px 10px;font-weight:600">${isHigh?(hi?'उच्च जोखिम':'High risk'):(hi?'मध्यम जोखिम':'Moderate risk')}</span>
       </div>
     </div>
@@ -1643,6 +1775,30 @@ function drawDietPlanCard(planText, level){
     <!-- ── INTRO ── -->
     <div style="padding:.85rem 1.25rem;border-bottom:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.02)">
       <p style="font-size:13px;color:rgba(255,255,255,0.83);line-height:1.75;margin:0">${intro}</p>
+    </div>
+
+    <!-- ── BODY GAP REDUCTION PROJECTION ── -->
+    <div style="padding:1rem 1.25rem;border-bottom:1px solid rgba(255,255,255,0.07);background:rgba(226,75,74,0.05)">
+      <div style="font-size:11px;font-weight:700;color:${accent};text-transform:uppercase;letter-spacing:.08em;margin-bottom:.75rem">📉 ${hi?'बॉडी गैप घटाने का अनुमानित रोडमैप':'Projected Body Gap Reduction'}</div>
+      <div style="display:flex;align-items:flex-end;gap:8px;height:70px;margin-bottom:6px">
+        ${(function(){
+          const ba = calcBodyAge();
+          const startGap = Math.max(1, ba.gap);
+          const projGaps = [startGap, Math.round(startGap*0.8), Math.round(startGap*0.55), Math.round(startGap*0.3)];
+          return projGaps.map((g,i)=>{
+            const pct = Math.round((g/startGap)*100);
+            const col = i===0?'#E24B4A':i===1?'#EF9F27':i===2?'#EFC927':'#1D9E75';
+            return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+              <div style="font-size:10px;color:${col};font-weight:700">+${g}y</div>
+              <div style="width:100%;background:${col};border-radius:6px 6px 0 0;height:${Math.max(10,pct*0.55)}px;transition:height .3s"></div>
+            </div>`;
+          }).join('');
+        })()}
+      </div>
+      <div style="display:flex;gap:8px">
+        ${['Week 1','Week 2','Week 3','Week 4'].map(w=>`<div style="flex:1;text-align:center;font-size:10px;color:rgba(255,255,255,0.55)">${hi?w.replace('Week','सप्ताह'):w}</div>`).join('')}
+      </div>
+      <p style="font-size:11px;color:rgba(255,255,255,0.55);margin-top:8px;line-height:1.5">${hi?'यह एक अनुमानित प्रक्षेपण है — निरंतरता से आपका वास्तविक बॉडी एज गैप कम हो सकता है।':'This is an estimated projection — consistent effort can reduce your actual Body Age Gap over time.'}</p>
     </div>
 
     <!-- ── ACTIVITY SCHEMATIC ── -->
@@ -1913,26 +2069,26 @@ function buildCaptions(level, rd){
   if(level==='low'){
     return {
       ig: qLang==='hi'?
-        `अभी DiabFit स्वास्थ्य जांच पूरी की ✅\n\nमुझे हरा टिक मिला — कम जोखिम क्षेत्र में!${cityTag}\n\nमुफ़्त जांच जो जीवन बचा सकती है:\ndiabfit.com\n\n#DiabFit #GreenTick #HealthChecked #MakeInIndia`:
-        `Just completed my DiabFit health screening ✅\n\nI earned the green tick — low risk zone!${cityTag}\n\nFree check that could save your life:\ndiabfit.com\n\n#DiabFit #GreenTick #HealthChecked #MakeInIndia`,
+        `अभी DiabFit स्वास्थ्य जांच पूरी की ✅\n\nमुझे हरा टिक मिला — कम जोखिम क्षेत्र में!${cityTag}\n\nमुफ़्त जांच जो जीवन बचा सकती है:\ndiabfit.in\n\n#DiabFit #GreenTick #HealthChecked #MakeInIndia`:
+        `Just completed my DiabFit health screening ✅\n\nI earned the green tick — low risk zone!${cityTag}\n\nFree check that could save your life:\ndiabfit.in\n\n#DiabFit #GreenTick #HealthChecked #MakeInIndia`,
       wa: qLang==='hi'?
-        `मैंने अभी मुफ़्त DiabFit स्वास्थ्य जांच पूरी की — हरा टिक मिला! ✅\n\ndiabfit.com\n\nआप भी जांच करें!`:
-        `Just completed the free DiabFit health screening — got the green tick! ✅\n\ndiabfit.com\n\nYou should check yours too!`,
+        `मैंने अभी मुफ़्त DiabFit स्वास्थ्य जांच पूरी की — हरा टिक मिला! ✅\n\ndiabfit.in\n\nआप भी जांच करें!`:
+        `Just completed the free DiabFit health screening — got the green tick! ✅\n\ndiabfit.in\n\nYou should check yours too!`,
       x: qLang==='hi'?
-        `अभी DiabFit स्वास्थ्य जांच पूरी की ✅ हरा टिक मिला! आप भी जांचें → diabfit.com`:
-        `Just completed the DiabFit health screening ✅ Earned the green tick! Check yours → diabfit.com`
+        `अभी DiabFit स्वास्थ्य जांच पूरी की ✅ हरा टिक मिला! आप भी जांचें → diabfit.in`:
+        `Just completed the DiabFit health screening ✅ Earned the green tick! Check yours → diabfit.in`
     };
   } else {
     return {
       ig: qLang==='hi'?
-        `मैं #DiabFit30 चैलेंज स्वीकार कर रहा/रही हूं ⚡\n\n30 दिनों में बेहतर स्वास्थ्य की ओर!${cityTag}\nफिर से जांच: ${rd}\n\ndiabfit.com\n\n#DiabFit30 #HealthJourney #ChallengeAccepted`:
-        `I'm accepting the #DiabFit30 challenge ⚡\n\n30 days to a healthier me!${cityTag}\nRetesting on ${rd}\n\ndiabfit.com\n\n#DiabFit30 #HealthJourney #ChallengeAccepted`,
+        `मैं #DiabFit30 चैलेंज स्वीकार कर रहा/रही हूं ⚡\n\n30 दिनों में बेहतर स्वास्थ्य की ओर!${cityTag}\nफिर से जांच: ${rd}\n\ndiabfit.in\n\n#DiabFit30 #HealthJourney #ChallengeAccepted`:
+        `I'm accepting the #DiabFit30 challenge ⚡\n\n30 days to a healthier me!${cityTag}\nRetesting on ${rd}\n\ndiabfit.in\n\n#DiabFit30 #HealthJourney #ChallengeAccepted`,
       wa: qLang==='hi'?
-        `मैं #DiabFit30 चैलेंज ले रहा/रही हूं ⚡\n\ndiabfit.com`:
-        `I'm taking the #DiabFit30 challenge ⚡\n\ndiabfit.com`,
+        `मैं #DiabFit30 चैलेंज ले रहा/रही हूं ⚡\n\ndiabfit.in`:
+        `I'm taking the #DiabFit30 challenge ⚡\n\ndiabfit.in`,
       x: qLang==='hi'?
-        `मैं #DiabFit30 चैलेंज ले रहा/रही हूं ⚡ ${rd} को फिर से जांच। → diabfit.com`:
-        `Taking the #DiabFit30 challenge ⚡ Retesting on ${rd}. → diabfit.com`
+        `मैं #DiabFit30 चैलेंज ले रहा/रही हूं ⚡ ${rd} को फिर से जांच। → diabfit.in`:
+        `Taking the #DiabFit30 challenge ⚡ Retesting on ${rd}. → diabfit.in`
     };
   }
 }
@@ -2046,7 +2202,7 @@ function drawSocialCard(result){
   // ── Bottom branding
   ctx.font='500 24px -apple-system, Segoe UI, sans-serif';
   ctx.fillStyle='rgba(255,255,255,0.45)';
-  ctx.fillText(hi?'मुफ़्त जांच लें · diabfit.com':'Take the free check · diabfit.com', W/2, 990);
+  ctx.fillText(hi?'मुफ़्त जांच लें · diabfit.in':'Take the free check · diabfit.in', W/2, 990);
   ctx.font='400 20px -apple-system, Segoe UI, sans-serif';
   ctx.fillStyle='rgba(255,255,255,0.28)';
   ctx.fillText(hi?'भारत में निर्मित':'Made in India', W/2, 1030);
