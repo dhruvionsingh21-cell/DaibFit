@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DiabFit — About Us</title>
-<meta name="description" content="DiabFit exists to help 100 million people detect and prevent diabetes before it becomes irreversible.">
+<meta name="description" content="DiabFit exists to make 10 crore Indians diabetes-free — through early prediabetes detection, prevention, and wellness rooted in tradition.">
 <style>
 :root{
   --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;
@@ -17,93 +17,68 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text)}
-
-/* ── NAV ── */
 nav{background:var(--navy);padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:52px;position:sticky;top:0;z-index:100}
 .logo{color:#fff;font-size:18px;font-weight:700}.logo span{color:var(--green)}
-.nav-back{color:rgba(255,255,255,0.7);font-size:13px;text-decoration:none;display:flex;align-items:center;gap:5px}
+.nav-back{color:rgba(255,255,255,0.7);font-size:13px;text-decoration:none}
 .nav-back:hover{color:#fff}
+@media(max-width:480px){.nav-back{font-size:11px}}
 
-/* ── HERO ── */
-.about-hero{background:var(--navy);color:#fff;padding:4rem 1.5rem 4.5rem;text-align:center;position:relative;overflow:hidden}
+.about-hero{background:var(--navy);color:#fff;padding:3.5rem 1.5rem 4rem;text-align:center;position:relative;overflow:hidden}
 .about-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(29,158,117,0.15) 0%,transparent 60%),radial-gradient(ellipse at 70% 50%,rgba(55,138,221,0.12) 0%,transparent 60%);pointer-events:none}
 .hero-label{display:inline-block;font-size:11px;font-weight:700;color:var(--green);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1rem}
-.about-hero h1{font-size:clamp(1.8rem,5vw,2.8rem);font-weight:800;line-height:1.2;margin-bottom:1.25rem;letter-spacing:-0.5px}
-.mission-quote{max-width:600px;margin:0 auto;font-size:1.1rem;line-height:1.75;color:rgba(255,255,255,0.82);font-style:italic;border-left:3px solid var(--green);padding-left:1.25rem;text-align:left}
-.shlok{margin-top:1.5rem;font-size:.95rem;color:var(--saffron);font-weight:600;letter-spacing:.02em}
+.about-hero h1{font-size:clamp(1.7rem,4.5vw,2.5rem);font-weight:800;line-height:1.25;margin-bottom:1.25rem;letter-spacing:-0.5px}
+.mission-quote{max-width:600px;margin:0 auto;font-size:1.05rem;line-height:1.75;color:rgba(255,255,255,0.85);font-style:italic;border-left:3px solid var(--green);padding-left:1.25rem;text-align:left}
+.shlok{margin-top:1.5rem;font-size:.95rem;color:var(--saffron);font-weight:600}
 .shlok-trans{font-size:12px;color:rgba(255,255,255,0.45);font-style:italic;margin-top:.25rem}
 
-/* ── CONTENT WRAPPER ── */
 .wrap{max-width:760px;margin:0 auto;padding:3rem 1.25rem 5rem}
-
-/* ── SECTION ── */
-.section{margin-bottom:3.5rem}
+.section{margin-bottom:3.25rem}
 .section-tag{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.75rem}
-.section h2{font-size:1.4rem;font-weight:800;color:var(--text);margin-bottom:.75rem;line-height:1.3}
+.section h2{font-size:1.35rem;font-weight:800;color:var(--text);margin-bottom:.75rem;line-height:1.3}
 .section p{font-size:15px;color:var(--text2);line-height:1.8;margin-bottom:1rem}
 .section p:last-child{margin-bottom:0}
 
-/* ── STAT ROW ── */
 .stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;margin:2rem 0}
 .stat-card{background:var(--white);border-radius:14px;box-shadow:var(--shadow);padding:1.25rem 1rem;text-align:center;border-bottom:3px solid var(--green)}
-.stat-num{font-size:2rem;font-weight:800;color:var(--navy);display:block;letter-spacing:-1px}
+.stat-num{font-size:1.9rem;font-weight:800;color:var(--navy);display:block;letter-spacing:-1px}
 .stat-label{font-size:12px;color:var(--text3);margin-top:3px;line-height:1.4}
 
-/* ── PROBLEM CARD ── */
-.problem-card{background:linear-gradient(135deg,#1a2744,#0d3d2e);border-radius:18px;padding:2rem;color:#fff;margin:1.5rem 0}
-.problem-card h3{font-size:1.1rem;font-weight:700;color:var(--saffron);margin-bottom:1rem}
-.problem-card ul{list-style:none;padding:0}
-.problem-card li{font-size:14px;color:rgba(255,255,255,0.82);line-height:1.7;padding:.4rem 0;display:flex;align-items:flex-start;gap:10px}
-.problem-card li::before{content:'→';color:var(--green);font-weight:700;flex-shrink:0}
+.pillars-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1rem;margin-top:1.25rem}
+.pillar{border-radius:14px;padding:1.25rem;border:1px solid var(--border)}
+.pillar-icon{font-size:1.6rem;margin-bottom:.5rem}
+.pillar h4{font-size:14px;font-weight:700;margin-bottom:.35rem}
+.pillar p{font-size:13px;color:var(--text2);line-height:1.6;margin:0}
 
-/* ── HOW IT'S DIFFERENT ── */
 .diff-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-top:1.25rem}
 .diff-item{background:var(--white);border-radius:14px;box-shadow:var(--shadow);padding:1.25rem}
 .diff-icon{font-size:1.75rem;margin-bottom:.6rem}
 .diff-item h4{font-size:14px;font-weight:700;color:var(--text);margin-bottom:.35rem}
-.diff-item p{font-size:13px;color:var(--text2);line-height:1.6}
+.diff-item p{font-size:13px;color:var(--text2);line-height:1.6;margin:0}
 
-/* ── TIMELINE ── */
-.timeline{position:relative;padding-left:1.75rem;margin-top:1.25rem}
-.timeline::before{content:'';position:absolute;left:7px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--green),var(--amber),var(--navy))}
-.tl-item{position:relative;margin-bottom:1.5rem}
-.tl-dot{position:absolute;left:-1.75rem;top:3px;width:16px;height:16px;border-radius:50%;border:2px solid var(--white);flex-shrink:0}
-.tl-item h4{font-size:14px;font-weight:700;color:var(--text);margin-bottom:.25rem}
-.tl-item p{font-size:13px;color:var(--text2);line-height:1.65}
-.tl-badge{display:inline-flex;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;margin-bottom:.35rem}
-
-/* ── VALUES ── */
-.values-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-top:1.25rem}
-.value-item{border-radius:14px;padding:1.25rem;border:1px solid var(--border)}
-.value-item h4{font-size:14px;font-weight:700;margin-bottom:.35rem}
-.value-item p{font-size:13px;color:var(--text2);line-height:1.6}
-
-/* ── FOUNDER SECTION ── */
 .founder-card{background:var(--white);border-radius:18px;box-shadow:var(--shadow-lg);padding:2rem;margin-top:1.25rem;display:flex;gap:1.5rem;align-items:flex-start;flex-wrap:wrap}
-.founder-avatar{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--navy));display:flex;align-items:center;justify-content:center;font-size:1.75rem;flex-shrink:0}
-.founder-info h3{font-size:16px;font-weight:700;color:var(--text);margin-bottom:.25rem}
+.founder-avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--navy));display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0}
+.founder-info h3{font-size:15px;font-weight:700;color:var(--text);margin-bottom:.25rem}
 .founder-info .role{font-size:12px;color:var(--green);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem}
-.founder-info p{font-size:13px;color:var(--text2);line-height:1.7}
+.founder-info p{font-size:13px;color:var(--text2);line-height:1.7;margin:0 0 .65rem}
 
-/* ── CTA ── */
-.cta-box{background:linear-gradient(135deg,var(--navy),#0d3d2e);border-radius:18px;padding:2.5rem;text-align:center;margin-top:1.5rem}
-.cta-box h3{font-size:1.3rem;font-weight:800;color:#fff;margin-bottom:.6rem}
+.cta-box{background:linear-gradient(135deg,var(--navy),#0d3d2e);border-radius:18px;padding:2.25rem;text-align:center;margin-top:1.5rem}
+.cta-box h3{font-size:1.2rem;font-weight:800;color:#fff;margin-bottom:.6rem}
 .cta-box p{font-size:14px;color:rgba(255,255,255,0.7);margin-bottom:1.5rem;line-height:1.65}
-.cta-btn{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#fff;padding:13px 28px;border-radius:99px;font-size:15px;font-weight:700;text-decoration:none;transition:all .2s;box-shadow:0 4px 20px rgba(29,158,117,0.4)}
-.cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(29,158,117,0.5)}
+.cta-row{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#fff;padding:12px 26px;border-radius:99px;font-size:14px;font-weight:700;text-decoration:none;transition:all .2s}
+.cta-btn:hover{transform:translateY(-2px)}
+.cta-btn.secondary{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.25)}
 
-/* ── FOOTER ── */
 footer{background:var(--navy);color:rgba(255,255,255,0.5);text-align:center;padding:1.75rem 1.5rem;font-size:12px}
 footer a{color:rgba(255,255,255,0.6);text-decoration:none}
 footer a:hover{color:#fff}
 .footer-flag{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:.6rem;font-size:11px;color:rgba(255,255,255,0.35)}
-.mini-flag{width:16px;height:11px;border-radius:1px;overflow:hidden;display:inline-block;flex-shrink:0}
-.mini-flag div{height:33.33%}
 
 @media(max-width:480px){
-  .about-hero{padding:3rem 1rem 3.5rem}
+  .about-hero{padding:2.75rem 1rem 3rem}
   .founder-card{flex-direction:column}
   .wrap{padding:2rem 1rem 4rem}
+  .cta-row{flex-direction:column}
 }
 </style>
 </head>
@@ -114,192 +89,123 @@ footer a:hover{color:#fff}
   <a href="/" class="nav-back">← Take the test</a>
 </nav>
 
-<!-- ── HERO ── -->
 <section class="about-hero">
   <div class="hero-label">Our Mission</div>
-  <h1>Diabetes doesn't have to<br>be India's silent epidemic</h1>
-  <div style="max-width:640px;margin:1.25rem auto 0">
+  <h1>A diabetes-free India,<br>rooted in prevention</h1>
+  <div style="max-width:620px;margin:1.25rem auto 0">
     <blockquote class="mission-quote">
-      "DiabFit exists to help 100 million people detect and prevent diabetes before it becomes irreversible."
+      "DiabFit exists to make 10 crore Indians diabetes-free — by detecting and reversing prediabetes before it becomes irreversible."
     </blockquote>
   </div>
   <div class="shlok">स्वास्थ्यं सर्वार्थसाधनम्</div>
   <div class="shlok-trans">"Health is the means to achieve all goals"</div>
 </section>
 
-<!-- ── MAIN CONTENT ── -->
 <div class="wrap">
 
-  <!-- The Problem -->
   <div class="section">
     <div class="section-tag">🇮🇳 The Problem</div>
-    <h2>India is the diabetes capital of the world — and most people don't know they're at risk</h2>
-    <p>136 million Indians have diabetes. Another estimated 136 million are prediabetic — and the vast majority have no idea. Prediabetes causes no symptoms. It doesn't hurt. It doesn't show up in a mirror. But left undetected, it almost always progresses to Type 2 diabetes within 5–10 years.</p>
+    <h2>India carries the world's largest diabetes burden — and prediabetes is invisible</h2>
+    <p>136 million Indians already have diabetes. Crores more are prediabetic and don't know it — prediabetes has no symptoms, so it goes undetected for years until it quietly becomes Type 2 diabetes. By then, reversal is far harder.</p>
+    <p>DiabFit exists at exactly this gap: a free, 3-minute screening that tells you your real prediabetes risk before a diagnosis ever becomes necessary.</p>
+  </div>
 
-    <div class="problem-card">
-      <h3>Why this is a crisis right now</h3>
-      <ul>
-        <li>South Asians develop diabetes at lower BMI thresholds than Western populations — standard BMI charts miss us</li>
-        <li>The average Indian waits until symptoms appear before getting tested — by then, damage has started</li>
-        <li>A full HbA1c blood test costs ₹300–600 and requires a doctor visit — most people skip it for years</li>
-        <li>Prediabetes is <strong>fully reversible</strong> with lifestyle changes — but only if caught in time</li>
-        <li>India spends ₹5 lakh crore annually managing diabetes complications — prevention costs a fraction</li>
-      </ul>
+  <div class="stat-row">
+    <div class="stat-card"><span class="stat-num">13.6Cr</span><span class="stat-label">Indians with diabetes</span></div>
+    <div class="stat-card"><span class="stat-num">10Cr</span><span class="stat-label">Our diabetes-free goal</span></div>
+    <div class="stat-card"><span class="stat-num">Free</span><span class="stat-label">Cost of screening</span></div>
+    <div class="stat-card"><span class="stat-num">3 min</span><span class="stat-label">To know your risk</span></div>
+  </div>
+
+  <div class="section">
+    <div class="section-tag">🎯 What We Focus On</div>
+    <h2>Prevention and wellness — not just detection</h2>
+    <p>Finding out your risk is only step one. DiabFit is built around three pillars, all pointed at the same goal: helping you avoid diabetes, not just measure your chances of getting it.</p>
+    <div class="pillars-grid">
+      <div class="pillar" style="border-color:var(--green);background:var(--green-light)">
+        <div class="pillar-icon">🩺</div>
+        <h4 style="color:var(--green-dark)">Early Detection</h4>
+        <p style="color:var(--green-dark)">A validated WHO FINDRISC-based screening, adapted for Indian bodies and Indian thresholds.</p>
+      </div>
+      <div class="pillar" style="border-color:var(--amber);background:var(--amber-light)">
+        <div class="pillar-icon">🌿</div>
+        <h4 style="color:var(--amber-dark)">Traditional Wellness</h4>
+        <p style="color:var(--amber-dark)">Our Knowledge Centre brings together traditional Indian wellness knowledge alongside modern research — not replacing medicine, but respecting what generations have practiced.</p>
+      </div>
+      <div class="pillar" style="border-color:#378ADD;background:#E6F1FB">
+        <div class="pillar-icon">📈</div>
+        <h4 style="color:#042C53">Sustained Prevention</h4>
+        <p style="color:#042C53">DaibFit Journey helps you track daily habits and stay consistent — because prevention is a routine, not a one-time result.</p>
+      </div>
     </div>
   </div>
 
-  <!-- Stats -->
-  <div class="stat-row">
-    <div class="stat-card"><span class="stat-num">136M</span><span class="stat-label">Indians with diabetes</span></div>
-    <div class="stat-card"><span class="stat-num">136M</span><span class="stat-label">Undiagnosed prediabetics</span></div>
-    <div class="stat-card"><span class="stat-num">58%</span><span class="stat-label">Risk reduction with 30 min walk daily</span></div>
-    <div class="stat-card"><span class="stat-num">₹6</span><span class="stat-label">Cost of a DiabFit screening</span></div>
-  </div>
-
-  <!-- What DiabFit is -->
   <div class="section">
     <div class="section-tag">✅ What We Do</div>
-    <h2>A 3-minute screening that checks what your BMI misses</h2>
-    <p>DiabFit is a clinically validated risk screening tool built on the ADA/WHO FINDRISC questionnaire, adapted specifically for India. It checks 17 risk factors — including family history, blood pressure, sleep, stress, waist size, and previous blood sugar history — that a simple BMI reading completely ignores.</p>
-    <p>In 3 minutes, anyone in India can know their real prediabetes risk level, get a shareable certificate card, and if at risk, receive a personalised 30-day Indian diet and activity plan to start reversing that risk today.</p>
-  </div>
-
-  <!-- How it's different -->
-  <div class="section">
-    <div class="section-tag">⚡ How We're Different</div>
-    <h2>Not just another health app</h2>
+    <h2>Four things, all working toward one outcome</h2>
     <div class="diff-grid">
       <div class="diff-item">
-        <div class="diff-icon">🧬</div>
-        <h4>India-specific thresholds</h4>
-        <p>South Asians are at risk from BMI 23, not 25. We use WHO-recommended Indian thresholds — not Western charts.</p>
+        <div class="diff-icon">🩺</div>
+        <h4>Prediabetes Risk Assessment</h4>
+        <p>17-factor screening using validated WHO FINDRISC methodology, aligned with ICMR and IDF guidelines for Indian bodies.</p>
       </div>
       <div class="diff-item">
-        <div class="diff-icon">📊</div>
-        <h4>17 risk factors, not just weight</h4>
-        <p>Family history, sleep, stress, blood pressure — all the things a BMI chart ignores but a doctor checks.</p>
+        <div class="diff-icon">📅</div>
+        <h4>Body Age Estimate</h4>
+        <p>An additional signal — how your lifestyle is ageing your body compared to your actual age.</p>
       </div>
       <div class="diff-item">
-        <div class="diff-icon">🏆</div>
-        <h4>Social movement, not just a tool</h4>
-        <p>Shareable certificate cards turn a health screening into a cultural signal — like a blue tick, but for health.</p>
+        <div class="diff-icon">📚</div>
+        <h4>Knowledge Centre</h4>
+        <p>Latest research, traditional wellness wisdom, and simple explainers — all reviewed before publishing.</p>
       </div>
       <div class="diff-item">
-        <div class="diff-icon">🗺️</div>
-        <h4>Mapping India's risk</h4>
-        <p>Every screening (with consent) contributes to an anonymised map of prediabetes risk across Indian cities.</p>
-      </div>
-      <div class="diff-item">
-        <div class="diff-icon">🍛</div>
-        <h4>Real Indian food plans</h4>
-        <p>Dal, sabzi, roti, millets — not smoothie bowls and kale salads. Plans that actually work in Indian kitchens.</p>
-      </div>
-      <div class="diff-item">
-        <div class="diff-icon">₹6</div>
-        <h4>Less than a cup of chai</h4>
-        <p>The barrier to knowing your risk should be zero. At ₹6, we've made it as close to free as commercially viable.</p>
+        <div class="diff-icon">📈</div>
+        <h4>DaibFit Journey</h4>
+        <p>Daily habit tracking, personal insights, and progress reports to keep prevention going, not just a one-time check.</p>
       </div>
     </div>
   </div>
 
-  <!-- Roadmap -->
-  <div class="section">
-    <div class="section-tag">🚀 Our Journey</div>
-    <h2>Where we are and where we're going</h2>
-    <div class="timeline">
-      <div class="tl-item">
-        <div class="tl-dot" style="background:var(--green)"></div>
-        <span class="tl-badge" style="background:var(--green-light);color:var(--green-dark)">Now</span>
-        <h4>India launch — daibfit.in</h4>
-        <p>17-factor validated screening in English and Hindi. Razorpay payments. Supabase data collection. Personalised 30-day plans. City-level risk mapping.</p>
-      </div>
-      <div class="tl-item">
-        <div class="tl-dot" style="background:var(--amber)"></div>
-        <span class="tl-badge" style="background:var(--amber-light);color:var(--amber-dark)">Phase 2</span>
-        <h4>More Indian languages + corporate wellness</h4>
-        <p>Adding Tamil, Telugu, Bengali, Marathi. Corporate bulk screening packages for HR departments. Lab test partnerships (SRL, Dr Lal) for discounted HbA1c tests.</p>
-      </div>
-      <div class="tl-item">
-        <div class="tl-dot" style="background:var(--navy)"></div>
-        <span class="tl-badge" style="background:var(--green-light);color:var(--navy)">Phase 3</span>
-        <h4>South Asia + Middle East</h4>
-        <p>Expanding to Pakistan, Bangladesh, UAE — all high-burden, high-diaspora markets. Same clinical tool, localised delivery.</p>
-      </div>
-      <div class="tl-item">
-        <div class="tl-dot" style="background:#7B5EA7"></div>
-        <span class="tl-badge" style="background:#EEEDFE;color:#534AB7">Phase 4</span>
-        <h4>CDC / NHS alignment — global</h4>
-        <p>Align with the US CDC's National Diabetes Prevention Programme and NHS Digital. Position DiabFit as a global public health infrastructure platform.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Values -->
-  <div class="section">
-    <div class="section-tag">💛 Our Values</div>
-    <h2>What we stand for</h2>
-    <div class="values-grid">
-      <div class="value-item" style="border-color:var(--green);background:var(--green-light)">
-        <h4 style="color:var(--green-dark)">Prevention over treatment</h4>
-        <p style="color:var(--green-dark)">Catching prediabetes at ₹6 is infinitely better than treating diabetes at ₹5 lakh per year. We exist at the front of the pipeline.</p>
-      </div>
-      <div class="value-item" style="border-color:var(--amber);background:var(--amber-light)">
-        <h4 style="color:var(--amber-dark)">India-first design</h4>
-        <p style="color:var(--amber-dark)">Every threshold, every food suggestion, every language choice is designed for the reality of Indian bodies and Indian kitchens.</p>
-      </div>
-      <div class="value-item" style="border-color:#378ADD;background:#E6F1FB">
-        <h4 style="color:#042C53">Privacy by default</h4>
-        <p style="color:#042C53">We never store health measurements. Name and city only, with explicit consent. Data is aggregated and anonymised for public health insight.</p>
-      </div>
-      <div class="value-item" style="border-color:var(--navy);background:#f0f2f8">
-        <h4 style="color:var(--navy)">Evidence-based, always</h4>
-        <p style="color:var(--navy)">Built on the validated ADA/WHO FINDRISC questionnaire. We say "risk screening" — not "diagnosis." Honesty about what we are.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Founder -->
   <div class="section">
     <div class="section-tag">👤 Who We Are</div>
-    <h2>Built by a preventive health care initiator</h2>
+    <h2>A preventive health care initiative, built for India</h2>
     <div class="founder-card">
       <div class="founder-avatar">🩺</div>
       <div class="founder-info">
         <div class="role">Preventive Health Care Initiator</div>
         <h3>DiabFit Team</h3>
-        <p>DiabFit was conceived, designed, and built by people who believe that preventive health care — not reactive treatment — is the only sustainable answer to India's diabetes crisis. We are not a hospital. We are not a pharmaceutical company. We are health advocates who think access to a ₹6 screening should be as easy as buying a samosa.</p>
-        <p style="margin-top:.65rem">We use the ADA-validated FINDRISC questionnaire, adapted for South Asian clinical thresholds, reviewed for Indian dietary and lifestyle context. Our work is grounded in public health science — not wellness trends.</p>
+        <p>DiabFit was built on one belief: prevention is more powerful — and far cheaper — than treatment. We are not a hospital or a pharmaceutical company. We are health advocates who think knowing your risk should cost nothing — the screening is completely free. Only the optional ₹49 personalised Activity Plan is paid, since it takes real effort to generate.</p>
+        <p>Our screening uses the WHO FINDRISC questionnaire, aligned with ICMR and IDF guidelines for South Asian populations. Our Knowledge Centre pairs that same rigor with respect for traditional Indian wellness knowledge — presented honestly, alongside modern research, never as a replacement for medical care.</p>
       </div>
     </div>
   </div>
 
-  <!-- Medical disclaimer -->
   <div class="section">
     <div class="section-tag">⚖️ Medical Disclaimer</div>
     <h2>What DiabFit is — and what it is not</h2>
-    <p>DiabFit is a <strong>risk screening tool</strong>, not a diagnostic device. It uses the validated ADA/WHO FINDRISC questionnaire to estimate prediabetes risk based on self-reported information. It does not diagnose prediabetes or diabetes. Only a qualified doctor and a blood test (HbA1c or fasting plasma glucose) can provide a medical diagnosis.</p>
-    <p>If DiabFit shows moderate or high risk, we strongly encourage you to book an HbA1c test and consult your doctor. The 30-day plan we provide is general wellness guidance — not medical advice or a treatment protocol.</p>
+    <p>DiabFit is a <strong>risk screening tool</strong>, not a diagnostic device. It does not diagnose prediabetes or diabetes — only a doctor and a blood test (HbA1c or fasting plasma glucose) can do that. If your result shows moderate or high risk, please book a blood test and speak to a doctor.</p>
+    <p>Traditional wellness content in our Knowledge Centre is shared as historical and cultural knowledge — it is not a substitute for medical treatment, and does not claim to cure diabetes.</p>
   </div>
 
-  <!-- CTA -->
   <div class="cta-box">
     <h3>Ready to know your real risk?</h3>
-    <p>3 minutes. 17 factors. ₹6. More accurate than BMI alone — built specifically for India.</p>
-    <a href="/" class="cta-btn">Take the free screening →</a>
+    <p>3 minutes. 17 factors. Completely free. Built specifically for India.</p>
+    <div class="cta-row">
+      <a href="/" class="cta-btn">Take the screening →</a>
+      <a href="/library.html" class="cta-btn secondary">Explore the Knowledge Centre</a>
+    </div>
   </div>
 
 </div>
 
 <footer>
-  <div><strong style="color:#fff">DiabFit</strong> — Free prediabetes risk screening for India</div>
-  <div style="margin-top:.4rem">Based on the validated ADA/WHO FINDRISC questionnaire &nbsp;·&nbsp; <a href="/">Home</a> &nbsp;·&nbsp; <a href="/tracker.html">Weekly Tracker</a></div>
+  <div><strong style="color:#fff">DiabFit</strong> — Prediabetes risk screening for India</div>
+  <div style="margin-top:.4rem"><a href="/">Home</a> · <a href="/library.html">Knowledge Centre</a> · <a href="/tracker.html">DaibFit Journey</a> · <a href="/privacy.html">Privacy</a> · <a href="/disclaimer.html">Disclaimer</a></div>
   <div style="margin-top:.65rem;padding-top:.65rem;border-top:1px solid rgba(255,255,255,0.1);font-size:12px;color:rgba(255,255,255,0.5);font-style:italic">
-    "DiabFit exists to help 100 million people detect and prevent diabetes before it becomes irreversible."
+    "DiabFit exists to make 10 crore Indians diabetes-free — by detecting and reversing prediabetes before it becomes irreversible."
   </div>
-  <div class="footer-flag">
-    <span class="mini-flag"><div style="background:#FF9933"></div><div style="background:#FFFFFF"></div><div style="background:#138808"></div></span>
-    Made in India 🇮🇳
-  </div>
+  <div class="footer-flag">Made in India 🇮🇳</div>
 </footer>
 
 </body>
