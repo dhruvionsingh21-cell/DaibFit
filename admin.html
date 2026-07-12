@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DiabFit Admin — Knowledge Centre</title>
+<link rel="stylesheet" href="/library/library.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+  window.DF_CONFIG = {
+    url: 'https://dtheefwrmpontfhlzzgv.supabase.co',      // same as tracker.html / library.html
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR0aGVlZndybXBvbnRmaGx6emd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4MDQ0MzUsImV4cCI6MjA5ODM4MDQzNX0.r7SKrfXSUazF_28ViCpIwfop3kOFGwrvFmALjg5b2BA',
+  };
+  // Mirrors the admin email list in supabase/library-schema.sql — for UI display only.
+  // Real enforcement happens server-side via the is_admin() RLS function.
+  const ADMIN_EMAILS = ['harmeetsingh.lubana3@gmail.com'];
+</script>
+</head>
+<body>
+
+<nav>
+  <div class="lib-logo">Diab<span>Fit</span> Admin</div>
+  <a href="/library.html" class="lib-nav-back">← Knowledge Centre</a>
+</nav>
+
+<div class="lib-main">
+  <div id="admin-root">
+    <div class="lib-empty">Loading...</div>
+  </div>
+</div>
+
+<div class="lib-toast" id="lib-toast"></div>
+
+<script src="/library/articles-api.js"></script>
+<script>
+let editingId = null;
+let allArticles = [];
+
+function showToast(msg) {
+  const t = document.getElementById('lib-toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function renderLoginScreen() {
+  document.getElementById('admin-root').innerHTML = `
+    <div class="lib-form-card" style="text-align:center;max-width:380px;margin:2rem auto">
+      <div style="font-size:2rem;margin-bottom:1rem">🔐</div>
+      <h2 style="font-size:1.2rem;margin-bottom:.5rem">Admin Sign In</h2>
+      <p style="font-size:13px;color:var(--lib-text2);margin-bottom:1.5rem">Sign in with your admin Google account to manage articles.</p>
+      <button id="admin-signin-btn" class="lib-submit-btn" style="background:var(--lib-navy)">Sign in with Google</button>
+    </div>`;
+  document.getElementById('admin-signin-btn').onclick = () => DFArticles.signInWithGoogle('/admin.html');
+}
+
+function renderNotAdmin(email) {
+  document.getElementById('admin-root').innerHTML = `
+    <div class="lib-form-card" style="text-align:center;max-width:420px;margin:2rem auto">
+      <div style="font-size:2rem;margin-bottom:1rem">🚫</div>
+      <h2 style="font-size:1.2rem;margin-bottom:.5rem">Not authorised</h2>
+      <p style="font-size:13px;color:var(--lib-text2)">Signed in as <strong>${email}</strong>, which is not on the admin list. Ask the site owner to add your email in <code>supabase/library-schema.sql</code>.</p>
+    </div>`;
+}
+
+async function renderAdminPanel(userEmail) {
+  const root = document.getElementById('admin-root');
+  root.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem">
+      <div style="font-size:13px;color:var(--lib-text3)">Signed in as ${userEmail}</div>
+      <button id="admin-signout-btn" class="lib-icon-btn" style="width:auto;padding:0 12px">Sign out</button>
+    </div>
+
+    <div class="lib-form-card" style="margin-bottom:1.5rem">
+      <h2 id="form-heading" style="font-size:1.1rem;margin-bottom:1rem">+ New Article</h2>
+      <div class="lib-field"><label>Title</label><input type="text" id="a-title"></div>
+      <div class="lib-field"><label>Category</label>
+        <select id="a-category">
+          <option value="research">🔬 Latest Research</option>
+          <option value="traditional">🌿 Traditional Wisdom</option>
+          <option value="community">✍️ Community</option>
+        </select>
+      </div>
+      <div class="lib-field"><label>Author name</label><input type="text" id="a-author" placeholder="DiabFit Team"></div>
+      <div class="lib-field">
+        <label>Cover image</label>
+        <div class="lib-upload-zone" id="a-upload-zone">📷 Click to upload an image</div>
+        <input type="file" id="a-file-input" accept="image/*" style="display:none">
+        <img id="a-image-preview" class="lib-upload-preview" style="display:none">
+        <input type="hidden" id="a-image-url">
+      </div>
+      <div class="lib-field"><label>Video link (optional)</label><input type="text" id="a-video" placeholder="https://youtube.com/watch?v=..."></div>
+      <div class="lib-field"><label>Content</label><textarea id="a-body" placeholder="Use **bold** and - bullets"></textarea></div>
+      <div class="lib-field"><label>Status</label>
+        <select id="a-status">
+          <option value="published">Published (visible now)</option>
+          <option value="draft">Draft (hidden)</option>
+        </select>
+      </div>
+      <button id="a-save-btn" class="lib-submit-btn">Save Article</button>
+      <button id="a-cancel-btn" class="lib-icon-btn" style="width:100%;margin-top:.5rem;display:none">Cancel edit</button>
+    </div>
+
+    <h2 style="font-size:1rem;margin-bottom:.75rem">All Articles</h2>
+    <div id="admin-article-list"></div>
+  `;
+
+  document.getElementById('admin-signout-btn').onclick = async () => { await DFArticles.signOut(); window.location.reload(); };
+  document.getElementById('a-upload-zone').onclick = () => document.getElementById('a-file-input').click();
+  document.getElementById('a-file-input').onchange = handleImageUpload;
+  document.getElementById('a-save-btn').onclick = saveArticle;
+  document.getElementById('a-cancel-btn').onclick = resetForm;
+
+  await loadAdminList();
+}
+
+async function handleImageUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const zone = document.getElementById('a-upload-zone');
+  zone.textContent = 'Uploading...';
+  try {
+    const url = await DFArticles.uploadImage(file);
+    document.getElementById('a-image-url').value = url;
+    const preview = document.getElementById('a-image-preview');
+    preview.src = url; preview.style.display = 'block';
+    zone.textContent = '📷 Click to change image';
+  } catch (err) {
+    zone.textContent = '📷 Click to upload an image';
+    showToast('Upload failed: ' + err.message);
+  }
+}
+
+async function loadAdminList() {
+  allArticles = await DFArticles.getAllForAdmin();
+  const listEl = document.getElementById('admin-article-list');
+  if (!allArticles.length) {
+    listEl.innerHTML = `<div class="lib-empty">No articles yet.</div>`;
+    return;
+  }
+  const statusClass = { published: 'lib-status-published', pending: 'lib-status-pending', draft: 'lib-status-draft' };
+  listEl.innerHTML = allArticles.map(a => `
+    <div class="lib-admin-list-item">
+      <img class="lib-admin-thumb" src="${a.cover_image_url || ''}" onerror="this.style.background='var(--lib-navy)';this.src=''">
+      <div class="lib-admin-item-info">
+        <div class="lib-admin-item-title">${a.title}</div>
+        <div class="lib-admin-item-meta">
+          <span class="lib-status-pill ${statusClass[a.status]}">${a.status}</span>
+          &nbsp;${a.category} · ${a.submitted_by === 'public' ? '👤 public submission' : 'admin'}
+        </div>
+      </div>
+      <div class="lib-admin-actions">
+        ${a.status === 'pending' ? `<button class="lib-icon-btn" onclick="approveArticle('${a.id}')" title="Approve">✓</button>` : ''}
+        <button class="lib-icon-btn" onclick="editArticle('${a.id}')" title="Edit">✏️</button>
+        <button class="lib-icon-btn" onclick="deleteArticle('${a.id}')" title="Delete">🗑️</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function approveArticle(id) {
+  try { await DFArticles.approveArticle(id); showToast('✓ Published'); await loadAdminList(); }
+  catch (err) { showToast('Error: ' + err.message); }
+}
+
+async function deleteArticle(id) {
+  if (!confirm('Delete this article permanently?')) return;
+  try { await DFArticles.deleteArticle(id); showToast('Deleted'); await loadAdminList(); }
+  catch (err) { showToast('Error: ' + err.message); }
+}
+
+function editArticle(id) {
+  const a = allArticles.find(x => x.id === id);
+  if (!a) return;
+  editingId = id;
+  document.getElementById('form-heading').textContent = '✏️ Edit Article';
+  document.getElementById('a-title').value = a.title || '';
+  document.getElementById('a-category').value = a.category;
+  document.getElementById('a-author').value = a.author_name || '';
+  document.getElementById('a-image-url').value = a.cover_image_url || '';
+  if (a.cover_image_url) {
+    const preview = document.getElementById('a-image-preview');
+    preview.src = a.cover_image_url; preview.style.display = 'block';
+  }
+  document.getElementById('a-video').value = a.video_url || '';
+  document.getElementById('a-body').value = a.body || '';
+  document.getElementById('a-status').value = a.status === 'pending' ? 'published' : a.status;
+  document.getElementById('a-cancel-btn').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function resetForm() {
+  editingId = null;
+  document.getElementById('form-heading').textContent = '+ New Article';
+  ['a-title', 'a-author', 'a-video', 'a-body', 'a-image-url'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('a-category').value = 'research';
+  document.getElementById('a-status').value = 'published';
+  document.getElementById('a-image-preview').style.display = 'none';
+  document.getElementById('a-cancel-btn').style.display = 'none';
+}
+
+async function saveArticle() {
+  const fields = {
+    title: document.getElementById('a-title').value.trim(),
+    category: document.getElementById('a-category').value,
+    author_name: document.getElementById('a-author').value.trim() || 'DiabFit Team',
+    cover_image_url: document.getElementById('a-image-url').value.trim() || null,
+    video_url: document.getElementById('a-video').value.trim() || null,
+    body: document.getElementById('a-body').value.trim(),
+    status: document.getElementById('a-status').value,
+  };
+  if (!fields.title || !fields.body) { showToast('Title and content are required'); return; }
+
+  const btn = document.getElementById('a-save-btn');
+  btn.disabled = true; btn.textContent = 'Saving...';
+  try {
+    if (editingId) await DFArticles.updateArticle(editingId, fields);
+    else await DFArticles.createArticle(fields);
+    showToast('✓ Saved');
+    resetForm();
+    await loadAdminList();
+  } catch (err) {
+    showToast('Error: ' + err.message);
+  }
+  btn.disabled = false; btn.textContent = 'Save Article';
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  DFArticles.init();
+  const session = await DFArticles.getSession();
+  if (!session) { renderLoginScreen(); return; }
+  const email = session.user.email;
+  if (!ADMIN_EMAILS.includes(email)) { renderNotAdmin(email); return; }
+  renderAdminPanel(email);
+});
+</script>
+</body>
+</html>

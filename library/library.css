@@ -1,0 +1,106 @@
+/**
+ * library/library.css
+ * Shared styles for the public Knowledge Centre (library.html)
+ * and the admin panel (admin.html). Matches main site's palette.
+ */
+
+:root {
+  --lib-navy: #1a2744; --lib-green: #1D9E75; --lib-green-light: #E1F5EE;
+  --lib-amber: #EF9F27; --lib-amber-light: #FAEEDA;
+  --lib-blue: #378ADD; --lib-red: #E24B4A;
+  --lib-text: #1a1a1a; --lib-text2: #555; --lib-text3: #888;
+  --lib-border: #e0e0e0; --lib-bg: #f7f8fc; --lib-white: #fff;
+  --lib-radius: 14px; --lib-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+* { box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--lib-bg); color: var(--lib-text); margin: 0; }
+
+/* ── NAV ── */
+nav { background: var(--lib-navy); padding: 0 1.5rem; height: 52px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
+.lib-logo { color: #fff; font-size: 17px; font-weight: 700; }
+.lib-logo span { color: var(--lib-green); }
+.lib-nav-back { color: rgba(255,255,255,0.75); font-size: 13px; text-decoration: none; }
+.lib-nav-back:hover { color: #fff; }
+
+/* ── HERO ── */
+.lib-hero { background: var(--lib-navy); color: #fff; padding: 2.5rem 1.5rem; text-align: center; }
+.lib-hero h1 { font-size: clamp(1.5rem, 4vw, 2.2rem); font-weight: 800; margin-bottom: .5rem; }
+.lib-hero p { font-size: 14px; color: rgba(255,255,255,0.7); max-width: 480px; margin: 0 auto; line-height: 1.6; }
+
+/* ── MAIN WRAP ── */
+.lib-main { max-width: 760px; margin: 0 auto; padding: 1.5rem 1rem 4rem; }
+
+/* ── TABS ── */
+.lib-tabs { display: flex; gap: 8px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.lib-tab { padding: 8px 18px; border-radius: 99px; font-size: 13px; font-weight: 600; cursor: pointer; border: 1.5px solid var(--lib-border); background: #fff; color: var(--lib-text2); font-family: inherit; }
+.lib-tab.active { background: var(--lib-navy); border-color: var(--lib-navy); color: #fff; }
+
+/* ── ARTICLE CARDS ── */
+.lib-article-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+.lib-card { background: var(--lib-white); border-radius: var(--lib-radius); box-shadow: var(--lib-shadow); overflow: hidden; cursor: pointer; transition: transform .15s; }
+.lib-card:hover { transform: translateY(-2px); }
+.lib-card-img { width: 100%; height: 160px; object-fit: cover; background: linear-gradient(135deg, var(--lib-navy), #0d3d2e); }
+.lib-card-body { padding: 1rem 1.15rem; }
+.lib-card-cat { display: inline-block; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; padding: 2px 9px; border-radius: 99px; margin-bottom: .5rem; }
+.lib-cat-traditional { background: var(--lib-amber-light); color: #633806; }
+.lib-cat-research { background: #E6F1FB; color: #042C53; }
+.lib-cat-community { background: var(--lib-green-light); color: #085041; }
+.lib-card-title { font-size: 15px; font-weight: 700; color: var(--lib-text); line-height: 1.4; margin-bottom: .35rem; }
+.lib-card-meta { font-size: 12px; color: var(--lib-text3); }
+.lib-empty { text-align: center; padding: 3rem 1rem; color: var(--lib-text3); font-size: 13px; }
+
+/* ── ARTICLE DETAIL ── */
+.lib-detail-card { background: var(--lib-white); border-radius: var(--lib-radius); box-shadow: var(--lib-shadow); overflow: hidden; }
+.lib-detail-img { width: 100%; max-height: 280px; object-fit: cover; }
+.lib-detail-body { padding: 1.5rem; }
+.lib-detail-title { font-size: 1.4rem; font-weight: 800; color: var(--lib-text); line-height: 1.3; margin-bottom: .5rem; }
+.lib-detail-meta { font-size: 12px; color: var(--lib-text3); margin-bottom: 1.25rem; }
+.lib-detail-text { font-size: 14px; color: var(--lib-text2); line-height: 1.85; white-space: pre-wrap; }
+.lib-video-embed { width: 100%; aspect-ratio: 16/9; border: none; border-radius: 10px; margin-bottom: 1.25rem; }
+.lib-back-link { display: inline-block; margin-bottom: 1rem; font-size: 13px; color: var(--lib-text3); text-decoration: none; cursor: pointer; }
+.lib-back-link:hover { color: var(--lib-navy); }
+
+/* ── AI SUMMARY BOX ── */
+.lib-summary-box { background: linear-gradient(135deg, #1a2744, #0d3d2e); border-radius: 14px; padding: 1.25rem; margin-top: 1.5rem; }
+.lib-summary-label { font-size: 11px; font-weight: 700; color: var(--lib-amber); text-transform: uppercase; letter-spacing: .07em; margin-bottom: .6rem; }
+.lib-summary-unlock-btn { width: 100%; padding: 12px; background: var(--lib-amber); color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; }
+.lib-summary-unlock-btn:disabled { opacity: .6; cursor: wait; }
+.lib-summary-text { font-size: 13px; color: rgba(255,255,255,0.88); line-height: 1.75; }
+
+/* ── SUBMIT FORM ── */
+.lib-form-card { background: var(--lib-white); border-radius: var(--lib-radius); box-shadow: var(--lib-shadow); padding: 1.5rem; }
+.lib-field { margin-bottom: 1rem; }
+.lib-field label { display: block; font-size: 12px; font-weight: 600; color: var(--lib-text2); text-transform: uppercase; letter-spacing: .05em; margin-bottom: .4rem; }
+.lib-field input, .lib-field select, .lib-field textarea { width: 100%; padding: 10px 13px; border: 1.5px solid var(--lib-border); border-radius: 10px; font-size: 14px; font-family: inherit; color: var(--lib-text); outline: none; }
+.lib-field input:focus, .lib-field select:focus, .lib-field textarea:focus { border-color: var(--lib-green); }
+.lib-field textarea { min-height: 160px; resize: vertical; }
+.lib-submit-btn { width: 100%; padding: 13px; background: var(--lib-green); color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; }
+.lib-submit-btn:disabled { opacity: .6; cursor: wait; }
+.lib-form-note { font-size: 12px; color: var(--lib-text3); margin-top: .75rem; text-align: center; line-height: 1.6; }
+
+/* ── ADMIN PANEL ── */
+.lib-admin-list-item { display: flex; align-items: center; gap: 12px; padding: .9rem; background: #fafafa; border-radius: 10px; margin-bottom: .6rem; }
+.lib-admin-thumb { width: 56px; height: 56px; border-radius: 8px; object-fit: cover; background: var(--lib-navy); flex-shrink: 0; }
+.lib-admin-item-info { flex: 1; min-width: 0; }
+.lib-admin-item-title { font-size: 13px; font-weight: 600; color: var(--lib-text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lib-admin-item-meta { font-size: 11px; color: var(--lib-text3); margin-top: 2px; }
+.lib-status-pill { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 99px; text-transform: uppercase; }
+.lib-status-published { background: var(--lib-green-light); color: #085041; }
+.lib-status-pending { background: var(--lib-amber-light); color: #633806; }
+.lib-status-draft { background: #f0f0f0; color: #888; }
+.lib-admin-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.lib-icon-btn { width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--lib-border); background: #fff; cursor: pointer; font-size: 13px; display: flex; align-items: center; justify-content: center; }
+.lib-icon-btn:hover { border-color: var(--lib-navy); }
+.lib-upload-zone { border: 2px dashed var(--lib-border); border-radius: 10px; padding: 1.5rem; text-align: center; cursor: pointer; font-size: 13px; color: var(--lib-text3); }
+.lib-upload-zone:hover { border-color: var(--lib-green); color: var(--lib-green); }
+.lib-upload-preview { width: 100%; max-height: 160px; object-fit: cover; border-radius: 10px; margin-top: .5rem; }
+
+.lib-toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); background: var(--lib-text); color: #fff; padding: 10px 20px; border-radius: 99px; font-size: 13px; font-weight: 600; opacity: 0; transition: opacity .3s; pointer-events: none; z-index: 999; }
+.lib-toast.show { opacity: 1; }
+
+@media (min-width: 640px) {
+  .lib-article-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) {
+  .lib-main { padding: 1rem .75rem 3rem; }
+}

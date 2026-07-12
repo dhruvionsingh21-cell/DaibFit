@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DiabFit Knowledge Centre — Research, Tradition & Understanding Diabetes</title>
+<meta name="description" content="Latest research on diabetes and prediabetes, traditional wellness knowledge, and simple explainers — all in one place.">
+<link rel="stylesheet" href="/library/library.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+  window.DF_CONFIG = {
+    url: 'https://dtheefwrmpontfhlzzgv.supabase.co',      // same as tracker.html
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR0aGVlZndybXBvbnRmaGx6emd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4MDQ0MzUsImV4cCI6MjA5ODM4MDQzNX0.r7SKrfXSUazF_28ViCpIwfop3kOFGwrvFmALjg5b2BA',              // same as tracker.html
+  };
+  const RAZORPAY_KEY = 'rzp_live_T8FFk6vWsmq0PB'; // same as index.html
+</script>
+</head>
+<body>
+
+<nav>
+  <div class="lib-logo">Diab<span>Fit</span> Knowledge Centre</div>
+  <a href="/" class="lib-nav-back">← Home</a>
+</nav>
+
+<section class="lib-hero">
+  <h1>The DiabFit Knowledge Centre</h1>
+  <p>Latest research, traditional wellness knowledge, and simple explainers about diabetes and prediabetes — all in one place.</p>
+</section>
+
+<div class="lib-main">
+  <div id="lib-view-list">
+    <div class="lib-tabs" id="lib-tabs">
+      <button class="lib-tab active" data-cat="all">All</button>
+      <button class="lib-tab" data-cat="research">🔬 Latest Research</button>
+      <button class="lib-tab" data-cat="traditional">🌿 Traditional Wisdom</button>
+      <button class="lib-tab" data-cat="community">✍️ Community</button>
+    </div>
+    <div id="lib-article-list" class="lib-article-grid">
+      <div class="lib-empty">Loading articles...</div>
+    </div>
+
+    <div class="lib-form-card" style="margin-top:2rem">
+      <div style="font-size:15px;font-weight:700;margin-bottom:.4rem">✍️ Have an article or research to share?</div>
+      <p style="font-size:13px;color:var(--lib-text2);margin-bottom:1rem;line-height:1.6">
+        Anyone can submit an article. Submissions are reviewed before publishing.
+      </p>
+      <button id="lib-show-submit-btn" class="lib-submit-btn" style="background:var(--lib-navy)">Submit an article</button>
+    </div>
+  </div>
+
+  <div id="lib-view-detail" style="display:none"></div>
+
+  <div id="lib-view-submit" style="display:none">
+    <span class="lib-back-link" id="lib-back-from-submit">← Back to Knowledge Centre</span>
+    <div class="lib-form-card">
+      <h2 style="font-size:1.2rem;margin-bottom:.25rem">Submit an article</h2>
+      <p style="font-size:13px;color:var(--lib-text2);margin-bottom:1.25rem">Share research, traditional knowledge, or your own experience. We review every submission before it goes live.</p>
+
+      <div class="lib-field">
+        <label>Title</label>
+        <input type="text" id="sub-title" placeholder="e.g. How walking after meals affects blood sugar" maxlength="150">
+      </div>
+      <div class="lib-field">
+        <label>Category</label>
+        <select id="sub-category">
+          <option value="research">🔬 Latest Research</option>
+          <option value="traditional">🌿 Traditional Wisdom</option>
+          <option value="community">✍️ Community</option>
+        </select>
+      </div>
+      <div class="lib-field">
+        <label>Your name</label>
+        <input type="text" id="sub-author" placeholder="Your name (or leave blank for Anonymous)" maxlength="80">
+      </div>
+      <div class="lib-field">
+        <label>Cover image URL (optional)</label>
+        <input type="text" id="sub-image" placeholder="https://...">
+      </div>
+      <div class="lib-field">
+        <label>Video link (optional — YouTube/Vimeo)</label>
+        <input type="text" id="sub-video" placeholder="https://youtube.com/watch?v=...">
+      </div>
+      <div class="lib-field">
+        <label>Content</label>
+        <textarea id="sub-body" placeholder="Write your article here. Use **text** for bold, and - for bullet points."></textarea>
+      </div>
+      <button id="sub-submit-btn" class="lib-submit-btn">Submit for review</button>
+      <p class="lib-form-note">Your submission will be reviewed by the DiabFit team before publishing. This is not medical advice — please avoid claiming cures.</p>
+    </div>
+  </div>
+</div>
+
+<div class="lib-toast" id="lib-toast"></div>
+
+<script src="/library/articles-api.js"></script>
+<script>
+// ══════════════════════════════════════════════════════════════
+// Page controller — view switching + wiring
+// ══════════════════════════════════════════════════════════════
+let currentCategory = 'all';
+let currentArticle = null;
+
+function showToast(msg) {
+  const t = document.getElementById('lib-toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function showView(view) {
+  document.getElementById('lib-view-list').style.display = view === 'list' ? 'block' : 'none';
+  document.getElementById('lib-view-detail').style.display = view === 'detail' ? 'block' : 'none';
+  document.getElementById('lib-view-submit').style.display = view === 'submit' ? 'block' : 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function loadArticles(category) {
+  currentCategory = category;
+  const listEl = document.getElementById('lib-article-list');
+  listEl.innerHTML = `<div class="lib-empty">Loading articles...</div>`;
+  const articles = await DFArticles.getPublished(category);
+
+  if (!articles.length) {
+    listEl.innerHTML = `<div class="lib-empty">No articles here yet — check back soon, or be the first to submit one below.</div>`;
+    return;
+  }
+
+  const catLabel = { research: '🔬 Research', traditional: '🌿 Traditional', community: '✍️ Community' };
+  const catClass = { research: 'lib-cat-research', traditional: 'lib-cat-traditional', community: 'lib-cat-community' };
+
+  listEl.innerHTML = articles.map(a => `
+    <div class="lib-card" onclick="openArticle('${a.id}')">
+      <img class="lib-card-img" src="${a.cover_image_url || ''}" onerror="this.style.display='none'" alt="">
+      <div class="lib-card-body">
+        <span class="lib-card-cat ${catClass[a.category]}">${catLabel[a.category]}</span>
+        <div class="lib-card-title">${a.title}</div>
+        <div class="lib-card-meta">By ${a.author_name || 'DiabFit'} · ${new Date(a.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function openArticle(id) {
+  const article = await DFArticles.getById(id);
+  if (!article) { showToast('Article not found'); return; }
+  currentArticle = article;
+
+  const embedUrl = DFArticles.toEmbedUrl(article.video_url);
+  const detailEl = document.getElementById('lib-view-detail');
+  detailEl.innerHTML = `
+    <span class="lib-back-link" onclick="showView('list')">← Back to Knowledge Centre</span>
+    <div class="lib-detail-card">
+      ${article.cover_image_url ? `<img class="lib-detail-img" src="${article.cover_image_url}" alt="">` : ''}
+      <div class="lib-detail-body">
+        <div class="lib-detail-title">${article.title}</div>
+        <div class="lib-detail-meta">By ${article.author_name || 'DiabFit'} · ${new Date(article.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
+        ${embedUrl ? `<iframe class="lib-video-embed" src="${embedUrl}" allowfullscreen></iframe>` : ''}
+        <div class="lib-detail-text">${DFArticles.renderBody(article.body)}</div>
+
+        <div class="lib-summary-box">
+          <div class="lib-summary-label">🤖 AI Summary</div>
+          <div id="lib-summary-content">
+            <p style="font-size:13px;color:rgba(255,255,255,0.7);margin-bottom:.75rem">Get a quick 120-word AI summary of this article for ₹11.</p>
+            <button id="lib-unlock-summary-btn" class="lib-summary-unlock-btn">Unlock summary — ₹11</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  showView('detail');
+  document.getElementById('lib-unlock-summary-btn').onclick = () => payForSummary(article.id);
+}
+
+function payForSummary(articleId) {
+  const btn = document.getElementById('lib-unlock-summary-btn');
+  btn.disabled = true; btn.textContent = 'Loading...';
+
+  const rzp = new Razorpay({
+    key: RAZORPAY_KEY,
+    amount: 1100, // ₹11 in paise
+    currency: 'INR',
+    name: 'DiabFit Knowledge Centre',
+    description: 'AI article summary',
+    handler: async function (response) {
+      const contentEl = document.getElementById('lib-summary-content');
+      contentEl.innerHTML = `<p style="font-size:13px;color:rgba(255,255,255,0.6);font-style:italic">Generating your summary...</p>`;
+      try {
+        const summary = await DFArticles.requestSummary(articleId, response.razorpay_payment_id);
+        contentEl.innerHTML = `<div class="lib-summary-text">${summary.replace(/\n/g, '<br>')}</div>`;
+      } catch (err) {
+        contentEl.innerHTML = `<p style="font-size:13px;color:#F09595">${err.message}</p>`;
+      }
+    },
+    theme: { color: '#EF9F27' },
+    modal: { ondismiss: () => { btn.disabled = false; btn.textContent = 'Unlock summary — ₹11'; } },
+  });
+  rzp.on('payment.failed', () => { btn.disabled = false; btn.textContent = 'Unlock summary — ₹11'; showToast('Payment failed'); });
+  rzp.open();
+}
+
+async function submitArticle() {
+  const title = document.getElementById('sub-title').value.trim();
+  const category = document.getElementById('sub-category').value;
+  const authorName = document.getElementById('sub-author').value.trim();
+  const coverImageUrl = document.getElementById('sub-image').value.trim();
+  const videoUrl = document.getElementById('sub-video').value.trim();
+  const body = document.getElementById('sub-body').value.trim();
+
+  if (!title || !body) { showToast('Please fill in title and content'); return; }
+
+  const btn = document.getElementById('sub-submit-btn');
+  btn.disabled = true; btn.textContent = 'Submitting...';
+  try {
+    await DFArticles.submitPublicArticle({ title, category, authorName, coverImageUrl, videoUrl, body });
+    showToast('✓ Submitted for review — thank you!');
+    ['sub-title', 'sub-author', 'sub-image', 'sub-video', 'sub-body'].forEach(id => document.getElementById(id).value = '');
+    showView('list');
+  } catch (err) {
+    showToast('Error: ' + err.message);
+  }
+  btn.disabled = false; btn.textContent = 'Submit for review';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  DFArticles.init();
+  loadArticles('all');
+
+  document.querySelectorAll('.lib-tab').forEach(tab => {
+    tab.onclick = () => {
+      document.querySelectorAll('.lib-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      loadArticles(tab.dataset.cat);
+    };
+  });
+
+  document.getElementById('lib-show-submit-btn').onclick = () => showView('submit');
+  document.getElementById('lib-back-from-submit').onclick = () => showView('list');
+  document.getElementById('sub-submit-btn').onclick = submitArticle;
+});
+</script>
+</body>
+</html>
