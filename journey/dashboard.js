@@ -188,7 +188,7 @@ const DFDashboard = (function () {
 
       <div class="df-card df-ai-card">
         <div class="df-card-label">🤖 Ask your Personal Health Coach</div>
-        <p class="df-card-sub" style="margin-bottom:.75rem">Get answers based on your actual tracked data — not generic advice.</p>
+        <p class="df-card-sub" style="margin-bottom:.75rem">Get answers based on your actual tracked data — not generic advice. ₹9 per question.</p>
         <div class="df-ai-suggestions">
           <button class="df-ai-chip" data-q="What should I improve first?">What should I improve first?</button>
           <button class="df-ai-chip" data-q="Why is my Body Age increasing?">Why is my Body Age increasing?</button>
@@ -196,7 +196,7 @@ const DFDashboard = (function () {
         </div>
         <div style="display:flex;gap:8px;margin-top:.75rem">
           <input type="text" id="df-ai-input" placeholder="Ask anything about your health journey..." class="df-ai-input">
-          <button id="df-ai-ask-btn" class="df-ai-ask-btn">Ask</button>
+          <button id="df-ai-ask-btn" class="df-ai-ask-btn">Ask — ₹9</button>
         </div>
         <div id="df-ai-answer" class="df-ai-answer" style="display:none"></div>
       </div>
@@ -250,11 +250,10 @@ const DFDashboard = (function () {
     const btn = document.getElementById('df-ai-ask-btn');
     const answerBox = document.getElementById('df-ai-answer');
 
-    async function ask(question) {
-      if (!question || !question.trim()) return;
+    // Actually calls the AI after payment has succeeded.
+    async function askAfterPayment(question) {
       answerBox.style.display = 'block';
       answerBox.innerHTML = `<div class="df-ai-loading">Thinking...</div>`;
-      btn.disabled = true;
       try {
         const answer = await DFAICoach.ask(question, profile, logs, weeklyReports, insights, lang);
         answerBox.innerHTML = `<div class="df-ai-answer-text">${answer.replace(/\n/g, '<br>')}</div>`;
@@ -262,6 +261,38 @@ const DFDashboard = (function () {
         answerBox.innerHTML = `<div class="df-ai-error">${err.message}</div>`;
       }
       btn.disabled = false;
+      btn.textContent = 'Ask — ₹9';
+    }
+
+    // Entry point — every question requires a ₹9 payment first.
+    function ask(question) {
+      if (!question || !question.trim()) return;
+      if (!window.Razorpay) { answerBox.style.display = 'block'; answerBox.innerHTML = `<div class="df-ai-error">Payment system not loaded. Please refresh and try again.</div>`; return; }
+
+      btn.disabled = true;
+      btn.textContent = 'Loading...';
+
+      const rzp = new Razorpay({
+        key: RAZORPAY_KEY,
+        amount: 900, // ₹9 in paise
+        currency: 'INR',
+        name: 'DaibFit Journey',
+        description: 'Ask your Personal Health Coach',
+        handler: function () {
+          askAfterPayment(question);
+        },
+        prefill: { name: profile?.full_name || '' },
+        theme: { color: '#EF9F27' },
+        modal: {
+          ondismiss: () => { btn.disabled = false; btn.textContent = 'Ask — ₹9'; },
+        },
+      });
+      rzp.on('payment.failed', () => {
+        btn.disabled = false; btn.textContent = 'Ask — ₹9';
+        answerBox.style.display = 'block';
+        answerBox.innerHTML = `<div class="df-ai-error">Payment failed. Please try again.</div>`;
+      });
+      rzp.open();
     }
 
     btn.onclick = () => ask(input.value);

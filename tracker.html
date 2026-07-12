@@ -13,6 +13,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <!-- jsPDF for report downloads -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<!-- Razorpay for the ₹9 AI coach question fee -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+  const RAZORPAY_KEY = 'rzp_live_T8FFk6vWsmq0PB'; // same key as index.html / library.html
+</script>
 
 <script>
   // ══════════════════════════════════════════════════════════════
@@ -23,7 +29,7 @@
   // ══════════════════════════════════════════════════════════════
   window.DF_CONFIG = {
     url: 'https://dtheefwrmpontfhlzzgv.supabase.co',      // replace with your Supabase Project URL
-    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR0aGVlZndybXBvbnRmaGx6emd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4MDQ0MzUsImV4cCI6MjA5ODM4MDQzNX0.r7SKrfXSUazF_28ViCpIwfop3kOFGwrvFmALjg5b2BA',              // replace with your Supabase anon public key
+    anonKey: 'eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR0aGVlZndybXBvbnRmaGx6emd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4MDQ0MzUsImV4cCI6MjA5ODM4MDQzNX0',              // replace with your Supabase anon public key
   };
 </script>
 </head>
