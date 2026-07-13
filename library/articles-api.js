@@ -118,11 +118,33 @@ const DFArticles = (function () {
     return data.summary;
   }
 
-  /** Very small markdown-ish renderer: **bold**, line breaks, - bullets. Escapes HTML first. */
-  function renderBody(text) {
+  /**
+   * Renders article body for display.
+   * - Admin-authored articles (submittedBy === 'admin'): if the content
+   *   contains real HTML tags (headings, paragraphs, lists, bold, etc.),
+   *   it's rendered as-is — trusted because only Google-authenticated,
+   *   email-allowlisted admins can create these. <script> tags are still
+   *   stripped as a defensive safety net against accidental paste.
+   * - Public/community submissions: always run through the safe,
+   *   escaped simple-markdown renderer (**bold**, - bullets, line breaks)
+   *   — never raw HTML, since anyone can submit these.
+   */
+  function renderBody(text, submittedBy) {
     if (!text) return '';
+
+    const looksLikeHtml = /<\s*(h[1-6]|p|div|ul|ol|li|strong|em|b|i|br|img|a|blockquote|table)[\s>]/i.test(text);
+
+    if (submittedBy === 'admin' && looksLikeHtml) {
+      // Trusted admin HTML — strip only <script> tags defensively, render the rest as-is.
+      return text.replace(/<script[\s\S]*?<\/script>/gi, '');
+    }
+
+    // Safe path — always escape first, then apply simple markdown.
     let safe = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     safe = safe.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    safe = safe.replace(/^### (.+)$/gm, '<h4>$1</h4>');
+    safe = safe.replace(/^## (.+)$/gm, '<h3>$1</h3>');
+    safe = safe.replace(/^# (.+)$/gm, '<h2>$1</h2>');
     safe = safe.replace(/^- (.+)$/gm, '• $1');
     safe = safe.replace(/\n/g, '<br>');
     return safe;

@@ -155,7 +155,7 @@ async function openArticle(id) {
         <div class="lib-detail-title">${article.title}</div>
         <div class="lib-detail-meta">By ${article.author_name || 'DiabFit'} · ${new Date(article.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
         ${embedUrl ? `<iframe class="lib-video-embed" src="${embedUrl}" allowfullscreen></iframe>` : ''}
-        <div class="lib-detail-text">${DFArticles.renderBody(article.body)}</div>
+        <div class="lib-detail-text">${DFArticles.renderBody(article.body, article.submitted_by)}</div>
 
         <div class="lib-summary-box">
           <div class="lib-summary-label">🤖 AI Summary</div>

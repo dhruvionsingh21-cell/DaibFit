@@ -89,7 +89,12 @@ async function renderAdminPanel(userEmail) {
         <input type="hidden" id="a-image-url">
       </div>
       <div class="lib-field"><label>Video link (optional)</label><input type="text" id="a-video" placeholder="https://youtube.com/watch?v=..."></div>
-      <div class="lib-field"><label>Content</label><textarea id="a-body" placeholder="Use **bold** and - bullets"></textarea></div>
+      <div class="lib-field">
+        <label>Content</label>
+        <textarea id="a-body" placeholder="Paste full HTML (headings like &lt;h2&gt;, &lt;p&gt;, &lt;ul&gt;, &lt;strong&gt;, &lt;img&gt;) — it renders exactly as written. Or just write plain text with **bold** and - bullets for simple articles."></textarea>
+        <button type="button" id="a-preview-btn" class="lib-icon-btn" style="width:auto;padding:0 12px;margin-top:.5rem;font-size:12px">👁 Preview rendering</button>
+        <div id="a-preview-box" style="display:none;margin-top:.75rem;padding:1rem;background:#fafafa;border-radius:10px;border:1px solid var(--lib-border)"></div>
+      </div>
       <div class="lib-field"><label>Status</label>
         <select id="a-status">
           <option value="published">Published (visible now)</option>
@@ -108,6 +113,12 @@ async function renderAdminPanel(userEmail) {
   document.getElementById('a-upload-zone').onclick = () => document.getElementById('a-file-input').click();
   document.getElementById('a-file-input').onchange = handleImageUpload;
   document.getElementById('a-save-btn').onclick = saveArticle;
+  document.getElementById('a-preview-btn').onclick = () => {
+    const box = document.getElementById('a-preview-box');
+    const bodyText = document.getElementById('a-body').value;
+    box.style.display = 'block';
+    box.innerHTML = `<div class="lib-detail-text">${DFArticles.renderBody(bodyText, 'admin')}</div>`;
+  };
   document.getElementById('a-cancel-btn').onclick = resetForm;
 
   await loadAdminList();
