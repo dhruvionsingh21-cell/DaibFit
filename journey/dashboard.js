@@ -250,49 +250,76 @@ const DFDashboard = (function () {
     const btn = document.getElementById('df-ai-ask-btn');
     const answerBox = document.getElementById('df-ai-answer');
 
+    function showError(msg) {
+      console.error('[DaibFit AI Coach]', msg);
+      answerBox.style.display = 'block';
+      answerBox.innerHTML = `<div class="df-ai-error">${msg}</div>`;
+      btn.disabled = false;
+      btn.textContent = 'Ask — ₹9';
+    }
+
     // Actually calls the AI after payment has succeeded.
-    async function askAfterPayment(question) {
+    async function askAfterPayment(question, paymentId) {
+      console.log('[DaibFit AI Coach] Payment succeeded, payment_id:', paymentId, '— calling AI now.');
       answerBox.style.display = 'block';
       answerBox.innerHTML = `<div class="df-ai-loading">Thinking...</div>`;
       try {
         const answer = await DFAICoach.ask(question, profile, logs, weeklyReports, insights, lang);
+        console.log('[DaibFit AI Coach] Got answer, length:', answer?.length);
         answerBox.innerHTML = `<div class="df-ai-answer-text">${answer.replace(/\n/g, '<br>')}</div>`;
+        btn.disabled = false;
+        btn.textContent = 'Ask — ₹9';
       } catch (err) {
-        answerBox.innerHTML = `<div class="df-ai-error">${err.message}</div>`;
+        // This is almost always either: (1) /.netlify/functions/ask-ai-coach.js
+        // was not deployed — check Netlify → Functions tab — or (2) OPENAI_API_KEY
+        // is missing/invalid in Netlify env vars.
+        showError('You were charged ₹9, but the AI coach failed to respond: ' + err.message + '. Please contact support with this message — your payment is safe and will be honoured.');
       }
-      btn.disabled = false;
-      btn.textContent = 'Ask — ₹9';
     }
 
     // Entry point — every question requires a ₹9 payment first.
     function ask(question) {
       if (!question || !question.trim()) return;
-      if (!window.Razorpay) { answerBox.style.display = 'block'; answerBox.innerHTML = `<div class="df-ai-error">Payment system not loaded. Please refresh and try again.</div>`; return; }
+      if (!window.Razorpay) { showError('Payment system not loaded. Please refresh and try again.'); return; }
+      if (typeof RAZORPAY_KEY === 'undefined' || !RAZORPAY_KEY || RAZORPAY_KEY.includes('XXXX')) {
+        showError('Payment is not configured correctly on this site yet. Please contact support.');
+        return;
+      }
 
       btn.disabled = true;
       btn.textContent = 'Loading...';
 
-      const rzp = new Razorpay({
-        key: RAZORPAY_KEY,
-        amount: 900, // ₹9 in paise
-        currency: 'INR',
-        name: 'DaibFit Journey',
-        description: 'Ask your Personal Health Coach',
-        handler: function () {
-          askAfterPayment(question);
-        },
-        prefill: { name: profile?.full_name || '' },
-        theme: { color: '#EF9F27' },
-        modal: {
-          ondismiss: () => { btn.disabled = false; btn.textContent = 'Ask — ₹9'; },
-        },
-      });
-      rzp.on('payment.failed', () => {
-        btn.disabled = false; btn.textContent = 'Ask — ₹9';
-        answerBox.style.display = 'block';
-        answerBox.innerHTML = `<div class="df-ai-error">Payment failed. Please try again.</div>`;
-      });
-      rzp.open();
+      try {
+        const rzp = new Razorpay({
+          key: RAZORPAY_KEY,
+          amount: 900, // ₹9 in paise
+          currency: 'INR',
+          name: 'DaibFit Journey',
+          description: 'Ask your Personal Health Coach',
+          handler: function (response) {
+            // Wrapped defensively — if askAfterPayment throws for any reason
+            // before its own try/catch engages, this still surfaces an error
+            // instead of failing completely silently.
+            try {
+              askAfterPayment(question, response?.razorpay_payment_id);
+            } catch (err) {
+              showError('Payment succeeded (ID: ' + response?.razorpay_payment_id + ') but something went wrong showing your answer: ' + err.message + '. Contact support with this payment ID.');
+            }
+          },
+          prefill: { name: profile?.full_name || '' },
+          theme: { color: '#EF9F27' },
+          modal: {
+            ondismiss: () => { btn.disabled = false; btn.textContent = 'Ask — ₹9'; },
+          },
+        });
+        rzp.on('payment.failed', (resp) => {
+          console.error('[DaibFit AI Coach] Razorpay payment.failed:', resp?.error);
+          showError('Payment failed: ' + (resp?.error?.description || 'unknown reason') + '. Please try again.');
+        });
+        rzp.open();
+      } catch (err) {
+        showError('Could not open payment window: ' + err.message);
+      }
     }
 
     btn.onclick = () => ask(input.value);
